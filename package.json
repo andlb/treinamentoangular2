@@ -1,0 +1,31 @@
+{
+  "name": "yucar",
+  "version": "0.0.1",
+  "description": "projeto yucar para mecanicas e centros automotivos",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andlb/treinamentoangular2.git"
+  },
+  "keywords": [
+    "MEAN",
+    "Stack",
+    "angular",
+    "2",
+    "application"
+  ],
+  "author": "Andre Luis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andlb/treinamentoangular2/issues"
+  },
+  "homepage": "https://github.com/andlb/treinamentoangular2#readme",
+  "dependencies": {
+    "crypto": "0.0.3",
+    "express": "^4.15.3",
+    "mongoose": "^4.11.3"
+  }
+}
