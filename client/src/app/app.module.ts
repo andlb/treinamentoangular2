@@ -6,6 +6,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { ServiceComponent } from './service/service.component';
 import { SurveyComponent } from './survey/survey.component';
+import { RegisterComponent } from './src/app/register/register.component';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { SurveyComponent } from './survey/survey.component';
     HeaderComponent,
     HomeComponent,
     ServiceComponent,
-    SurveyComponent
+    SurveyComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
