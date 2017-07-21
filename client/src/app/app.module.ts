@@ -1,4 +1,6 @@
+
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';  
 import {AppRoutingModule} from './app-routing.module';
@@ -8,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { ServiceComponent } from './service/service.component';
 import { SurveyComponent } from './survey/survey.component';
 import { RegisterComponent } from './autenticar/register/register.component';
+import { AuthService } from './autenticar/auth.service';
+
 
 @NgModule({
   declarations: [
@@ -20,10 +24,11 @@ import { RegisterComponent } from './autenticar/register/register.component';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule    
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
