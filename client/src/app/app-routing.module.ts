@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ServiceComponent } from './service/service.component';
 import { SurveyComponent } from './survey/survey.component';
 import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent } from './autenticar/register/register.component';
 
 
 const appRoutes: Routes = [

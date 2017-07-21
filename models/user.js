@@ -9,16 +9,10 @@ let emailLengthChecker = (email) => {
     return true;
 }
 
-let usernameLengthChecker = (username) => {
-    if (!username) return false;
-    if (username.length < 3 || username.length > 15) return false;
-    return true;
-}
-
-let usernameValid = (username) => {    
-    if (!username) return false;
-    const regExp = new RegExp(/^[a-zA-Z0-9]+$/);
-    return regExp.test(username);
+let emailValidation = (email) => {
+    if (!email) return false;
+    const regExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    return regExp.test(email);
 }
 
 let passwordValid = (password) => {
@@ -29,18 +23,14 @@ let passwordValid = (password) => {
 
 const emailValidators = [
     {
-        validator : emailLengthChecker, message: 'Preencha com um e-mail válido'
+        validator : emailLengthChecker, message: 'E-mail deve ter entre 5 e 30 caracteres'
+    },
+    {
+        validator : emailValidation, message: 'E-mail deve ser válido'
     }
 ]
 
-const usernameValidators = [
-    {
-        validator: usernameLengthChecker, message: 'Preencha o username com mais de três caracteres'
-    },
-    {
-        validator:usernameValid, message:'Preencha o username sem caracteres especiais'
-    }
-]
+
 const passwordValidator = [
     {
         validator: passwordValid, message:'A senha tem que ter no minimo 5 caracteres'
@@ -48,8 +38,7 @@ const passwordValidator = [
 ]
 
 const userSchema = new Schema({
-    email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },
-    username: { type: String, required: true, unique: true, lowercase: true, validate:usernameValidators },
+    email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },    
     password: { type: String, required: true, validate: passwordValidator },
 });
 

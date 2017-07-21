@@ -7,7 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { ServiceComponent } from './service/service.component';
 import { SurveyComponent } from './survey/survey.component';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent } from './autenticar/register/register.component';
 
 @NgModule({
   declarations: [
