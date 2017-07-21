@@ -29,6 +29,7 @@
     "cors": "^2.8.4",
     "crypto": "0.0.3",
     "express": "^4.15.3",
+    "jsonwebtoken": "^7.4.1",
     "mongoose": "^4.11.3"
   }
 }

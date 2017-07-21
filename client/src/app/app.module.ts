@@ -11,6 +11,7 @@ import { ServiceComponent } from './service/service.component';
 import { SurveyComponent } from './survey/survey.component';
 import { RegisterComponent } from './autenticar/register/register.component';
 import { AuthService } from './autenticar/auth.service';
+import { LoginComponent } from './autenticar/login/login.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AuthService } from './autenticar/auth.service';
     HomeComponent,
     ServiceComponent,
     SurveyComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

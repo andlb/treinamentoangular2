@@ -1,4 +1,7 @@
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const database = require('../config/database');
+
 module.exports = (router) => {
     router.post('/register', (req, res) => {
         //  req.body.email
@@ -11,7 +14,7 @@ module.exports = (router) => {
         }
         if (!req.body.password) {           
             if (erroMsg !="")  erroMsg !=","              
-            erroMsg += " o senha "   
+            erroMsg += " a senha "   
         }
         if (erroMsg != "" ) {
             erroMsg = "Por favor, preencha o(s) seguinte(s) campos: " + erroMsg
@@ -49,6 +52,46 @@ module.exports = (router) => {
                 }
             });
         }        
+    });
+
+    router.post('/login',(req,res) =>{
+        const retorno = {success:false, message:'',token:''};
+        let mensagem = ""
+        if (!req.body.email) {
+            if (mensagem!="") mensagem += ",";
+            mensagem += " o e-mail ";
+        }
+        if (!req.body.password) {
+            if (mensagem!="") mensagem += ",";
+            mensagem += " a senha ";
+        }
+        if (mensagem != ""){
+            retorno.message = "Por favor, preencha os seguintes campos: "+ mensagem;
+            res.json(retorno);
+            return;            
+        }            
+        User.findOne({email: req.body.email},(err, user)=>{
+            if (err){                
+                retorno.message = err;
+            }else{
+                if (!user){
+                    retorno.message = "Usuário não encontrado";
+                }else{
+                    const validPassword = user.comparePassword(req.body.password);
+                    if (!validPassword) {
+                        retorno.message = "Senha incorreta";                        
+                    }else{
+                        const token = jwt.sign({userId:user._id},database.secret,{expiresIn:'15m'})
+                        retorno.success = true;
+                        retorno.message = "Success";     
+                        retorno.token = token;
+                        retorno.user = { email : user.email };                  
+                    }
+                }
+            }
+            res.json(retorno);
+            return;
+        });
     });
 
     router.get('/checkEmail/:email',(req,res)=>{
