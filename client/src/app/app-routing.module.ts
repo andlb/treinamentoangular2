@@ -7,6 +7,8 @@ import { SurveyComponent } from './survey/survey.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './autenticar/register/register.component';
 import { LoginComponent } from './autenticar/login/login.component';
+import { AuthGuard } from './autenticar/guards/auth.guard';
+
 
 const appRoutes: Routes = [
   { path: '', component:HomeComponent},

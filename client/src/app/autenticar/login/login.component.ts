@@ -1,3 +1,4 @@
+import { AuthGuard } from './../guards/auth.guard';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './../auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,10 +14,12 @@ export class LoginComponent implements OnInit {
   processing = false;
   message;
   messageClass;  
+  priviousUrl;
 
   constructor(private fb: FormBuilder,
               private authService:AuthService,
-              private router: Router) { 
+              private router: Router,
+              private authGuard:AuthGuard) { 
     this.createForm();
   }
 
@@ -54,13 +57,23 @@ export class LoginComponent implements OnInit {
         this.messageClass = 'alert alert-success';                
         this.authService.storeUserData(data.token,data.user);
         setTimeout(()=>{
-          this.router.navigate(['/home']);
+          if (this.priviousUrl){
+            this.router.navigate([this.priviousUrl]);
+          }else {
+            this.router.navigate(['/home']);
+          }
         },2000);
       }
     })  
   }
 
   ngOnInit() {
+    if (this.authGuard.redirectUrl){
+      this.message = 'Você deve estar logado para acessar essa página';
+      this.messageClass = 'alert alert-danger';
+      this.priviousUrl = this.authGuard.redirectUrl;
+      this.authGuard.redirectUrl = undefined;
+    }
   }
 
 }
