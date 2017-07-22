@@ -12,7 +12,7 @@ import { SurveyComponent } from './survey/survey.component';
 import { RegisterComponent } from './autenticar/register/register.component';
 import { AuthService } from './autenticar/auth.service';
 import { LoginComponent } from './autenticar/login/login.component';
-
+import { FlashMessagesModule } from 'angular2-flash-messages';
 
 @NgModule({
   declarations: [
@@ -28,6 +28,7 @@ import { LoginComponent } from './autenticar/login/login.component';
     BrowserModule,
     HttpModule,
     AppRoutingModule,
+    FlashMessagesModule,
     ReactiveFormsModule    
   ],
   providers: [AuthService],
