@@ -9,6 +9,7 @@ export class AuthService {
   domain = environment.domain;  
   authToken;
   user;
+  options;
 
   constructor(
     private http: Http
@@ -24,6 +25,23 @@ export class AuthService {
 
   login(user){
     return this.http.post(this.domain+'/authentication/login',user).map(res => res.json());    
+  }
+  createAuthenticationHeader(){
+    this.loadToken();
+    this.options = new RequestOptions({
+      headers: new Headers({
+        'Content-Type':'application/json',
+        'authorization':this.authToken
+      });
+    });
+  }
+
+  loadToken(){
+    this.authToken = localStorage.getItem('token');
+  }
+
+  logout(){
+    
   }
 
   storeUserData(token,user){

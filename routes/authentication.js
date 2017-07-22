@@ -94,6 +94,29 @@ module.exports = (router) => {
         });
     });
 
+    /********************************************
+    middleware: usado para pegar o token do cabeçalho
+    ********************************************/
+    router.use((req,res,next)=>{
+        const token = req.headers['authorization'];
+        if (!token){
+            res.json({ success: false, message: 'Token não fornecido'});
+        }else{
+            //verifica se o token é valido
+            jwt.verify(token,config.secret,(err,decoded)=>{
+                if (err){
+                    res.json({success:false, message: 'Token inválido'});
+                }else{
+                    //cria uma variavel global para ser utilizada em todas as proximas requisições.
+                    req.decoded = decoded;
+                    next()
+                }
+
+            });
+
+        }
+    });
+
     router.get('/checkEmail/:email',(req,res)=>{
         const retorno = {success : false, message : ''};
         if (!req.params.email){            
