@@ -15,15 +15,16 @@ export class HeaderComponent implements OnInit {
     private authService:AuthService,
     private router:Router,
     private flashMessage: FlashMessagesService
-
-    
-
     ) { }
 
   onLogoutClick(){
     this.authService.logout();
     this.flashMessage.show('Aplicação desconectada',{cssClass:'alert-info'});
     this.router.navigate(['/']);
+  }
+
+  loggedIn(){
+    return this.authService.loggedIn();
   }
 
   ngOnInit() {

@@ -19,12 +19,11 @@ export class NoAuthGuard implements CanActivate{
             route: ActivatedRouteSnapshot, 
             state: RouterStateSnapshot): boolean {
     
-    if (this.authService.loggedIn()){
-      return true;
+    if (this.authService.loggedIn()){      
+      this.router.navigate(['/']);
+      return false;      
     }else{
-      this.redirectUrl = state.url;
-      this.router.navigate(['/login']);
-      return false;
+      return true;
     }
     
   }

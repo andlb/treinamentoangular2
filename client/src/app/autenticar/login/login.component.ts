@@ -67,6 +67,8 @@ export class LoginComponent implements OnInit {
     })  
   }
 
+
+
   ngOnInit() {
     if (this.authGuard.redirectUrl){
       this.message = 'Você deve estar logado para acessar essa página';
@@ -75,5 +77,7 @@ export class LoginComponent implements OnInit {
       this.authGuard.redirectUrl = undefined;
     }
   }
+
+
 
 }
