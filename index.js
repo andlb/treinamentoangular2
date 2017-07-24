@@ -24,7 +24,7 @@ app.use(cors(
 app.use(bodyParser.urlencoded({ extended: false })) 
 app.use(bodyParser.json())
 app.use(express.static(__dirname+'/client/dist/'));
-app.use("/authentication", authentication);
+//app.use("/authentication", authentication);
 
 app.get('*', (req, res) =>{ 
   res.sendFile(path.join(__dirname+'/client/dist/index.html'));
