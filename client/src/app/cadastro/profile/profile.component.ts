@@ -26,27 +26,36 @@ export class ProfileComponent implements OnInit {
   }
 
   getUsuario(){
-
-
-
+    this.usuario = this.authService.getMeuUsuario();
+    if (!this.usuario) {
+      this.usuario = {
+        nome:'',
+        endereco:'',
+        bairro:'',
+        numero:'',
+        complemento:'',
+        estado:'',
+        cep:''
+      }
+    }
   }
 
   createForm() {
     this.form = this.formBuilder.group({
-      nome: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
-      endereco: [''],
-      bairro: [''],
-      numero: [''],
-      complemento: [''],
-      cidade: [''],
-      estado: [''],
-      CEP: ['']
+      nome: [this.usuario.nome, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
+      endereco: [this.usuario.endereco],
+      bairro: [this.usuario.bairro],
+      numero: [this.usuario.numero],
+      complemento: [this.usuario.complemento],
+      cidade: [this.usuario.cidade],
+      estado: [this.usuario.estado],
+      CEP: [this.usuario.cep]
     });
   }
 
   updateProfile() {
     this.processing = true;
-    const profile = {
+    const usuario = {
       nome: this.form.get('nome').value,
       endereco: this.form.get("endereco").value,
       bairro: this.form.get("bairro").value,
@@ -55,6 +64,20 @@ export class ProfileComponent implements OnInit {
       estado: this.form.get('estado').value,
       CEP: this.form.get('CEP').value
     }
+    this.authService.atualizaUsuario(usuario).subscribe((data) => {
+      if (!data.success) {
+        this.messageClass = 'alert alert-danger';
+        this.message = data.message;
+        this.processing = false;
+      } else {
+        this.messageClass = 'alert alert-success';
+        this.message = data.message;
+        setTimeout(() => {
+          this.processing = false; // Enable submit button
+          this.message = false; // Erase error/success message
+          this.form.reset(); // Reset all form fields
+        }, 2000);
+    });
 
   }
   ngOnInit() {

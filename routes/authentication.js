@@ -187,16 +187,41 @@ module.exports = (router) => {
     }
   });
 
-  router.get('/editProfile', (req, res) => {
+  router.get('/getUsuario', (req, res) => {
     const retorno = {
       success: false,
-      message: ''
+      message: '',
+      usuario:null
     };
     if(!req.params.usuarioid){
       retorno.message = "Código do usuário não definido";
       res.json(retorno);
       return;
     }
+    Usuario.findOne({
+      _id: req.body.userid
+    }, (err, user) => {
+      if (err) {
+        retorno.mensagem = err;
+        res.json(retorno);
+        return;
+      }
+      if (!user) {
+        retorno.mensagem = "Usuario não encontrado"
+        res.json(retorno);
+        return;
+      } 
+      retorno.usuario = {
+        nome:user.nome,        
+        endereco:user.endereco.endereco,
+        bairro:user.endereco.bairro,
+        numero:user.endereco.numero,
+        complemento:user.endereco.complemento,
+        estado:user.endereco.estado,
+        cep:user.endereco.cep        
+      }
+      res.json(retorno);
+    });
   });
 
   router.post('/editProfile', (req, res) => {
@@ -238,8 +263,15 @@ module.exports = (router) => {
         estado: req.body.estado,
         cep: req.body.cep
       }
-    })
+      user.save((err)=>{
+        if (err) {
+          res.json({ success: false, message: err }); // Return error message
+        } else {
+          res.json({ success: true, message: 'Dados cadastrados com sucesso' }); // Return success message
+        }        
+      });
 
+    })
   });
 
 
