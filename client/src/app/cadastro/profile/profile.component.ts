@@ -11,43 +11,53 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 
 export class ProfileComponent implements OnInit {
- form: FormGroup;
-
+  form: FormGroup;
+  usuario;
   messageClass;
   message;
   processing = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private AuthService: AuthService
-  ) { }
-
-  ngOnInit() {
+    private authService: AuthService
+  ) {
+    this.getUsuario();
+    this.createForm();
   }
 
-  createForm(){
+  getUsuario(){
+
+
+
+  }
+
+  createForm() {
     this.form = this.formBuilder.group({
-      nome:['',[Validators.required,Validators.maxLength(100),Validators.minLength(5)]],
-      endereco:[''],
-      bairro:[''],
-      complemento:[''],
-      cidade:[''],
-      estado:[''],
-      CEP:['']
+      nome: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
+      endereco: [''],
+      bairro: [''],
+      numero: [''],
+      complemento: [''],
+      cidade: [''],
+      estado: [''],
+      CEP: ['']
     });
   }
 
-  updateProfile(){
+  updateProfile() {
     this.processing = true;
     const profile = {
-      nome:this.form.get('nome').value,
-      endereco:this.form.get("endereco").value,
-      bairro:this.form.get("bairro").value,
-      complemento:this.form.get('complemento').value,
-      cidade:this.form.get('cidade').value,
-      estado:this.form.get('estado').value,
-      CEP:this.form.get('CEP').value
+      nome: this.form.get('nome').value,
+      endereco: this.form.get("endereco").value,
+      bairro: this.form.get("bairro").value,
+      complemento: this.form.get('complemento').value,
+      cidade: this.form.get('cidade').value,
+      estado: this.form.get('estado').value,
+      CEP: this.form.get('CEP').value
     }
+
+  }
+  ngOnInit() {
 
   }
 

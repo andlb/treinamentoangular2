@@ -74,6 +74,7 @@ module.exports = (router) => {
     }
   });
 
+  //Login do sistema.
   router.post('/login', (req, res) => {
     const retorno = {
       success: false,
@@ -94,7 +95,9 @@ module.exports = (router) => {
       res.json(retorno);
       return;
     }
-    Usuario.findOne({email: req.body.email}, (err, user) => {
+    Usuario.findOne({
+      email: req.body.email
+    }, (err, user) => {
       if (err) {
         retorno.message = err;
       } else {
@@ -114,6 +117,7 @@ module.exports = (router) => {
             retorno.message = "Success";
             retorno.token = token;
             retorno.user = {
+              usuarioid: user._id,
               email: user.email,
               tipo: user.tipo,
               cadastrocompleto: user.cadastrocompleto
@@ -124,47 +128,6 @@ module.exports = (router) => {
       res.json(retorno);
       return;
     });
-  });
-
-  router.post('/editProfile', (req, res) => {
-    const retorno = {
-      success: false,
-      message: ''
-    };
-    if (!req.params.userid) {
-      retorno.message = 'Código do usuário não definido';
-      res.json(retorno);
-      return;
-    }
-    if (!req.params.nome) {
-      retorno.message = 'Nome não definido ';
-      res.json( retorno );
-      return;
-    }
-    Usuario.findOne( { _id:req.params.userid },(err,user)=>{
-      if (err) {
-        retorno.mensagem = err;
-        res.json( retorno );
-        return;
-      } 
-      if (!user) {
-        retorno.mensagem = "Usuario não encontrado"
-        res.json(retorno);
-        return;
-      }
-      user.nome = req.body.nome;
-      user.tipo = 0
-      user.cadastrocomplemento = 1
-      user.endereco = {
-        endereco: req.body.endereco,
-        bairro: req.body.bairro,
-        numero: req.body.numero,
-        complemento : req.body.complemento,
-        estado : req.body.estado,
-        cep : req.body.cep
-      }
-    })
-    
   });
 
   router.get('/checkEmail/:email', (req, res) => {
@@ -193,7 +156,7 @@ module.exports = (router) => {
       res.json(retorno);
       return;
     });
-  })  
+  })
 
   /********************************************
   middleware: usado para pegar o token do cabeçalho
@@ -222,6 +185,61 @@ module.exports = (router) => {
       });
 
     }
+  });
+
+  router.get('/editProfile', (req, res) => {
+    const retorno = {
+      success: false,
+      message: ''
+    };
+    if(!req.params.usuarioid){
+      retorno.message = "Código do usuário não definido";
+      res.json(retorno);
+      return;
+    }
+  });
+
+  router.post('/editProfile', (req, res) => {
+    const retorno = {
+      success: false,
+      message: ''
+    };
+    if (!req.body.userid) {
+      retorno.message = 'Código do usuário não definido';
+      res.json(retorno);
+      return;
+    }
+    if (!req.body.nome) {
+      retorno.message = 'Nome não definido ';
+      res.json(retorno);
+      return;
+    }
+    Usuario.findOne({
+      _id: req.body.userid
+    }, (err, user) => {
+      if (err) {
+        retorno.mensagem = err;
+        res.json(retorno);
+        return;
+      }
+      if (!user) {
+        retorno.mensagem = "Usuario não encontrado"
+        res.json(retorno);
+        return;
+      }
+      user.nome = req.body.nome;
+      user.tipo = 0
+      user.cadastrocomplemento = 1
+      user.endereco = {
+        endereco: req.body.endereco,
+        bairro: req.body.bairro,
+        numero: req.body.numero,
+        complemento: req.body.complemento,
+        estado: req.body.estado,
+        cep: req.body.cep
+      }
+    })
+
   });
 
 

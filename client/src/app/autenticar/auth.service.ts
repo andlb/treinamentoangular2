@@ -6,10 +6,11 @@ import { environment } from './../../environments/environment';
 
 @Injectable()
 export class AuthService {
+  private usuario;
 
   domain = environment.domain;
   authToken;
-  usuario;
+  usuarioToken;
   options;
 
   constructor(
@@ -17,16 +18,22 @@ export class AuthService {
   ) { }
 
   registerUser(usuario){
-    return this.http.post(this.domain+'/authentication/register',usuario).map(res => res.json());
+    return this.http.post(this.domain+'authentication/register',usuario).map(res => res.json());
   }
 
   checkEmail(email){
-    return this.http.get(this.domain+'/authentication/checkEmail/'+email).map(res => res.json());
+    return this.http.get(this.domain+'authentication/checkEmail/'+email).map(res => res.json());
   }
 
   login(usuario){
-    return this.http.post(this.domain+'/authentication/login',usuario).map(res => res.json());
+    return this.http.post(this.domain+'authentication/login',usuario).map(res => res.json());
   }
+  getMeuUsuario() {
+    this.createAuthenticationHeader();
+    let usuarioid = JSON.parse(localStorage.getItem('usuario'));
+    return this.http.get(this.domain+'authentication/getUsuario/'+usuarioid, this.options).map(res => res.json());
+  }
+
   createAuthenticationHeader(){
     this.loadToken();
     this.options = new RequestOptions({
@@ -43,7 +50,7 @@ export class AuthService {
 
   logout(){
     this.authToken = null;
-    this.usuario = null;
+    this.usuarioToken = null;
     localStorage.clear();
   }
 
@@ -51,12 +58,12 @@ export class AuthService {
     localStorage.setItem('token',token);
     localStorage.setItem('usuario',JSON.stringify(usuario));
     this.authToken = token;
-    this.usuario = usuario;
+    this.usuarioToken = usuario;
   }
 
   loggedIn(){
-
     return tokenNotExpired();
   }
+
 
 }
