@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/usuario');
 const jwt = require('jsonwebtoken');
 const database = require('../config/database');
 
@@ -8,84 +8,84 @@ module.exports = (router) => {
         // req.body.username;
         // req.body.password;
         let erroMsg = ""
-        if (!req.body.email) {                        
-            if (erroMsg !="")  erroMsg !="," 
-            erroMsg += " o e-mail "   
+        if (!req.body.email) {
+            if (erroMsg != "") erroMsg != ","
+            erroMsg += " o e-mail "
         }
-        if (!req.body.password) {           
-            if (erroMsg !="")  erroMsg !=","              
-            erroMsg += " a senha "   
+        if (!req.body.password) {
+            if (erroMsg != "") erroMsg != ","
+            erroMsg += " a senha "
         }
-        if (erroMsg != "" ) {
+        if (erroMsg != "") {
             erroMsg = "Por favor, preencha o(s) seguinte(s) campos: " + erroMsg
-            res.json({success:false,message:erroMsg});
-        }else {
+            res.json({ success: false, message: erroMsg });
+        } else {
             let user = new User({
-                email:req.body.email.toLowerCase(),                
-                password:req.body.password
+                email: req.body.email.toLowerCase(),
+                password: req.body.password
             });
-            user.save((err) =>{
-                if (err){
+            user.save((err) => {
+                if (err) {
                     if (err.code === 11000) {
-                        res.json({success:false,message:"Usuário já cadastrado"});    
-                    }else {
+                        res.json({ success: false, message: "Usuário já cadastrado" });
+                    } else {
                         if (err.errors) {
                             if (err.errors.email) {
-                                res.json({success:false,message:err.errors.email.message});                            
+                                res.json({ success: false, message: err.errors.email.message });
                                 return;
                             }
 
                             if (err.errors.password) {
-                                res.json({success:false,message:err.errors.password.message});                            
+                                res.json({ success: false, message: err.errors.password.message });
                                 return;
-                            }                             
-                            res.json({success:false,message:err});                            
+                            }
+                            res.json({ success: false, message: err });
                             return;
-                        }else {
-                            res.json({success:false,message:"Usuário não pode ser salvo",err});
-                            return; 
-                        }                        
+                        } else {
+                            res.json({ success: false, message: "Usuário não pode ser salvo", err });
+                            return;
+                        }
                     }
-                    console.log("Erro> UserJs:"+err);                    
-                }else{
-                    res.json({success:true,message:"Usuário salvo"});
+                    console.log("Erro> UserJs:" + err);
+                } else {
+                    res.json({ success: true, message: "Usuário salvo" });
                 }
             });
-        }        
+        }
     });
 
-    router.post('/login',(req,res) =>{
-        const retorno = {success:false, message:'',token:''};
+    router.post('/login', (req, res) => {
+        const retorno = { success: false, message: '', token: '' };
         let mensagem = ""
         if (!req.body.email) {
-            if (mensagem!="") mensagem += ",";
+            if (mensagem != "") mensagem += ",";
             mensagem += " o e-mail ";
         }
         if (!req.body.password) {
-            if (mensagem!="") mensagem += ",";
+            if (mensagem != "") mensagem += ",";
             mensagem += " a senha ";
         }
-        if (mensagem != ""){
-            retorno.message = "Por favor, preencha os seguintes campos: "+ mensagem;
+        if (mensagem != "") {
+            retorno.message = "Por favor, preencha os seguintes campos: " + mensagem;
             res.json(retorno);
-            return;            
-        }            
-        User.findOne({email: req.body.email},(err, user)=>{
-            if (err){                
+            return;
+        }
+        User.findOne({ email: req.body.email }, (err, user) => {
+            if (err) {
                 retorno.message = err;
-            }else{
-                if (!user){
+            } else {
+                if (!user) {
                     retorno.message = "Usuário não encontrado";
-                }else{
+                } else {
                     const validPassword = user.comparePassword(req.body.password);
                     if (!validPassword) {
-                        retorno.message = "Senha incorreta";                        
-                    }else{
-                        const token = jwt.sign({userId:user._id},database.secret,{expiresIn:'15m'})
+                        retorno.message = "Senha incorreta";
+                    } else {
+                        const token = jwt.sign({ userId: user._id }, database.secret, { expiresIn: '15m' })
                         retorno.success = true;
-                        retorno.message = "Success";     
+                        retorno.message = "Success";
                         retorno.token = token;
-                        retorno.user = { email : user.email };                  
+                        retorno.user = { email: user.email };
                     }
                 }
             }
@@ -97,16 +97,16 @@ module.exports = (router) => {
     /********************************************
     middleware: usado para pegar o token do cabeçalho
     ********************************************/
-    router.use((req,res,next)=>{
+    router.use((req, res, next) => {
         const token = req.headers['authorization'];
-        if (!token){
-            res.json({ success: false, message: 'Token não fornecido'});
-        }else{
+        if (!token) {
+            res.json({ success: false, message: 'Token não fornecido' });
+        } else {
             //verifica se o token é valido
-            jwt.verify(token,config.secret,(err,decoded)=>{
-                if (err){
-                    res.json({success:false, message: 'Token inválido'});
-                }else{
+            jwt.verify(token, config.secret, (err, decoded) => {
+                if (err) {
+                    res.json({ success: false, message: 'Token inválido' });
+                } else {
                     //cria uma variavel global para ser utilizada em todas as proximas requisições.
                     req.decoded = decoded;
                     next()
@@ -117,20 +117,20 @@ module.exports = (router) => {
         }
     });
 
-    router.get('/checkEmail/:email',(req,res)=>{
-        const retorno = {success : false, message : ''};
-        if (!req.params.email){            
-            retorno.message = 'e-mail não fornecido';                        
+    router.get('/checkEmail/:email', (req, res) => {
+        const retorno = { success: false, message: '' };
+        if (!req.params.email) {
+            retorno.message = 'e-mail não fornecido';
             res.json(retorno);
             return;
         }
-        User.findOne({email: req.params.email},(err, user)=>{
-            if (err){                
+        User.findOne({ email: req.params.email }, (err, user) => {
+            if (err) {
                 retorno.message = err;
-            }else{
+            } else {
                 if (user) {
                     retorno.message = 'Usuário já cadastrado';
-                }else {
+                } else {
                     retorno.success = true;
                     retorno.message = "Usuário disponível"
                 }

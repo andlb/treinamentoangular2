@@ -3,9 +3,10 @@ mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 
 const respostaSchema = new Schema({
-    perguntaid:{type:String},
-    descricao:{type:String},    
-    resposta:{type:String}
+    empresaid: { type: String },
+    perguntaid: { type: String },
+    descricao: { type: String },
+    resposta: { type: String }
 });
 
 
