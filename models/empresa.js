@@ -32,6 +32,7 @@ const empresaSchema = new Schema({
     razaosocial: { type: String, required: [true, "Razão social não definido"] },
     fantasia: { type: String, required: [true, "Nome fantasia não definido"] },
     email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },
+    emailautenticado: {type:Boolean, default:false},
     telefone: { type: String },
     celular: { type: String, required: [true, "Celular não definido"] },
     endereco: {
