@@ -13,26 +13,26 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   processing = false;
   message;
-  messageClass;  
+  messageClass;
   priviousUrl;
 
   constructor(private fb: FormBuilder,
               private authService:AuthService,
               private router: Router,
-              private authGuard:AuthGuard) { 
+              private authGuard:AuthGuard) {
     this.createForm();
   }
 
   createForm(){
-    this.form = this.fb.group({      
+    this.form = this.fb.group({
       email:['',Validators.required],
       password:['',Validators.required]
     })
   }
-  
+
  disableForm(){
    this.form.controls["email"].disable();
-   this.form.controls["password"].disable();   
+   this.form.controls["password"].disable();
  }
 
  enableForm(){
@@ -49,22 +49,27 @@ export class LoginComponent implements OnInit {
     };
     this.authService.login(user).subscribe(data => {
       this.message = data.message;
-      if (!data.success){        
-        this.messageClass = 'alert alert-danger';        
+      if (!data.success){
+        this.messageClass = 'alert alert-danger';
         this.processing = false;
         this.enableForm();
       }else{
-        this.messageClass = 'alert alert-success';                
+        this.messageClass = 'alert alert-success';
         this.authService.storeUserData(data.token,data.user);
         setTimeout(()=>{
           if (this.priviousUrl){
             this.router.navigate([this.priviousUrl]);
           }else {
-            this.router.navigate(['/home']);
+            if ( (data.user.tipo === 1) && (!data.user.cadastrocompleto) ){
+              this.router.navigate(['/profile']);
+            }else {
+              ///TODO: depende do tipo do usuário.
+              this.router.navigate(['/home']);
+            }
           }
         },2000);
       }
-    })  
+    })
   }
 
 

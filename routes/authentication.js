@@ -116,7 +116,9 @@ module.exports = (router) => {
             retorno.message = "Success";
             retorno.token = token;
             retorno.user = {
-              email: user.email
+              email: user.email,
+              tipo: user.tipo,
+              cadastrocompleto: user.cadastrocompleto
             };
           }
         }

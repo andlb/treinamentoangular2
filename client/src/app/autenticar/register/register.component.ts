@@ -57,16 +57,18 @@ export class RegisterComponent implements OnInit {
    this.form.controls["email"].enable();
    this.form.controls["password"].enable();
    this.form.controls["password_confirm"].enable();
-
  }
 
   onRegister(){
     this.processing = true;
     this.disableForm();
+    //TODO: corrigir o tipo 1. O tipo 1 é valido para determinado tipos de usuários. Essa informação deve vir do formulario. No caso 1 é convidado
     const usuario = {
       email: this.form.get("email").value,
-      password: this.form.get("password").value
+      password: this.form.get("password").value,
+      tipo:1
     }
+
     this.authService.registerUser(usuario).subscribe(data => {
       this.message = data.message;
       if (!data.success) {
