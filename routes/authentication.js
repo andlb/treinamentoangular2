@@ -4,9 +4,6 @@ const database = require('../config/database');
 
 module.exports = (router) => {
   router.post('/register', (req, res) => {
-    //  req.body.email
-    // req.body.username;
-    // req.body.password;
     let erroMsg = ""
     if (!req.body.email) {
       if (erroMsg != "") erroMsg != ","
@@ -25,7 +22,8 @@ module.exports = (router) => {
     } else {
       let user = new Usuario({
         email: req.body.email.toLowerCase(),
-        password: req.body.password
+        password: req.body.password,
+        tipo: req.body.tipo
       });
       user.save((err) => {
         if (err) {
