@@ -1,3 +1,5 @@
+///TODO: Criar um validador para tempo, respeitando o formato que permite 6h 5m e etc.
+
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
@@ -43,15 +45,10 @@ const empresaSchema = new Schema({
       nome:{ type: String },    
       email:{ type: String, validate: emailValidators },    
     }], 
-    Servicos:[{
+    servicos:[{
       descricao:{type:String},
-      quilometragem:{type:Number},
-      tempo:{type:Number}
-    }],
-    Perguntas:[{
-      descricao:{type:String},
-      tipo:{type:Number},
-      resposta:{type:String}
+      tempo:{type:String},
+      quilometragem:{type:Number}
     }],
     respUltimaAlteracao:[{
       usuario:{ type: String },    

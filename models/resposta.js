@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 
-const respostaporempresaSchema = new Schema({
+const respostaSchema = new Schema({
+    perguntaid:{type:String},
     descricao:{type:String},    
     resposta:{type:String}
 });
 
 
-module.exports = mongoose.model('RespostaporEmpresa', respostaporempresaSchema);
+module.exports = mongoose.model('Resposta', respostaSchema);
