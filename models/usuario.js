@@ -48,14 +48,14 @@ const passwordValidator = [{
 
 const tipoValidator = [{
     validator: tipoValidation,
-    message: 'Tipo inválido. Selecione 0 para proprietário, 1 para funcionário e 2 para funcionário e proprietário'
+    message: 'Tipo inválido. Selecione 0 para proprietário, 1 para convidado e 2 para funcionário e proprietário'
 }]
 
 const usuarioSchema = new Schema({
     nome: { type: String },
     email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },
-    password: { type: String, required: true, validate: passwordValidator },
-    tipo: { type: Number, require: true },
+    password: { type: String, required: true, validate: passwordValidator },    
+    tipo: { type: Number, require: true },//0 - proprietário, 1 convidado, 2 proprietário e convidado
     endereco: {
         endereco: { type: String },
         bairro: { type: String },
@@ -65,7 +65,7 @@ const usuarioSchema = new Schema({
         estado: { type: String },
         cep: { type: String },
     },
-    CadastroCompleto: { type: Boolean }
+    cadastrocompleto: { type: Boolean }
 });
 
 usuarioSchema.pre('save', function(next) {

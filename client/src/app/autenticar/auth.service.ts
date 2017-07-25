@@ -7,25 +7,25 @@ import { environment } from './../../environments/environment';
 @Injectable()
 export class AuthService {
 
-  domain = environment.domain;  
+  domain = environment.domain;
   authToken;
-  user;
+  usuario;
   options;
 
   constructor(
     private http: Http
   ) { }
-  
-  registerUser(user){    
-    return this.http.post(this.domain+'/authentication/register',user).map(res => res.json());    
-  }
-  
-  checkEmail(email){
-    return this.http.get(this.domain+'/authentication/checkEmail/'+email).map(res => res.json());    
+
+  registerUser(usuario){
+    return this.http.post(this.domain+'/authentication/register',usuario).map(res => res.json());
   }
 
-  login(user){
-    return this.http.post(this.domain+'/authentication/login',user).map(res => res.json());    
+  checkEmail(email){
+    return this.http.get(this.domain+'/authentication/checkEmail/'+email).map(res => res.json());
+  }
+
+  login(usuario){
+    return this.http.post(this.domain+'/authentication/login',usuario).map(res => res.json());
   }
   createAuthenticationHeader(){
     this.loadToken();
@@ -43,19 +43,19 @@ export class AuthService {
 
   logout(){
     this.authToken = null;
-    this.user = null;
+    this.usuario = null;
     localStorage.clear();
   }
 
-  storeUserData(token,user){
+  storeUserData(token,usuario){
     localStorage.setItem('token',token);
-    localStorage.setItem('user',JSON.stringify(user));
+    localStorage.setItem('usuario',JSON.stringify(usuario));
     this.authToken = token;
-    this.user = user;
+    this.usuario = usuario;
   }
-  
+
   loggedIn(){
-    
+
     return tokenNotExpired();
   }
 

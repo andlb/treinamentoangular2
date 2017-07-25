@@ -5,20 +5,19 @@
   </div>
 </div>
 
-
 <form [formGroup]="form" (submit)="onRegister()" >
-  <div class="control-group">  
+  <div class="control-group">
     <label class="control-label" for="email">E-mail</label>
     <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors || !emailValid), 'has-success': !form.controls.email.errors }">
       <input type="text" class="form-control"  id="email" name="email" formControlName="email" placeholder="" (blur)="checkEmail()">
       <ul class="help-block">
         <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
-        <li *ngIf="((form.controls.email.touched) && (form.controls.email.errors?.maxlength || form.controls.email.errors?.minlength))">Caracters mínimo: 3, máximo: 15</li>      
+        <li *ngIf="((form.controls.email.touched) && (form.controls.email.errors?.maxlength || form.controls.email.errors?.minlength))">Caracters mínimo: 3, máximo: 15</li>
         <li *ngIf="form.controls.email.touched && form.controls.email.errors?.pattern">Este e-mail deve ser válido</li>
         <li *ngIf="form.controls.email.touched && !emailValid">Email já cadastrado</li>
       </ul>
-    </div>    
-  </div> 
+    </div>
+  </div>
   <div class="control-group">
     <!-- Password-->
     <label class="control-label" for="password">Senha</label>
@@ -26,7 +25,7 @@
       <input type="password" class="form-control"  id="password" name="password"  formControlName="password" placeholder="" >
       <ul class="help-block">
         <li *ngIf="form.controls.password.touched && form.controls.password.errors?.minlength">Senha deve ter ao menos 5 caracteres</li>
-      </ul>         
+      </ul>
     </div>
   </div>
   <div class="control-group">
@@ -36,7 +35,7 @@
       <input type="password" class="form-control"  id="password_confirm" name="password_confirm"  formControlName="password_confirm" placeholder="">
       <ul class="help-block">
         <li *ngIf="form.errors?.matchingPass && form.controls.password_confirm.touched" class="help-block">Senha informada diferente da senha anterior</li>
-      </ul>        
+      </ul>
     </div>
   </div>
   <div class="control-group">

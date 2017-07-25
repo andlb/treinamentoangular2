@@ -20,17 +20,17 @@ export class RegisterComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private authService:AuthService,
-              private router: Router) { 
+              private router: Router) {
     this.createForm();
   }
 
   createForm(){
-    this.form = this.fb.group({      
+    this.form = this.fb.group({
       email:['',[Validators.required,
                 Validators.minLength(5),
-                Validators.maxLength(30),      
+                Validators.maxLength(30),
                 Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-                ]],                
+                ]],
       password:['',[Validators.required,Validators.minLength(5)]],
       password_confirm:['',[Validators.required,Validators.minLength(5)]]
     },{validator:this.matchPassword('password','password_confirm')}
@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit {
       }
     }
   }
-  
+
  disableForm(){
    this.form.controls["email"].disable();
    this.form.controls["password"].disable();
@@ -57,32 +57,33 @@ export class RegisterComponent implements OnInit {
    this.form.controls["email"].enable();
    this.form.controls["password"].enable();
    this.form.controls["password_confirm"].enable();
-   
+
  }
 
   onRegister(){
     this.processing = true;
     this.disableForm();
-    const user = {
+    const usuario = {
       email: this.form.get("email").value,
       password: this.form.get("password").value
-    }    
-    this.authService.registerUser(user).subscribe(data => {
+    }
+    this.authService.registerUser(usuario).subscribe(data => {
       this.message = data.message;
       if (!data.success) {
         this.messageClass = 'alert alert-danger';
-        this.processing = false;      
+        this.processing = false;
         this.enableForm();
       }else {
-        this.messageClass = 'alert alert-success'; 
+        this.messageClass = 'alert alert-success';
         setTimeout(()=>{
           this.router.navigate(['/login']);
         },2000)
       }
-    });    
+    });
   }
 
-  checkEmail(){    
+  checkEmail(){
+
     this.authService.checkEmail(this.form.controls["email"].value).subscribe(data => {
       if (!data.success) {
         this.emailValid=false;
@@ -90,7 +91,7 @@ export class RegisterComponent implements OnInit {
       }else {
         this.emailValid=true;
       }
-    });    
+    });
   }
 
   ngOnInit() {}

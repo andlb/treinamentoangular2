@@ -1,0 +1,81 @@
+<h1 class="page-header">Minhas informações</h1>
+<div class="row show-hide-message">
+    <div [ngClass]="messageClass">
+        {{message}}
+    </div>
+</div>
+
+<form [formGroup]="form"  (submit)="updateProfile()">
+    <div class="form-group">
+        <label for="Nome">Nome</label>
+        <div [ngClass]="{'has-success': form.controls.nome.valid, 'has-error': form.controls.nome.dirty && form.controls.nome.errors}">
+            <!-- nome Input -->
+            <input type="text" [disabled]="processing" name="nome" class="form-control" placeholder="*Nome" autocomplete="off" formControlName="nome" />
+            <!-- Validation -->
+            <ul class="help-block">
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="endereco">Endereço</label>
+        <div>
+            <!--endereco Input -->
+            <input type="text" [disabled]="processing" name="endereco" class="form-control" placeholder="Endereço" autocomplete="off" formControlName="endereco" />
+            <!-- Validation -->
+            <ul class="help-block ">
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="bairro">Bairro</label>
+        <div>
+            <!--bairro Input -->
+            <input type="text" [disabled]="processing" name="bairro" class="form-control" placeholder="Bairro" autocomplete="off" formControlName="bairro" />
+            <!-- Validation -->
+            <ul class="help-block ">
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="complemento">Complemento</label>
+        <div>
+            <!--complemento Input -->
+            <input type="text" [disabled]="processing" name="complemento" class="form-control" placeholder="Complemento" autocomplete="off" formControlName="complemento" />
+            <!-- Validation -->
+            <ul class="help-block ">
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="cidade">cidade</label>
+        <div>
+            <!--cidade Input -->
+            <input type="text" [disabled]="processing" name="cidade" class="form-control" placeholder="cidade" autocomplete="off" formControlName="cidade" />
+            <!-- Validation -->
+            <ul class="help-block ">
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="estado">Estado</label>
+        <div>
+            <!--estado Input -->
+            <input type="text" [disabled]="processing" name="estado" class="form-control" placeholder="Estado" autocomplete="off" formControlName="estado" />
+            <!-- Validation -->
+            <ul class="help-block ">
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="CEP">CEP</label>
+        <div>
+            <!--CEP Input -->
+            <input type="text" [disabled]="processing" name="CEP" class="form-control" placeholder="CEP" autocomplete="off" formControlName="CEP" />
+            <!-- Validation -->
+            <ul class="help-block ">
+            </ul>
+        </div>
+    </div>
+    <input [disabled]="!form.valid || processing" type="submit" class="btn btn-primary" value="Submit" />
+</form>

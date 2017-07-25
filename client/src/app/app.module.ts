@@ -1,9 +1,7 @@
-
-
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';  
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './autenticar/guards/auth.guard';
 import { NoAuthGuard } from './autenticar/guards/notAuth.guard';
@@ -16,6 +14,8 @@ import { RegisterComponent } from './autenticar/register/register.component';
 import { AuthService } from './autenticar/auth.service';
 import { LoginComponent } from './autenticar/login/login.component';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { ProfileComponent } from './cadastro/profile/profile.component';
+import { EmpresaComponent } from './cadastro/empresa/empresa.component';
 
 @NgModule({
   declarations: [
@@ -25,14 +25,16 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     ServiceComponent,
     SurveyComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent,
+    EmpresaComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     AppRoutingModule,
     FlashMessagesModule,
-    ReactiveFormsModule    
+    ReactiveFormsModule
   ],
   providers: [AuthService, AuthGuard,NoAuthGuard],
   bootstrap: [AppComponent]
