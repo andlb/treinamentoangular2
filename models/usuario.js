@@ -1,3 +1,7 @@
+//cadastro do usuário.
+///TODO: Se o usuário for do tipo empresa, irá direto para a tele de cadastro de serviço.
+///TODO: Se o usuário for do tipo proprietário, irá direto para a tela de cadastro de veiculo.
+///TODO: Quando o usuário não terminar o cadastro dele, ele terá que acessar a tela de profile para terminar o cadastro.
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
@@ -60,7 +64,8 @@ const usuarioSchema = new Schema({
         cidade: { type: String },
         estado: { type: String },
         cep: { type: String },
-    }
+    },
+    CadastroCompleto: { type: Boolean }
 });
 
 usuarioSchema.pre('save', function(next) {

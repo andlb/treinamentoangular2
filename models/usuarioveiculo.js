@@ -1,1 +1,0 @@
-///TODO: terminar a definiçãod o usuário por veiuclo
