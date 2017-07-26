@@ -8,7 +8,7 @@
 <form [formGroup]="form" (submit)="submitEmpresa()">
   <div class="control-group">
     <label class="control-label" for="email">E-mail</label>
-    <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
+    <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors || !emailValid), 'has-success': !form.controls.email.errors }">
       <input type="text" class="form-control" id="email" name="email" placeholder="*E-mail" formControlName="email" autofocus (blur)="checkEmail()">
       <ul class="help-block">
         <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
@@ -159,7 +159,7 @@
       <input type="text" name="CEP" class="form-control" placeholder="*CEP" autocomplete="off" formControlName="CEP" />
       <!-- Validation -->
       <ul class="help-block ">
-        <li *ngIf="form.controls.CEP.touched && form.controls.CEP.errors?.pattern ">CEP inválido</li>
+        <li *ngIf="form.controls.CEP.touched && form.controls.CEP.errors?.pattern ">CEP inválido. Exemplo: 15057-000</li>
       </ul>
     </div>
   </div>
@@ -167,7 +167,7 @@
   <div class="control-group">
     <!-- Button -->
     <div class="controls">
-      <button [disabled]="!form.valid || processing" class="btn btn-success">Cadastrar</button>
+      <button [disabled]="!form.valid || processing || !emailValid" class="btn btn-success">Cadastrar</button>
     </div>
   </div>
 </form>
