@@ -21,13 +21,18 @@ export class AuthService {
     return this.http.post(this.domain+'authentication/register',usuario).map(res => res.json());
   }
 
-  checkEmail(email){
-    return this.http.get(this.domain+'authentication/checkEmail/'+email).map(res => res.json());
+  checkEmailUsuario(email){
+    return this.http.get(this.domain+'authentication/checkEmailUsuario/'+email).map(res => res.json());
+  }
+
+  checkEmailEmpresa(email){
+    return this.http.get(this.domain+'authentication/checkEmailEmpresa/'+email).map(res => res.json());
   }
 
   login(usuario){
     return this.http.post(this.domain+'authentication/login',usuario).map(res => res.json());
   }
+
   getMeuUsuario() {
     this.createAuthenticationHeader();
     let usuarioid = JSON.parse(localStorage.getItem('usuario'));

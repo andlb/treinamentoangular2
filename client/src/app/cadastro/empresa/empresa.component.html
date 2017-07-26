@@ -1,4 +1,4 @@
-<h1 class="page-header">Minhas informações</h1>
+<h1 class="page-header">Dados da empresa</h1>
 <div class="row show-hide-message">
   <div [ngClass]="messageClass">
     {{message}}
@@ -9,13 +9,12 @@
   <div class="control-group">
     <label class="control-label" for="email">E-mail</label>
     <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
-      <input type="text"
-        class="form-control" id="email" name="email"
-        placeholder="*E-mail" formControlName="email"
-        autofocus
-        >
+      <input type="text" class="form-control" id="email" name="email" placeholder="*E-mail" formControlName="email" autofocus (blur)="checkEmail()">
       <ul class="help-block">
         <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
+        <li *ngIf="((form.controls.email.touched) && (form.controls.email.errors?.maxlength || form.controls.email.errors?.minlength))">Caracters mínimo: 3, máximo: 15</li>
+        <li *ngIf="form.controls.email.touched && form.controls.email.errors?.pattern">Este e-mail deve ser válido</li>
+        <li *ngIf="form.controls.email.touched && !emailValid">Email já cadastrado</li>
       </ul>
     </div>
   </div>
@@ -23,11 +22,14 @@
     <label class="control-label" for="nomeresponsavel">Nome responsável</label>
     <div [ngClass]="{'has-success': form.controls.nomeresponsavel.valid, 'has-error': form.controls.nomeresponsavel.dirty && form.controls.nomeresponsavel.errors}">
       <!-- razaosocial Input Razão social -->
-      <input type="text"  name="nomeresponsavel"
-        class="form-control" placeholder="*Nome responsável" autocomplete="off"
-        formControlName="nomeresponsavel" />
+      <input type="text" name="nomeresponsavel" class="form-control" placeholder="*Nome responsável" autocomplete="off" formControlName="nomeresponsavel"
+      />
       <!-- Validation -->
       <ul class="help-block">
+        <li *ngIf="form.controls.nomeresponsavel.touched && form.controls.nomeresponsavel.errors?.required ">Informe o e-mail</li>
+        <li *ngIf="((form.controls.nomeresponsavel.touched) && (form.controls.nomeresponsavel.errors?.maxlength || form.controls.nomeresponsavel.errors?.minlength))">
+          Caracters mínimo: 5, máximo: 100
+        </li>
       </ul>
     </div>
   </div>
@@ -35,11 +37,14 @@
     <label class="control-label" for="razaosocial">Razão social</label>
     <div [ngClass]="{'has-success': form.controls.razaosocial.valid, 'has-error': form.controls.razaosocial.dirty && form.controls.razaosocial.errors}">
       <!-- razaosocial Input Razão social -->
-      <input type="text"  name="razaosocial"
-        class="form-control" placeholder="*Razão social" autocomplete="off"
-        formControlName="razaosocial" />
+      <input type="text" name="razaosocial" class="form-control" placeholder="*Razão social" autocomplete="off" formControlName="razaosocial"
+      />
       <!-- Validation -->
       <ul class="help-block">
+        <li *ngIf="form.controls.razaosocial.touched && form.controls.razaosocial.errors?.required ">Informe o e-mail</li>
+        <li *ngIf="((form.controls.razaosocial.touched) && (form.controls.razaosocial.errors?.maxlength || form.controls.razaosocial.errors?.minlength))">
+          Caracters mínimo: 5, máximo: 100
+        </li>
       </ul>
     </div>
   </div>
@@ -48,11 +53,14 @@
     <label class="control-label" for="nomefantasia">Nome fantasia</label>
     <div [ngClass]="{'has-success': form.controls.nomefantasia.valid, 'has-error': form.controls.nomefantasia.dirty && form.controls.nomefantasia.errors}">
       <!-- Input Razão social -->
-      <input type="text"
-        name="nomefantasia" class="form-control" placeholder="*Nome fantasia" autocomplete="off"
-        formControlName="nomefantasia" />
+      <input type="text" name="nomefantasia" class="form-control" placeholder="*Nome fantasia" autocomplete="off" formControlName="nomefantasia"
+      />
       <!-- Validation -->
       <ul class="help-block">
+        <li *ngIf="form.controls.nomefantasia.touched && form.controls.nomefantasia.errors?.required ">Informe o e-mail</li>
+        <li *ngIf="((form.controls.nomefantasia.touched) && (form.controls.nomefantasia.errors?.maxlength || form.controls.nomefantasia.errors?.minlength))">
+          Caracters mínimo: 5, máximo: 100
+        </li>
       </ul>
     </div>
   </div>
@@ -60,22 +68,24 @@
   <div class="control-group">
     <label class="control-label" for="telefone">Telefone</label>
     <div [ngClass]="{'has-error':form.controls.telefone.touched &&  (form.controls.telefone.errors), 'has-success': !form.controls.telefone.errors }">
-      <input type="text"   class="form-control" id="telefone" name="telefone"
-        placeholder="*Telefone" formControlName="telefone">
+      <input type="text" class="form-control" id="telefone" name="telefone" placeholder="*Telefone" formControlName="telefone">
       <ul class="help-block">
-        <li *ngIf="form.controls.telefone.touched && form.controls.telefone.errors?.required ">Informe o numero do celular</li>
-        <li *ngIf="form.controls.telefone.touched && form.controls.telefone.errors?.pattern ">Telefone incorreto</li>
+        <li *ngIf="form.controls.telefone.touched && form.controls.telefone.errors?.required ">
+          Informe o numero do telefone</li>
+        <li *ngIf="form.controls.telefone.touched && form.controls.telefone.errors?.pattern ">
+          Telefone incorreto</li>
       </ul>
     </div>
   </div>
-    <div class="control-group">
+  <div class="control-group">
     <label class="control-label" for="celular">Celular</label>
     <div [ngClass]="{'has-error':form.controls.celular.touched &&  (form.controls.celular.errors), 'has-success': !form.controls.celular.errors }">
-      <input type="text"   class="form-control" id="celular" name="celular"
-      placeholder="*Celular" formControlName="celular" >
+      <input type="text" class="form-control" id="celular" name="celular" placeholder="*Celular" formControlName="celular">
       <ul class="help-block">
-        <li *ngIf="form.controls.celular.touched && form.controls.celular.errors?.required ">Informe o numero do celular</li>
-        <li *ngIf="form.controls.celular.touched && form.controls.celular.errors?.pattern ">Celular incorreto</li>
+        <li *ngIf="form.controls.celular.touched && form.controls.celular.errors?.required ">
+          Informe o numero do celular</li>
+        <li *ngIf="form.controls.celular.touched && form.controls.celular.errors?.pattern ">
+          Celular incorreto</li>
       </ul>
     </div>
   </div>
@@ -83,19 +93,18 @@
     <label class="control-label" for="endereco">Endereço</label>
     <div>
       <!--endereco Input -->
-      <input type="text"  name="endereco" class="form-control" placeholder="*Endereço" autocomplete="off"
-        formControlName="endereco" />
+      <input type="text" name="endereco" class="form-control" placeholder="*Endereço" autocomplete="off" formControlName="endereco"
+      />
       <!-- Validation -->
       <ul class="help-block ">
       </ul>
     </div>
   </div>
-<div class="control-group">
+  <div class="control-group">
     <label class="control-label" for="numero">Numero</label>
     <div>
       <!--bairro Input -->
-      <input type="text"  name="numero" class="form-control" placeholder="*Numero" autocomplete="off" formControlName="numero"
-      />
+      <input type="text" name="numero" class="form-control" placeholder="*Numero" autocomplete="off" formControlName="numero" />
       <!-- Validation -->
       <ul class="help-block ">
       </ul>
@@ -105,8 +114,8 @@
     <label class="control-label" for="complemento">Complemento</label>
     <div>
       <!--complemento Input -->
-      <input type="text"  name="complemento" class="form-control" placeholder="*Complemento" autocomplete="off"
-        formControlName="complemento" />
+      <input type="text" name="complemento" class="form-control" placeholder="*Complemento" autocomplete="off" formControlName="complemento"
+      />
       <!-- Validation -->
       <ul class="help-block ">
       </ul>
@@ -116,8 +125,7 @@
     <label class="control-label" for="bairro">Bairro</label>
     <div>
       <!--bairro Input -->
-      <input type="text"  name="bairro" class="form-control" placeholder="*Bairro" autocomplete="off" formControlName="bairro"
-      />
+      <input type="text" name="bairro" class="form-control" placeholder="*Bairro" autocomplete="off" formControlName="bairro" />
       <!-- Validation -->
       <ul class="help-block ">
       </ul>
@@ -128,9 +136,7 @@
     <label class="control-label" for="cidade">Cidade</label>
     <div>
       <!--cidade Input -->
-      <input type="text"  name="cidade" class="form-control"
-      placeholder="*Cidade" autocomplete="off" formControlName="cidade"
-      />
+      <input type="text" name="cidade" class="form-control" placeholder="*Cidade" autocomplete="off" formControlName="cidade" />
       <!-- Validation -->
       <ul class="help-block ">
       </ul>
@@ -140,8 +146,7 @@
     <label class="control-label" for="estado">Estado</label>
     <div>
       <!--estado Input -->
-      <input type="text"  name="estado" class="form-control" placeholder="*Estado" autocomplete="off" formControlName="estado"
-      />
+      <input type="text" name="estado" class="form-control" placeholder="*Estado" autocomplete="off" formControlName="estado" />
       <!-- Validation -->
       <ul class="help-block ">
       </ul>
@@ -151,16 +156,15 @@
     <label class="control-label" for="CEP">CEP</label>
     <div [ngClass]="{'has-error':form.controls.CEP.touched &&  (form.controls.CEP.errors), 'has-success': !form.controls.CEP.errors }">
       <!--CEP Input -->
-      <input type="text"  name="CEP" class="form-control" placeholder="*CEP" autocomplete="off" formControlName="CEP"
-      />
+      <input type="text" name="CEP" class="form-control" placeholder="*CEP" autocomplete="off" formControlName="CEP" />
       <!-- Validation -->
       <ul class="help-block ">
         <li *ngIf="form.controls.CEP.touched && form.controls.CEP.errors?.pattern ">CEP inválido</li>
-
       </ul>
     </div>
   </div>
-    <div class="control-group">
+
+  <div class="control-group">
     <!-- Button -->
     <div class="controls">
       <button [disabled]="!form.valid || processing" class="btn btn-success">Cadastrar</button>

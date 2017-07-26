@@ -86,7 +86,7 @@ export class RegisterComponent implements OnInit {
 
   checkEmail(){
 
-    this.authService.checkEmail(this.form.controls["email"].value).subscribe(data => {
+    this.authService.checkEmailUsuario(this.form.controls["email"].value).subscribe(data => {
       if (!data.success) {
         this.emailValid=false;
         this.emailMessage= data.message;

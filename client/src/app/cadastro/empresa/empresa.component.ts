@@ -15,6 +15,8 @@ export class EmpresaComponent implements OnInit {
   messageClass;
   message;
   processing = false;
+  emailValid;
+  emailMessage;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,7 +31,13 @@ export class EmpresaComponent implements OnInit {
       nomefantasia: [this.empresa.nomefantasia, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
       razaosocial: [this.empresa.razaosocial, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
       nomeresponsavel: [this.empresa.nomeresponsavel, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
-      email: [this.empresa.email,Validators.required],
+      email: [this.empresa.email,
+        [Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(30),
+          Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+        ]
+      ],
       telefone: [this.empresa.telefone,[Validators.required,Validators.pattern(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/)]],
       celular: [this.empresa.celular,[Validators.required,Validators.pattern(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/)]],
       endereco: [this.empresa.endereco],
@@ -45,21 +53,6 @@ export class EmpresaComponent implements OnInit {
     getEmpresa(){
     if (!this.empresa) {
       this.empresa = {};
-      /*this.empresa = {
-        nomefantasia:'',
-        razaosocial:'',
-        nomeresponsavel:'',
-        email:'',
-        telefone:'',
-        celular:'',
-        endereco:'',
-        bairro:'',
-        numero:'',
-        complemento:'',
-        cidade:'',
-        estado:'',
-        cep:''
-      }*/
     }
 
   }
@@ -135,6 +128,18 @@ export class EmpresaComponent implements OnInit {
       }
     });
 
+  }
+
+    checkEmail(){
+
+    this.authService.checkEmailEmpresa(this.form.controls["email"].value).subscribe(data => {
+      if (!data.success) {
+        this.emailValid=false;
+        this.emailMessage= data.message;
+      }else {
+        this.emailValid=true;
+      }
+    });
   }
 
   ngOnInit() {
