@@ -77,8 +77,8 @@ export class ProfileComponent implements OnInit {
           this.message = false; // Erase error/success message
           this.form.reset(); // Reset all form fields
         }, 2000);
+      }
     });
-
   }
   ngOnInit() {
 

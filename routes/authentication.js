@@ -1,4 +1,5 @@
 const Usuario = require('../models/usuario');
+const Empresa = require('../models/empresa');
 const jwt = require('jsonwebtoken');
 const database = require('../config/database');
 
@@ -156,8 +157,63 @@ module.exports = (router) => {
       res.json(retorno);
       return;
     });
-  })
+  });
 
+  router.post('/cadastraEmpresa',(req,res)=>{
+    let retorno = {success:false, message:''};
+    let erroMsg = ""
+    if (!req.body.razaosocial){
+      if (erroMsg !== "") erroMsg += ","
+      erroMsg += " a razão social"
+    }
+
+    if (!req.body.nomefantasia){
+      if (erroMsg !== "") erroMsg += ","
+      erroMsg += " o nome fantasia "
+    }
+
+    if (!req.body.email){
+      if (erroMsg !== "") erroMsg += ","
+      erroMsg += " o e-mail "
+    }
+
+    if (!req.body.celular){
+      if (erroMsg !== "") erroMsg += ","
+      erroMsg += " o celular "
+    }
+    
+    if (erroMsg != "") {
+      retorno.message = "Por favor, preencha o(s) seguinte(s) campos: " + erroMsg
+      res.json(retorno);  
+      return;
+    } 
+ 
+    const empresa = new Empresa({
+      nomefantasia:req.body.nomefantasia,
+      razaosocial:req.body.razaosocial,
+      email:req.body.email,
+      telefone:req.body.telefone,
+      celular:req.body.celular,
+      endereco:{
+        endereco: req.body.endereco,
+        bairro: req.body.bairro,
+        complemento: req.body.complemento,
+        cidade: req.body.cidade,
+        estado: req.body.estado,
+        CEP: req.body.CEP
+      }
+    });
+  
+    empresa.save((err) => {
+      
+      if (err) {
+        retorno.message = err;
+      }else{
+        retorno.success = true;
+        retorno.message = 'Empresa cadastrada com sucesso';
+      }
+    });
+  });
   /********************************************
   middleware: usado para pegar o token do cabeçalho
   ********************************************/

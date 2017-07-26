@@ -10,7 +10,8 @@
     <label class="control-label" for="razaosocial">Razão social</label>
     <div [ngClass]="{'has-success': form.controls.razaosocial.valid, 'has-error': form.controls.razaosocial.dirty && form.controls.razaosocial.errors}">
       <!-- razaosocial Input Razão social -->
-      <input type="text" [disabled]="processing" name="razaosocial" class="form-control" placeholder="*Razão social" autocomplete="off"
+      <input type="text" [disabled]="processing" name="razaosocial"
+        class="form-control" placeholder="*Razão social" autocomplete="off"
         formControlName="razaosocial" />
       <!-- Validation -->
       <ul class="help-block">
@@ -22,7 +23,8 @@
     <label class="control-label" for="nomefantasia">Nome fantasia</label>
     <div [ngClass]="{'has-success': form.controls.nomefantasia.valid, 'has-error': form.controls.nomefantasia.dirty && form.controls.nomefantasia.errors}">
       <!-- Input Razão social -->
-      <input type="text" [disabled]="processing" name="nomefantasia" class="form-control" placeholder="*Nome fantasia" autocomplete="off"
+      <input type="text" [disabled]="processing"
+        name="nomefantasia" class="form-control" placeholder="*Nome fantasia" autocomplete="off"
         formControlName="nomefantasia" />
       <!-- Validation -->
       <ul class="help-block">
@@ -32,25 +34,29 @@
   <div class="control-group">
     <label class="control-label" for="email">E-mail</label>
     <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
-      <input type="text"[disabled]="processing"   class="form-control" id="email" name="email" formControlName="email" placeholder="">
+      <input type="text"[disabled]="processing"
+        class="form-control" id="email" name="email"
+        placeholder="*E-mail" formControlName="email">
       <ul class="help-block">
         <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
       </ul>
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="telefone">E-mail</label>
+    <label class="control-label" for="telefone">Telefone</label>
     <div [ngClass]="{'has-error':form.controls.telefone.touched &&  (form.controls.telefone.errors), 'has-success': !form.controls.telefone.errors }">
-      <input type="text" [disabled]="processing"  class="form-control" id="telefone" name="telefone" formControlName="telefone" placeholder="">
+      <input type="text" [disabled]="processing"  class="form-control" id="telefone" name="telefone"
+        placeholder="*Telefone" formControlName="telefone">
       <ul class="help-block">
         <li *ngIf="form.controls.telefone.touched && form.controls.telefone.errors?.required ">Informe o e-mail</li>
       </ul>
     </div>
   </div>
     <div class="control-group">
-    <label class="control-label" for="celular">E-mail</label>
+    <label class="control-label" for="celular">Celular</label>
     <div [ngClass]="{'has-error':form.controls.celular.touched &&  (form.controls.celular.errors), 'has-success': !form.controls.celular.errors }">
-      <input type="text" [disabled]="processing"  class="form-control" id="celular" name="celular" formControlName="celular" placeholder="">
+      <input type="text" [disabled]="processing"  class="form-control" id="celular" name="celular"
+      placeholder="*Celular" formControlName="celular" >
       <ul class="help-block">
         <li *ngIf="form.controls.celular.touched && form.controls.celular.errors?.required ">Informe o e-mail</li>
       </ul>
@@ -60,7 +66,7 @@
     <label class="control-label" for="endereco">Endereço</label>
     <div>
       <!--endereco Input -->
-      <input type="text" [disabled]="processing" name="endereco" class="form-control" placeholder="Endereço" autocomplete="off"
+      <input type="text" [disabled]="processing" name="endereco" class="form-control" placeholder="*Endereço" autocomplete="off"
         formControlName="endereco" />
       <!-- Validation -->
       <ul class="help-block ">
@@ -71,7 +77,7 @@
     <label class="control-label" for="bairro">Bairro</label>
     <div>
       <!--bairro Input -->
-      <input type="text" [disabled]="processing" name="bairro" class="form-control" placeholder="Bairro" autocomplete="off" formControlName="bairro"
+      <input type="text" [disabled]="processing" name="bairro" class="form-control" placeholder="*Bairro" autocomplete="off" formControlName="bairro"
       />
       <!-- Validation -->
       <ul class="help-block ">
@@ -82,7 +88,7 @@
     <label class="control-label" for="numero">Numero</label>
     <div>
       <!--bairro Input -->
-      <input type="text" [disabled]="processing" name="numero" class="form-control" placeholder="Numero" autocomplete="off" formControlName="numero"
+      <input type="text" [disabled]="processing" name="numero" class="form-control" placeholder="*Numero" autocomplete="off" formControlName="numero"
       />
       <!-- Validation -->
       <ul class="help-block ">
@@ -93,7 +99,7 @@
     <label class="control-label" for="complemento">Complemento</label>
     <div>
       <!--complemento Input -->
-      <input type="text" [disabled]="processing" name="complemento" class="form-control" placeholder="Complemento" autocomplete="off"
+      <input type="text" [disabled]="processing" name="complemento" class="form-control" placeholder="*Complemento" autocomplete="off"
         formControlName="complemento" />
       <!-- Validation -->
       <ul class="help-block ">
@@ -101,10 +107,11 @@
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="cidade">cidade</label>
+    <label class="control-label" for="cidade">Cidade</label>
     <div>
       <!--cidade Input -->
-      <input type="text" [disabled]="processing" name="cidade" class="form-control" placeholder="cidade" autocomplete="off" formControlName="cidade"
+      <input type="text" [disabled]="processing" name="cidade" class="form-control"
+      placeholder="*Cidade" autocomplete="off" formControlName="cidade"
       />
       <!-- Validation -->
       <ul class="help-block ">
@@ -115,7 +122,7 @@
     <label class="control-label" for="estado">Estado</label>
     <div>
       <!--estado Input -->
-      <input type="text" [disabled]="processing" name="estado" class="form-control" placeholder="Estado" autocomplete="off" formControlName="estado"
+      <input type="text" [disabled]="processing" name="estado" class="form-control" placeholder="*Estado" autocomplete="off" formControlName="estado"
       />
       <!-- Validation -->
       <ul class="help-block ">
@@ -126,7 +133,7 @@
     <label class="control-label" for="CEP">CEP</label>
     <div>
       <!--CEP Input -->
-      <input type="text" [disabled]="processing" name="CEP" class="form-control" placeholder="CEP" autocomplete="off" formControlName="CEP"
+      <input type="text" [disabled]="processing" name="CEP" class="form-control" placeholder="*CEP" autocomplete="off" formControlName="CEP"
       />
       <!-- Validation -->
       <ul class="help-block ">

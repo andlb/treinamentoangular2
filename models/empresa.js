@@ -27,7 +27,7 @@ const emailValidators = [{
     }
 ]
 
-
+//emailautenticado, é quando ele através do e-mail entra com o login e a senha e acessa o sistema.
 const empresaSchema = new Schema({
     razaosocial: { type: String, required: [true, "Razão social não definido"] },
     fantasia: { type: String, required: [true, "Nome fantasia não definido"] },

@@ -34,6 +34,10 @@ export class AuthService {
     return this.http.get(this.domain+'authentication/getUsuario/'+usuarioid, this.options).map(res => res.json());
   }
 
+  cadastraEmpresa(empresa){
+    return this.http.post(this.domain+'authentication/cadastraEmpresa',empresa).map(res => res.json());
+  }
+
   createAuthenticationHeader(){
     this.loadToken();
     this.options = new RequestOptions({
