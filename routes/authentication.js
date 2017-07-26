@@ -162,6 +162,11 @@ module.exports = (router) => {
   router.post('/cadastraEmpresa',(req,res)=>{
     let retorno = {success:false, message:''};
     let erroMsg = ""
+    if (!req.body.nomeresponsavel){
+      if (erroMsg !== "") erroMsg += ","
+      erroMsg += " o nome do responsável"
+    }
+
     if (!req.body.razaosocial){
       if (erroMsg !== "") erroMsg += ","
       erroMsg += " a razão social"
@@ -189,11 +194,12 @@ module.exports = (router) => {
     } 
  
     const empresa = new Empresa({
+      nomeresponsavel:req.body.nomeresponsavel,
       nomefantasia:req.body.nomefantasia,
       razaosocial:req.body.razaosocial,
-      email:req.body.email,
+      email:req.body.email, 
       telefone:req.body.telefone,
-      celular:req.body.celular,
+      celular:req.body.celular,  
       endereco:{
         endereco: req.body.endereco,
         bairro: req.body.bairro,
@@ -201,17 +207,21 @@ module.exports = (router) => {
         cidade: req.body.cidade,
         estado: req.body.estado,
         CEP: req.body.CEP
-      }
-    });
-  
-    empresa.save((err) => {
-      
+      },
+      respUltimaAlteracao:[{
+        usuario: null,
+        Data: Date.now()
+      }]
+    });  
+
+    empresa.save((err) => {      
       if (err) {
-        retorno.message = err;
+        retorno.message = err;        
       }else{
         retorno.success = true;
-        retorno.message = 'Empresa cadastrada com sucesso';
+        retorno.message = 'Empresa cadastrada com sucesso';        
       }
+      res.json(retorno);  
     });
   });
   /********************************************

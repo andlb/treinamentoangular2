@@ -17,6 +17,17 @@ let emailValidation = (email) => {
     return regExp.test(email);
 }
 
+let cepValidation = (cep) => {    
+    const regExp = new RegExp(/\d{5}\-\d{3}/);
+    return regExp.test(cep);
+}
+
+let telefoneValidation = (telefone) => {
+    const regExp = new RegExp(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/);
+    return regExp.test(telefone);
+}
+
+
 const emailValidators = [{
         validator: emailLengthChecker,
         message: 'E-mail deve ter entre 5 e 30 caracteres'
@@ -27,14 +38,27 @@ const emailValidators = [{
     }
 ]
 
+const cepValidators = [{    
+        validator: cepValidation,
+        message: 'CEP não válido'
+    }
+]
+
+const telefoneValidators = [{    
+        validator: telefoneValidation,
+        message: 'Telefone inválido'
+    }
+]
+
 //emailautenticado, é quando ele através do e-mail entra com o login e a senha e acessa o sistema.
 const empresaSchema = new Schema({
-    razaosocial: { type: String, required: [true, "Razão social não definido"] },
-    fantasia: { type: String, required: [true, "Nome fantasia não definido"] },
-    email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },
-    emailautenticado: {type:Boolean, default:false},
-    telefone: { type: String },
-    celular: { type: String, required: [true, "Celular não definido"] },
+    razaosocial: { type: String, required: [true, "Razão social não informado"] },
+    nomefantasia: { type: String, required: [true, "Nome fantasia não informado"] },
+    nomeresponsavel: { type: String, required: [true, "Nome responsável não informado"] },
+    email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },    
+    emailautenticado: { type : Boolean, default : false },
+    telefone: { type: String,required: [true, "Telefone não informado"],validate:telefoneValidators },
+    celular: { type: String, required: [true, "Celular não informado"],validate:telefoneValidators },    
     endereco: {
         endereco: { type: String },
         bairro: { type: String },
@@ -42,7 +66,7 @@ const empresaSchema = new Schema({
         complemento: { type: String },
         cidade: { type: String },
         estado: { type: String },
-        cep: { type: String },
+        cep: { type: String, validate:cepValidators },
     },
     convidados: [{
         nome: { type: String },
@@ -56,8 +80,7 @@ const empresaSchema = new Schema({
     respUltimaAlteracao: [{
         usuario: { type: String },
         Data: { type: Date, default: Date.now() }
-    }]
+    }]    
 });
-
 
 module.exports = mongoose.model('Empresa', empresaSchema);

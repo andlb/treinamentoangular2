@@ -13,8 +13,6 @@ import { LoginComponent } from './autenticar/login/login.component';
 import { EmpresaComponent } from './cadastro/empresa/empresa.component';
 import { ProfileComponent } from './cadastro/profile/profile.component';
 
-
-
 const appRoutes: Routes = [
   { path: '', component:HomeComponent},
   { path: 'service', component:ServiceComponent, canActivate:[AuthGuard]},
