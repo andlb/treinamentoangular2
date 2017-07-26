@@ -252,6 +252,7 @@ module.exports = (router) => {
       res.json(retorno);  
     });
   });
+  
   /********************************************
   middleware: usado para pegar o token do cabeçalho
   ********************************************/

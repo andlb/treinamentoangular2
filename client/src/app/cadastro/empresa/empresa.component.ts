@@ -133,6 +133,9 @@ export class EmpresaComponent implements OnInit {
     checkEmail(){
 
     this.authService.checkEmailEmpresa(this.form.controls["email"].value).subscribe(data => {
+      console.log(data);
+      console.log(data.success);
+      console.log(data.message);
       if (!data.success) {
         this.emailValid=false;
         this.emailMessage= data.message;
