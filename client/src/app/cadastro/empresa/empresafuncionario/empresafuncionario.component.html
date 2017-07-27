@@ -1,3 +1,23 @@
-<p>
-  empresafuncionario works!
-</p>
+<form class="form-inline" [formGroup]="form" (submit)="addFuncionario()">
+  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+    <label class="sr-only" for="inlineFormInput">Nome</label>
+    <div [ngClass]="{'has-error':form.controls.nome.touched &&  (form.controls.nome.errors), 'has-success': !form.controls.nome.errors }">
+      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="nome" name="nome" formControlName="nome" placeholder="*Nome">
+    </div>
+  </div>
+  <label class="sr-only" for="inlineFormInputGroup">E-mail</label>
+  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+    <div class="input-group-addon has-error" >@</div>
+    <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
+    <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail">
+    </div>
+  </div>
+  <button [disabled]="!form.valid" type="submit" class="btn btn-primary">Incluir</button>
+</form>
+
+
+<div class="row">
+  <div class="col-xs-12">
+
+  </div>
+</div>

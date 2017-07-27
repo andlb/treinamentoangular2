@@ -1,14 +1,15 @@
-
 <form [formGroup]="form" (submit)="submitEmpresa()" >
   <div class="control-group">
     <label class="control-label" for="nomeresponsavel">Nome responsável</label>
     <div [ngClass]="{'has-success': form.controls.nomeresponsavel.valid, 'has-error': form.controls.nomeresponsavel.dirty && form.controls.nomeresponsavel.errors}">
       <!-- razaosocial Input Razão social -->
-      <input type="text" name="nomeresponsavel" class="form-control" placeholder="*Nome responsável" autocomplete="off" formControlName="nomeresponsavel"
+      <input type="text" name="nomeresponsavel" class="form-control"
+      placeholder="*Nome responsável"
+      autocomplete="off" formControlName="nomeresponsavel"
       />
       <!-- Validation -->
       <ul class="help-block">
-        <li *ngIf="form.controls.nomeresponsavel.touched && form.controls.nomeresponsavel.errors?.required ">Informe o e-mail</li>
+        <li *ngIf="form.controls.nomeresponsavel.touched && form.controls.nomeresponsavel.errors?.required ">Informe o nome do responsável</li>
         <li *ngIf="((form.controls.nomeresponsavel.touched) && (form.controls.nomeresponsavel.errors?.maxlength || form.controls.nomeresponsavel.errors?.minlength))">
           Caracters mínimo: 5, máximo: 100
         </li>
@@ -23,7 +24,8 @@
       />
       <!-- Validation -->
       <ul class="help-block">
-        <li *ngIf="form.controls.razaosocial.touched && form.controls.razaosocial.errors?.required ">Informe o e-mail</li>
+        <li *ngIf="form.controls.razaosocial.touched && form.controls.razaosocial.errors?.required ">
+          Informe a razão social</li>
         <li *ngIf="((form.controls.razaosocial.touched) && (form.controls.razaosocial.errors?.maxlength || form.controls.razaosocial.errors?.minlength))">
           Caracters mínimo: 5, máximo: 100
         </li>
@@ -39,7 +41,8 @@
       />
       <!-- Validation -->
       <ul class="help-block">
-        <li *ngIf="form.controls.nomefantasia.touched && form.controls.nomefantasia.errors?.required ">Informe o e-mail</li>
+        <li *ngIf="form.controls.nomefantasia.touched && form.controls.nomefantasia.errors?.required ">
+          Informe o nome fantasia</li>
         <li *ngIf="((form.controls.nomefantasia.touched) && (form.controls.nomefantasia.errors?.maxlength || form.controls.nomefantasia.errors?.minlength))">
           Caracters mínimo: 5, máximo: 100
         </li>
@@ -143,13 +146,6 @@
       <ul class="help-block ">
         <li *ngIf="form.controls.CEP.touched && form.controls.CEP.errors?.pattern ">CEP inválido. Exemplo: 15057-000</li>
       </ul>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <!-- Button -->
-    <div class="controls">
-      <button [disabled]="!form.valid || processing " class="btn btn-success">Cadastrar</button>
     </div>
   </div>
 </form>

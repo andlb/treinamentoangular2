@@ -11,17 +11,14 @@ import { AuthService } from './../../../autenticar/auth.service';
 export class EmpresacadastroComponent implements OnInit {
   form: FormGroup;
   empresa;
-  messageClass;
-  message;
-  meuUsuario;
+
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private emrpesaServico: EmpresaService
+    private empresaService: EmpresaService
   ) { }
 
   ngOnInit() {
-    this.meuUsuario = this.authService.getMeuUsuario();
+    //this.meuUsuario = this.authService.getMeuUsuario();
     this.getEmpresa();
     this.createForm();
   }
@@ -78,9 +75,7 @@ export class EmpresacadastroComponent implements OnInit {
     this.form.controls["CEP"].disable();
   }
 
-  submitEmpresa() {
-    this.processing = true;
-    this.desabilitaCampos();
+  addEmpresa(){
     const empresa = {
       nomeresponsavel: this.form.get("nomeresponsavel").value,
       nomefantasia: this.form.get("nomefantasia").value,
@@ -94,25 +89,11 @@ export class EmpresacadastroComponent implements OnInit {
       estado: this.form.get('estado').value,
       CEP: this.form.get('CEP').value
     }
+    this.empresaService.addEmpresa(empresa);
 
-    this.authSerSub = this.empresa.cadastraEmpresa(empresa).subscribe((data) => {
-      if (!data.success) {
-        this.messageClass = 'alert alert-danger';
-        this.message = data.message;
-        this.processing = false;
-        this.habilitaCampo();
-      } else {
-        this.messageClass = 'alert alert-success';
-        this.message = data.message;
-        setTimeout(() => {
-          this.processing = false; // Enable submit button
-          //this.message = false; // Erase error/success message
-          //this.form.reset(); // Reset all form fields
-        }, 2000);
-
-      }
-    });
 
   }
+
+
 
 }
