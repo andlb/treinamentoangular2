@@ -11,7 +11,7 @@ import { EmpresacadastroComponent } from './empresacadastro/empresacadastro.comp
 
 const empresaRoutes: Routes = [
   { path: '', component: EmpresaComponent, children: [
-    { path: '', component: EmpresaComponent },
+    { path: '', component: EmpresacadastroComponent },
     { path: 'cadastro', component: EmpresacadastroComponent},
     { path: 'funcionario', component: EmpresafuncionarioComponent },
     { path: 'servico', component: EmpresaservicoComponent},
