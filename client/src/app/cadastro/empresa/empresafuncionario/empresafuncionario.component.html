@@ -15,7 +15,6 @@
   <button [disabled]="!form.valid" type="submit" class="btn btn-success" >{{(!edit) ? 'Incluir' : 'Editar' }}</button>
   <button *ngIf="(edit)" type="button" class="btn btn-danger" (click)="onDeletar()"  >Deletar</button>
   <button  type="button" class="btn btn-warning" (click)="onLimpar()" >Limpar</button>
-
 </form>
 
 <div class="bs-example" data-example-id="table-within-panel">

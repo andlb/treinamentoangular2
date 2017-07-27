@@ -1,3 +1,43 @@
-<p>
-  empresaservico works!
-</p>
+<form class="form-inline" [formGroup]="form" (submit)="enviaFuncionario()">
+  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+    <label class="sr-only" for="inlineFormInput">Nome</label>
+    <div [ngClass]="{'has-error':form.controls.nome.touched &&  (form.controls.nome.errors), 'has-success': !form.controls.nome.errors }">
+      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="nome" #nome name="nome" formControlName="nome" placeholder="*Nome" autofocus>
+    </div>
+  </div>
+  <label class="sr-only" for="inlineFormInputGroup">E-mail</label>
+  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+    <div class="input-group-addon has-error">@</div>
+    <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
+      <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail">
+    </div>
+  </div>
+  <button [disabled]="!form.valid" type="submit" class="btn btn-success" >{{(!edit) ? 'Incluir' : 'Editar' }}</button>
+  <button *ngIf="(edit)" type="button" class="btn btn-danger" (click)="onDeletar()"  >Deletar</button>
+  <button  type="button" class="btn btn-warning" (click)="onLimpar()" >Limpar</button>
+</form>
+
+<div class="bs-example" data-example-id="table-within-panel">
+  <div class="panel panel-default">
+    <div class="panel-heading">Funcionários cadastrados</div>
+    <table class="table table-striped table-hover ">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>E-mail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let funcionario of funcionarios; let cont = index" (click)="onEditItem(cont)" >
+          <th scope="row">{{cont}}</th>
+          <td >
+              {{funcionario.nome}}
+          </td>
+          <td> {{funcionario.email}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
