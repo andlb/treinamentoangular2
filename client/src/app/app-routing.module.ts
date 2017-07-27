@@ -16,11 +16,14 @@ import { ProfileComponent } from './cadastro/profile/profile.component';
 const appRoutes: Routes = [
   { path: '', component:HomeComponent},
   { path: 'service', component:ServiceComponent, canActivate:[AuthGuard]},
-  { path: 'empresa', component:EmpresaComponent, canActivate:[NoAuthGuard]},
+  { path: 'empresa', component:EmpresaComponent, canActivate:[AuthGuard]},
   { path: 'login', component:LoginComponent,canActivate: [NoAuthGuard]},
+  { path: 'login/:acessode', component:LoginComponent,canActivate: [NoAuthGuard]},
+  { path: 'register',component:RegisterComponent, canActivate:[NoAuthGuard] },
+  { path: 'register/:acessode',component:RegisterComponent, canActivate:[NoAuthGuard] },
   { path: 'profile', component:ProfileComponent,canActivate: [AuthGuard]},
   { path: 'survey', component:SurveyComponent, canActivate:[AuthGuard]},
-  { path: 'register',component:RegisterComponent,canActivate: [NoAuthGuard]},
+
   { path: '**', component:HomeComponent}
 ];
 

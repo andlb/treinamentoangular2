@@ -1,7 +1,7 @@
 import { AuthService } from './../auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 
 @Component({
@@ -10,9 +10,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.css']
 })
 
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+  private subparams: any;
+  private subcheckemail: any;
+  private subregister: any;
   form: FormGroup;
   processing = false;
+  acessode;
   message:String;
   messageClass:String;
   emailValid;
@@ -20,7 +24,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private authService:AuthService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
     this.createForm();
   }
 
@@ -62,14 +67,19 @@ export class RegisterComponent implements OnInit {
   onRegister(){
     this.processing = true;
     this.disableForm();
-    //TODO: corrigir o tipo 1. O tipo 1 é valido para determinado tipos de usuários. Essa informação deve vir do formulario. No caso 1 é convidado
+    //usuário normal
+    let tipo = 1
+    if (this.acessode === "empresa"){
+      //quando o registro é feito por uma empresa
+      tipo = 0
+    }
     const usuario = {
       email: this.form.get("email").value,
       password: this.form.get("password").value,
-      tipo:1
+      tipo:tipo
     }
 
-    this.authService.registerUser(usuario).subscribe(data => {
+    this.subregister = this.authService.registerUser(usuario).subscribe(data => {
       this.message = data.message;
       if (!data.success) {
         this.messageClass = 'alert alert-danger';
@@ -78,15 +88,14 @@ export class RegisterComponent implements OnInit {
       }else {
         this.messageClass = 'alert alert-success';
         setTimeout(()=>{
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login',this.acessode]);
         },2000)
       }
     });
   }
 
   checkEmail(){
-
-    this.authService.checkEmailUsuario(this.form.controls["email"].value).subscribe(data => {
+    this.subcheckemail=this.authService.checkEmailUsuario(this.form.controls["email"].value).subscribe(data => {
       if (!data.success) {
         this.emailValid=false;
         this.emailMessage= data.message;
@@ -96,5 +105,17 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.subparams = this.route.params.subscribe(
+        (params) => {
+          this.acessode = params['acessode'];
+        }
+      );
+  }
+
+  ngOnDestroy() {
+    if (this.subparams) this.subparams.unsubscribe();
+    if (this.subcheckemail) this.subcheckemail.unsubscribe();
+    if (this.subregister) this.subregister.unsubscribe();
+  }
 }

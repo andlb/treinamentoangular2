@@ -5,19 +5,13 @@
   </div>
 </div>
 
-<form [formGroup]="form" (submit)="submitEmpresa()">
-  <div class="control-group">
-    <label class="control-label" for="email">E-mail</label>
-    <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors || !emailValid), 'has-success': !form.controls.email.errors }">
-      <input type="text" class="form-control" id="email" name="email" placeholder="*E-mail" formControlName="email" autofocus (blur)="checkEmail()">
-      <ul class="help-block">
-        <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
-        <li *ngIf="((form.controls.email.touched) && (form.controls.email.errors?.maxlength || form.controls.email.errors?.minlength))">Caracters mínimo: 3, máximo: 15</li>
-        <li *ngIf="form.controls.email.touched && form.controls.email.errors?.pattern">Este e-mail deve ser válido</li>
-        <li *ngIf="form.controls.email.touched && !emailValid">Email já cadastrado</li>
-      </ul>
-    </div>
-  </div>
+<ul class="nav nav-tabs">
+  <li role="Dados cadastrais" [ngClass]="classDadosCadastral"><a (click)="controleNavBar('dadocadastral')" >Home</a></li>
+  <li role="Funcionários" [ngClass]="classFuncionario"><a (click)="controleNavBar('funcionario')" >Profile</a></li>
+  <li role="Serviços" [ngClass]="classServico"><a (click)="controleNavBar('servico')">Messages</a></li>
+</ul>
+
+<form [formGroup]="form" (submit)="submitEmpresa()" *ngIf='classDadosCadastral="active"'>
   <div class="control-group">
     <label class="control-label" for="nomeresponsavel">Nome responsável</label>
     <div [ngClass]="{'has-success': form.controls.nomeresponsavel.valid, 'has-error': form.controls.nomeresponsavel.dirty && form.controls.nomeresponsavel.errors}">
@@ -167,7 +161,7 @@
   <div class="control-group">
     <!-- Button -->
     <div class="controls">
-      <button [disabled]="!form.valid || processing || !emailValid" class="btn btn-success">Cadastrar</button>
+      <button [disabled]="!form.valid || processing " class="btn btn-success">Cadastrar</button>
     </div>
   </div>
 </form>

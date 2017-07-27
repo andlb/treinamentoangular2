@@ -5,6 +5,16 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 
+let cepValidation = (cep) => {    
+    const regExp = new RegExp(/\d{5}\-\d{3}/);
+    return regExp.test(cep);
+}
+
+let telefoneValidation = (telefone) => {
+    const regExp = new RegExp(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/);
+    return regExp.test(telefone);
+}
+
 let emailLengthChecker = (email) => {
     if (!email) return false;
     if (email.length < 5 || email.length > 30) return false;
@@ -17,16 +27,11 @@ let emailValidation = (email) => {
     return regExp.test(email);
 }
 
-let cepValidation = (cep) => {    
-    const regExp = new RegExp(/\d{5}\-\d{3}/);
-    return regExp.test(cep);
-}
-
-let telefoneValidation = (telefone) => {
-    const regExp = new RegExp(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/);
-    return regExp.test(telefone);
-}
-
+const cepValidators = [{    
+        validator: cepValidation,
+        message: 'CEP não válido'
+    }
+]
 
 const emailValidators = [{
         validator: emailLengthChecker,
@@ -35,12 +40,6 @@ const emailValidators = [{
     {
         validator: emailValidation,
         message: 'E-mail deve ser válido'
-    }
-]
-
-const cepValidators = [{    
-        validator: cepValidation,
-        message: 'CEP não válido'
     }
 ]
 
@@ -54,9 +53,7 @@ const telefoneValidators = [{
 const empresaSchema = new Schema({
     razaosocial: { type: String, required: [true, "Razão social não informado"] },
     nomefantasia: { type: String, required: [true, "Nome fantasia não informado"] },
-    nomeresponsavel: { type: String, required: [true, "Nome responsável não informado"] },
-    email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },    
-    emailautenticado: { type : Boolean, default : false },
+    nomeresponsavel: { type: String, required: [true, "Nome responsável não informado"] },    
     telefone: { type: String,required: [true, "Telefone não informado"],validate:telefoneValidators },
     celular: { type: String, required: [true, "Celular não informado"],validate:telefoneValidators },    
     endereco: {

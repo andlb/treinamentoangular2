@@ -12,7 +12,7 @@ export class AuthService {
   authToken;
   usuarioToken;
   options;
-
+  dadosAtivo = "active";
   constructor(
     private http: Http
   ) { }
@@ -25,9 +25,7 @@ export class AuthService {
     return this.http.get(this.domain+'authentication/checkEmailUsuario/'+email).map(res => res.json());
   }
 
-  checkEmailEmpresa(email){
-    return this.http.get(this.domain+'authentication/checkEmailEmpresa/'+email).map(res => res.json());
-  }
+
 
   login(usuario){
     return this.http.post(this.domain+'authentication/login',usuario).map(res => res.json());
@@ -39,9 +37,7 @@ export class AuthService {
     return this.http.get(this.domain+'authentication/getUsuario/'+usuarioid, this.options).map(res => res.json());
   }
 
-  cadastraEmpresa(empresa){
-    return this.http.post(this.domain+'authentication/cadastraEmpresa',empresa).map(res => res.json());
-  }
+
 
   createAuthenticationHeader(){
     this.loadToken();

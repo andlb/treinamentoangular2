@@ -1,6 +1,7 @@
+import { EmpresaService } from './empresa.service';
 
 import { AuthService } from './../../autenticar/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./empresa.component.css']
 })
 
-export class EmpresaComponent implements OnInit {
+export class EmpresaComponent implements OnInit,OnDestroy {
   form: FormGroup;
   empresa;
   messageClass;
@@ -17,11 +18,21 @@ export class EmpresaComponent implements OnInit {
   processing = false;
   emailValid;
   emailMessage;
+  authSerSub:any;
+  meuUsuario;
+  classDadosCadastral="active";
+  classFuncionario="";
+  classServico="";
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private emrpesaServico: EmpresaService
   ) {
+  }
+
+  ngOnInit() {
+    this.meuUsuario = this.authService.getMeuUsuario();
     this.getEmpresa();
     this.createForm();
   }
@@ -31,13 +42,6 @@ export class EmpresaComponent implements OnInit {
       nomefantasia: [this.empresa.nomefantasia, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
       razaosocial: [this.empresa.razaosocial, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
       nomeresponsavel: [this.empresa.nomeresponsavel, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
-      email: [this.empresa.email,
-        [Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(30),
-          Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-        ]
-      ],
       telefone: [this.empresa.telefone,[Validators.required,Validators.pattern(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/)]],
       celular: [this.empresa.celular,[Validators.required,Validators.pattern(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/)]],
       endereco: [this.empresa.endereco],
@@ -50,7 +54,7 @@ export class EmpresaComponent implements OnInit {
     });
   }
 
-    getEmpresa(){
+  getEmpresa(){
     if (!this.empresa) {
       this.empresa = {};
     }
@@ -61,7 +65,6 @@ export class EmpresaComponent implements OnInit {
     this.form.controls["nomeresponsavel"].enable();
     this.form.controls["nomefantasia"].enable();
     this.form.controls["razaosocial"].enable();
-    this.form.controls["email"].enable();
     this.form.controls["telefone"].enable();
     this.form.controls["celular"].enable();
     this.form.controls["endereco"].enable()        ;
@@ -77,7 +80,6 @@ export class EmpresaComponent implements OnInit {
     this.form.controls["nomeresponsavel"].disable();
     this.form.controls["nomefantasia"].disable();
     this.form.controls["razaosocial"].disable();
-    this.form.controls["email"].disable();
     this.form.controls["telefone"].disable();
     this.form.controls["celular"].disable();
     this.form.controls["endereco"].disable();
@@ -92,14 +94,12 @@ export class EmpresaComponent implements OnInit {
 
 
   submitEmpresa() {
-    console.log('entrou em submit empres');
     this.processing = true;
     this.desabilitaCampos();
     const empresa = {
       nomeresponsavel:this.form.get("nomeresponsavel").value,
       nomefantasia:this.form.get("nomefantasia").value,
       razaosocial:this.form.get("razaosocial").value,
-      email:this.form.get("email").value,
       telefone:this.form.get("telefone").value,
       celular:this.form.get("celular").value,
       endereco: this.form.get("endereco").value,
@@ -110,7 +110,7 @@ export class EmpresaComponent implements OnInit {
       CEP: this.form.get('CEP').value
     }
 
-    this.authService.cadastraEmpresa(empresa).subscribe((data) => {
+    this.authSerSub = this.empresa.cadastraEmpresa(empresa).subscribe((data) => {
       if (!data.success) {
         this.messageClass = 'alert alert-danger';
         this.message = data.message;
@@ -130,22 +130,24 @@ export class EmpresaComponent implements OnInit {
 
   }
 
-    checkEmail(){
-
-    this.authService.checkEmailEmpresa(this.form.controls["email"].value).subscribe(data => {
-      console.log(data);
-      console.log(data.success);
-      console.log(data.message);
-      if (!data.success) {
-        this.emailValid=false;
-        this.emailMessage= data.message;
-      }else {
-        this.emailValid=true;
-      }
-    });
+  ngOnDestroy(){
+    this.authSerSub.unsubscribe();
   }
 
-  ngOnInit() {
+  controleNavBar(tipo){
+    this.classDadosCadastral="";
+    this.classFuncionario="";
+    this.classServico="";
+
+    if (tipo==='dadocadastral'){
+      this.classDadosCadastral="active";
+    }
+    if (tipo==='funcionario'){
+    this.classFuncionario="active";
+    }
+    if (tipo==='servico'){
+    this.classServico="active";
+    }
   }
 
 }
