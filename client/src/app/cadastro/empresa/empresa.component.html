@@ -8,9 +8,9 @@
 <button class="btn btn-success">Cadastrar</button>
 <br/>
 <ul class="nav nav-tabs">
-  <li role="Dados cadastrais" [routerLinkActive]="['active']"><a routerLink="/empresa/cadastro" >Cadastro</a></li>
-  <li role="Funcionários" [routerLinkActive]="['active']"><a routerLink="/empresa/funcionario" >Funcionário</a></li>
-  <li role="Serviços" [routerLinkActive]="['active']"><a routerLink="/empresa/servico">Serviço</a></li>
+  <li [routerLinkActive]="['active']"><a routerLink="/empresa/cadastro" aria-expanded="true" >Cadastro</a></li>
+  <li [routerLinkActive]="['active']"><a routerLink="/empresa/funcionario" >Funcionário</a></li>
+  <li [routerLinkActive]="['active']"><a routerLink="/empresa/servico">Serviço</a></li>
 </ul>
 <router-outlet></router-outlet>
 

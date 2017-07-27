@@ -1,5 +1,5 @@
 <form [formGroup]="form" (submit)="submitEmpresa()" >
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="nomeresponsavel">Nome responsável</label>
     <div [ngClass]="{'has-success': form.controls.nomeresponsavel.valid, 'has-error': form.controls.nomeresponsavel.dirty && form.controls.nomeresponsavel.errors}">
       <!-- razaosocial Input Razão social -->
@@ -16,7 +16,9 @@
       </ul>
     </div>
   </div>
-  <div class="control-group">
+
+
+  <div class="form-group">
     <label class="control-label" for="razaosocial">Razão social</label>
     <div [ngClass]="{'has-success': form.controls.razaosocial.valid, 'has-error': form.controls.razaosocial.dirty && form.controls.razaosocial.errors}">
       <!-- razaosocial Input Razão social -->
@@ -33,7 +35,7 @@
     </div>
   </div>
 
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="nomefantasia">Nome fantasia</label>
     <div [ngClass]="{'has-success': form.controls.nomefantasia.valid, 'has-error': form.controls.nomefantasia.dirty && form.controls.nomefantasia.errors}">
       <!-- Input Razão social -->
@@ -50,7 +52,7 @@
     </div>
   </div>
 
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="telefone">Telefone</label>
     <div [ngClass]="{'has-error':form.controls.telefone.touched &&  (form.controls.telefone.errors), 'has-success': !form.controls.telefone.errors }">
       <input type="text" class="form-control" id="telefone" name="telefone" placeholder="*Telefone" formControlName="telefone">
@@ -62,7 +64,7 @@
       </ul>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="celular">Celular</label>
     <div [ngClass]="{'has-error':form.controls.celular.touched &&  (form.controls.celular.errors), 'has-success': !form.controls.celular.errors }">
       <input type="text" class="form-control" id="celular" name="celular" placeholder="*Celular" formControlName="celular">
@@ -74,7 +76,7 @@
       </ul>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="endereco">Endereço</label>
     <div>
       <!--endereco Input -->
@@ -85,7 +87,7 @@
       </ul>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="numero">Numero</label>
     <div>
       <!--bairro Input -->
@@ -95,7 +97,7 @@
       </ul>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="complemento">Complemento</label>
     <div>
       <!--complemento Input -->
@@ -106,7 +108,7 @@
       </ul>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="bairro">Bairro</label>
     <div>
       <!--bairro Input -->
@@ -117,7 +119,7 @@
     </div>
   </div>
 
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="cidade">Cidade</label>
     <div>
       <!--cidade Input -->
@@ -127,7 +129,7 @@
       </ul>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="estado">Estado</label>
     <div>
       <!--estado Input -->
@@ -137,7 +139,7 @@
       </ul>
     </div>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <label class="control-label" for="CEP">CEP</label>
     <div [ngClass]="{'has-error':form.controls.CEP.touched &&  (form.controls.CEP.errors), 'has-success': !form.controls.CEP.errors }">
       <!--CEP Input -->
