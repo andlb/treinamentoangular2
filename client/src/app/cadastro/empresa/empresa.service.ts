@@ -1,3 +1,5 @@
+import { Servico } from './empresaservico/servico.model';
+import { Funcionario } from './empresafuncionario/funcionario.model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthService } from './../../autenticar/auth.service';
 import { Injectable } from '@angular/core';
@@ -13,7 +15,9 @@ export class EmpresaService {
     private authService: AuthService,
     private http: Http
   )
-  { }
+  {
+    this.empresa = {};
+  }
 
   domain = environment.domain;
 
@@ -42,11 +46,22 @@ export class EmpresaService {
     console.log(empresa);
   }
 
+  getServico(){
+    if (this.empresa) {
+      return this.empresa.servico;
+    }
+  }
   addServico(servico){
     this.empresa={
       servico:servico
     }
   }
+  getFuncionario(){
+    if (this.empresa) {
+      return this.empresa.funcionario;
+    }
+  }
+
   addFuncionario(funcionario){
     this.empresa={
       funcionario:funcionario

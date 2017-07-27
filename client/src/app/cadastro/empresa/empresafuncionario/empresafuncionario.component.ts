@@ -23,7 +23,12 @@ export class EmpresafuncionarioComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.funcionarios = this.empresaService.getFuncionario();
+    if (!this.funcionarios) {
+      this.funcionarios= [];
+    }
   }
+
   createForm(){
     this.form = this.formBuilder.group({
       nome: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
@@ -37,6 +42,8 @@ export class EmpresafuncionarioComponent implements OnInit {
 
   //TODO: Verificar para não existir duplicidade de e-mail cadastrado.
   enviaFuncionario(){
+    console.log('teste');
+
     let funcionario ={
       nome:this.form.get("nome").value,
       email:this.form.get("email").value
@@ -46,8 +53,20 @@ export class EmpresafuncionarioComponent implements OnInit {
     }else{
       this.funcionarios[this.indexFuncionario]=funcionario;
     }
+    this.empresaService.addFuncionario(this.funcionarios);
+    this.onLimpar();
+
+  }
+
+  //deleta um registro da tela
+  onDeletar(){
+    this.funcionarios.splice(this.indexFuncionario, 1);
+    this.indexFuncionario = -1
+    this.empresaService.addFuncionario(this.funcionarios);
     this.onLimpar();
   }
+
+  //coloca o formulario em estado de edição.
   onEditItem(index){
     let funcionario = this.funcionarios[index];
     this.form.get("nome").setValue(funcionario.nome);
@@ -55,13 +74,9 @@ export class EmpresafuncionarioComponent implements OnInit {
     this.actinButtonValue = "Editar"
     this.edit = true;
     this.indexFuncionario=index;
-  }
-  onDeletar(){
-    this.funcionarios.splice(this.indexFuncionario, 1);
-    this.indexFuncionario = -1
-    this.onLimpar();
-  }
 
+  }
+  //limpa os campos do formulario
   onLimpar(){
     this.form.reset();
     this.nome.nativeElement.focus();
