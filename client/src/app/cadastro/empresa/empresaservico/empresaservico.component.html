@@ -1,15 +1,20 @@
 <form class="form-inline" [formGroup]="form" (submit)="enviaFuncionario()">
   <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-    <label class="sr-only" for="inlineFormInput">Nome</label>
+    <label class="sr-only" for="inlineFormInput">Descrição</label>
     <div [ngClass]="{'has-error':form.controls.nome.touched &&  (form.controls.nome.errors), 'has-success': !form.controls.nome.errors }">
-      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="nome" #nome name="nome" formControlName="nome" placeholder="*Nome" autofocus>
+      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="descricao" #descricao name="descricao" formControlName="descricao" placeholder="*Descriação" autofocus>
     </div>
   </div>
-  <label class="sr-only" for="inlineFormInputGroup">E-mail</label>
+  <label class="sr-only" for="inlineFormInputGroup">Quilometragem</label>
   <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-    <div class="input-group-addon has-error">@</div>
     <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
-      <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail">
+      <input type="text" class="form-control" id="quilometragem" name="quilometragem" formControlName="quilometragem" placeholder="*Quilometragem">
+    </div>
+  </div>
+  <label class="sr-only" for="inlineFormInputGroup">Tempo</label>
+  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+    <div [ngClass]="{'has-error':form.controls.tempo.touched &&  (form.controls.tempo.errors), 'has-success': !form.controls.tempo.errors }">
+      <input type="text" class="form-control" id="tempo" name="tempo" formControlName="tempo" placeholder="*Tempo">
     </div>
   </div>
   <button [disabled]="!form.valid" type="submit" class="btn btn-success" >{{(!edit) ? 'Incluir' : 'Editar' }}</button>
@@ -24,17 +29,19 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Nome</th>
-          <th>E-mail</th>
+          <th>Serviço</th>
+          <th>Quilometragem</th>
+          <th>Tempo</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let funcionario of funcionarios; let cont = index" (click)="onEditItem(cont)" >
+        <tr *ngFor="let servico of servicos; let cont = index" (click)="onEditItem(cont)" >
           <th scope="row">{{cont}}</th>
           <td >
-              {{funcionario.nome}}
+              {{servico.descricao}}
           </td>
-          <td> {{funcionario.email}}</td>
+          <td> {{servico.quilometragem}}</td>
+          <td> {{servico.tempo}}</td>
         </tr>
 
       </tbody>

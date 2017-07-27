@@ -1,3 +1,5 @@
+///TODO: Quando o navbar vem selecinado, ele não está indicando qual opção está selecionada.
+
 import { EmpresaService } from './empresa.service';
 
 import { AuthService } from './../../autenticar/auth.service';
