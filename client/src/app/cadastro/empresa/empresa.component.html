@@ -11,7 +11,7 @@
   <li role="Serviços" [ngClass]="classServico"><a (click)="controleNavBar('servico')">Messages</a></li>
 </ul>
 
-<form [formGroup]="form" (submit)="submitEmpresa()" *ngIf='classDadosCadastral="active"'>
+<form [formGroup]="form" (submit)="submitEmpresa()" >
   <div class="control-group">
     <label class="control-label" for="nomeresponsavel">Nome responsável</label>
     <div [ngClass]="{'has-success': form.controls.nomeresponsavel.valid, 'has-error': form.controls.nomeresponsavel.dirty && form.controls.nomeresponsavel.errors}">

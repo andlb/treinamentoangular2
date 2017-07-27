@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
@@ -15,7 +16,6 @@ import { AuthService } from './autenticar/auth.service';
 import { LoginComponent } from './autenticar/login/login.component';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { ProfileComponent } from './cadastro/profile/profile.component';
-import { EmpresaComponent } from './cadastro/empresa/empresa.component';
 import { EmpresaService } from './cadastro/empresa/empresa.service';
 
 @NgModule({
@@ -27,8 +27,7 @@ import { EmpresaService } from './cadastro/empresa/empresa.service';
     SurveyComponent,
     RegisterComponent,
     LoginComponent,
-    ProfileComponent,
-    EmpresaComponent
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +36,7 @@ import { EmpresaService } from './cadastro/empresa/empresa.service';
     FlashMessagesModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuard,NoAuthGuard,EmpresaService],
+  providers: [AuthService,EmpresaService, AuthGuard,NoAuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

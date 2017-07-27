@@ -1,6 +1,6 @@
 
 import { NgModule }             from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { AuthGuard } from './autenticar/guards/auth.guard';
 import { NoAuthGuard } from './autenticar/guards/notAuth.guard';
@@ -10,13 +10,12 @@ import { SurveyComponent } from './survey/survey.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './autenticar/register/register.component';
 import { LoginComponent } from './autenticar/login/login.component';
-import { EmpresaComponent } from './cadastro/empresa/empresa.component';
 import { ProfileComponent } from './cadastro/profile/profile.component';
 
 const appRoutes: Routes = [
   { path: '', component:HomeComponent},
   { path: 'service', component:ServiceComponent, canActivate:[AuthGuard]},
-  { path: 'empresa', component:EmpresaComponent, canActivate:[AuthGuard]},
+  { path: 'empresa', loadChildren: './cadastro/empresa/empresa.module#EmpresaModule'},
   { path: 'login', component:LoginComponent,canActivate: [NoAuthGuard]},
   { path: 'login/:acessode', component:LoginComponent,canActivate: [NoAuthGuard]},
   { path: 'register',component:RegisterComponent, canActivate:[NoAuthGuard] },
@@ -29,9 +28,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(
-      appRoutes
-    )
+    RouterModule.forRoot(appRoutes, {preloadingStrategy: PreloadAllModules})
   ],
   exports: [
     RouterModule
