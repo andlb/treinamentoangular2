@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { Servico } from './servico.model';
 import { EmpresaService } from './../empresa.service';
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: 'app-empresaservico',
@@ -11,18 +12,19 @@ import { EmpresaService } from './../empresa.service';
 })
 export class EmpresaservicoComponent implements OnInit {
   @ViewChild('nome') nome: ElementRef;
+  subscription: Subscription;
   form: FormGroup;
   servicos:Servico[]=[];
   edit=false;
   indexServico=-1;
 
-
   constructor(
     private formBuilder: FormBuilder,
-    private empresaService: EmpresaService
-  ) {
+    private empresaService: EmpresaService) {
+    this.servicos = this.empresaService.getServico();
     this.createForm();
    }
+
   createForm(){
     this.form = this.formBuilder.group({
       descricao: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
@@ -31,6 +33,14 @@ export class EmpresaservicoComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.subscription = this.empresaService.empresaChanged.subscribe(
+      (acao: any) => {
+        if (acao === 'cancelaracao') {
+          this.form.reset;
+          this.servicos = [];
+        }
+      }
+    )
   }
 
   onEditItem(index){
@@ -40,8 +50,8 @@ export class EmpresaservicoComponent implements OnInit {
     this.form.get("tempo").setValue(servico.tempo);
     this.edit=true;
     this.indexServico = index;
-
   }
+
   onDeletar(){
     this.onLimpar();
   }
@@ -62,7 +72,8 @@ export class EmpresaservicoComponent implements OnInit {
     }else{
       this.servicos[this.indexServico]=servico;
     }
-    //this.empresaService.empre
+    console.log('enviado o serivço para empresaservice');
+    this.empresaService.addServico(this.servicos);
     this.onLimpar();
   }
 }

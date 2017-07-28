@@ -4,9 +4,11 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthService } from './../../autenticar/auth.service';
 import { Injectable } from '@angular/core';
 import { environment } from './../../../environments/environment';
+import { Subject } from "rxjs/Subject";
 
 @Injectable()
 export class EmpresaService {
+  empresaChanged = new Subject();
   options;
   empresa;
   processing;
@@ -16,7 +18,12 @@ export class EmpresaService {
     private http: Http
   )
   {
-    this.empresa = {};
+    console.log('constriuu o service');
+    this.empresa = {
+      cadastro:{},
+      servico:[],
+      funcionario:[]
+    };
   }
 
   domain = environment.domain;
@@ -34,38 +41,42 @@ export class EmpresaService {
     return this.http.get(this.domain+'authentication/checkEmailEmpresa/'+email,this.options).map(res => res.json());
   }
 
+  cancelarAcao(){
+    this.empresa = {
+      cadastro:{},
+      servico:[],
+      funcionario:[]
+    };
+    this.empresaChanged.next('cancelaracao');
+  }
+
   cadastraEmpresa() {
     this.createAuthenticationHeader();
     return this.http.post(this.domain + 'authentication/cadastraEmpresa', this.empresa, this.options).map(res => res.json());
   }
 
   addEmpresa(empresa){
-    this.empresa={
-      cadastro:empresa
-    }
-    console.log(empresa);
+    this.empresa.cadastro = empresa
+  }
+
+  getEmpresa(){
+    return this.empresa.cadastro;
   }
 
   getServico(){
-    if (this.empresa) {
-      return this.empresa.servico;
-    }
+    return this.empresa.servico;
   }
+
   addServico(servico){
-    this.empresa={
-      servico:servico
-    }
+    this.empresa.servico = servico;
   }
+
   getFuncionario(){
-    if (this.empresa) {
-      return this.empresa.funcionario;
-    }
+    return this.empresa.funcionario;
   }
 
   addFuncionario(funcionario){
-    this.empresa={
-      funcionario:funcionario
-    }
+    this.empresa.funcionario=funcionario;
   }
 
   submitEmpresa() {

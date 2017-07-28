@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { Funcionario } from './funcionario.model';
 import { EmpresaService } from './../empresa.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,10 +12,10 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 export class EmpresafuncionarioComponent implements OnInit {
   @ViewChild('nome') nome: ElementRef;
   form: FormGroup;
+  subscription: Subscription;
   funcionarios:Funcionario[]=[];
   edit=false;
   indexFuncionario=-1;
-  actinButtonValue = "Incluir"
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,6 +24,14 @@ export class EmpresafuncionarioComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.subscription = this.empresaService.empresaChanged.subscribe(
+      (acao: any) => {
+        if (acao === 'cancelaracao') {
+          this.onLimpar()
+          this.funcionarios = [];
+        }
+      }
+    )
     this.funcionarios = this.empresaService.getFuncionario();
     if (!this.funcionarios) {
       this.funcionarios= [];
@@ -71,7 +80,6 @@ export class EmpresafuncionarioComponent implements OnInit {
     let funcionario = this.funcionarios[index];
     this.form.get("nome").setValue(funcionario.nome);
     this.form.get("email").setValue(funcionario.email);
-    this.actinButtonValue = "Editar"
     this.edit = true;
     this.indexFuncionario=index;
 

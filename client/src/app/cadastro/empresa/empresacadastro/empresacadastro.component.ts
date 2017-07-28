@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmpresaService } from './../empresa.service';
@@ -8,9 +9,10 @@ import { AuthService } from './../../../autenticar/auth.service';
   templateUrl: './empresacadastro.component.html',
   styleUrls: ['./empresacadastro.component.css']
 })
-export class EmpresacadastroComponent implements OnInit {
+export class EmpresacadastroComponent implements OnInit,OnDestroy {
   form: FormGroup;
   empresa;
+  subscription: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -18,7 +20,12 @@ export class EmpresacadastroComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //this.meuUsuario = this.authService.getMeuUsuario();
+    this.subscription = this.empresaService.empresaChanged.subscribe(
+      (empresa: any) => {
+        this.form.reset();
+        return;
+      }
+    )
     this.getEmpresa();
     this.createForm();
   }
@@ -40,8 +47,10 @@ export class EmpresacadastroComponent implements OnInit {
     });
   }
   getEmpresa() {
+    this.empresa = this.empresaService.getEmpresa();
     if (!this.empresa) {
       this.empresa = {};
+
     }
   }
 
@@ -90,10 +99,9 @@ export class EmpresacadastroComponent implements OnInit {
       CEP: this.form.get('CEP').value
     }
     this.empresaService.addEmpresa(empresa);
-
-
   }
 
-
-
+  ngOnDestroy(){
+    this.addEmpresa();
+  }
 }

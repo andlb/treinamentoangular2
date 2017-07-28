@@ -1,10 +1,8 @@
 ///TODO: Quando o navbar vem selecinado, ele não está indicando qual opção está selecionada.
-
-import { EmpresaService } from './empresa.service';
-
 import { AuthService } from './../../autenticar/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EmpresaService } from './empresa.service';
 
 @Component({
   selector: 'app-empresa',
@@ -14,29 +12,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export class EmpresaComponent implements OnInit {
   form: FormGroup;
-  empresa;
-  messageClass;
-  message;
-  processing = false;
-  emailValid;
-  emailMessage;
-  authSerSub:any;
-  meuUsuario;
-  classDadosCadastral="active";
-  classFuncionario="";
-  classServico="";
-
   constructor(
-
+    private formBuilder: FormBuilder,
+    private empresaService: EmpresaService
   ) {
   }
 
   ngOnInit() {
 
   }
-
-
-
+  cancelarAcao(){
+    console.log('cancelar ação');
+    this.empresaService.cancelarAcao();
+  }
 
 
 }
