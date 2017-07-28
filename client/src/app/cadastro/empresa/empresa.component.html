@@ -5,8 +5,8 @@
   </div>
 </div>
 
-<button class="btn btn-success">Cadastrar</button>
-<button class="btn btn-danger" (click)=cancelarAcao()>Limpar</button>
+<button class="btn btn-success" (click)='salvar'>Salvar</button>
+<button class="btn btn-danger" (click)='cancelarAcao()'>Limpar</button>
 <br/>
 <ul class="nav nav-tabs">
   <li [routerLinkActive]="['active']"><a routerLink="/empresa/cadastro" aria-expanded="true" >Cadastro</a></li>

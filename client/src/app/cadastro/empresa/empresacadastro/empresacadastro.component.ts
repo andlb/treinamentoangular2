@@ -13,6 +13,7 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
   form: FormGroup;
   empresa;
   subscription: Subscription;
+  valueChanged: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -21,16 +22,27 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.subscription = this.empresaService.empresaChanged.subscribe(
-      (empresa: any) => {
-        this.form.reset();
-        return;
+      (acao: any) => {
+        if (acao === "cancelaracao"){
+          this.form.reset();
+          return;
+        }
+        if (acao === "desabilitarcampos") {
+          this.desabilitaCampos();
+        }
+        if (acao === "habilitarcampos"){
+          this.habilitaCampo()
+        }
       }
     )
-    this.getEmpresa();
     this.createForm();
   }
 
   createForm() {
+    this.empresa = this.empresaService.getEmpresa();
+    if (!this.empresa) {
+      this.empresa = {};
+    }
     this.form = this.formBuilder.group({
       nomefantasia: [this.empresa.nomefantasia, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
       razaosocial: [this.empresa.razaosocial, [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
@@ -45,14 +57,15 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
       estado: [this.empresa.estado],
       CEP: [this.empresa.cep, Validators.pattern(/\d{5}\-\d{3}/)]
     });
+    this.valueChanged = this.form.valueChanges
+      .subscribe(data => this.onValueChanged(data));
   }
-  getEmpresa() {
-    this.empresa = this.empresaService.getEmpresa();
-    if (!this.empresa) {
-      this.empresa = {};
 
-    }
+  onValueChanged(data){
+    this.empresaService.setCadastroValido(this.form.valid);
+    this.addEmpresa();
   }
+
 
   habilitaCampo() {
     this.form.controls["nomeresponsavel"].enable();
@@ -102,6 +115,8 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy(){
-    this.addEmpresa();
+
+    if (this.subscription) this.subscription.unsubscribe();
+    if (this.valueChanged) this.valueChanged.unsubscribe();
   }
 }

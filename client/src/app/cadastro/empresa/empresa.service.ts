@@ -9,16 +9,21 @@ import { Subject } from "rxjs/Subject";
 @Injectable()
 export class EmpresaService {
   empresaChanged = new Subject();
+  cadastroValido=false;
   options;
   empresa;
   processing;
   authSerSub;
+  messageClass;
+  message;
+
+
   constructor(
     private authService: AuthService,
     private http: Http
   )
   {
-    console.log('constriuu o service');
+
     this.empresa = {
       cadastro:{},
       servico:[],
@@ -27,7 +32,6 @@ export class EmpresaService {
   }
 
   domain = environment.domain;
-
   createAuthenticationHeader() {
     this.options = new RequestOptions({
       headers: new Headers({
@@ -52,7 +56,29 @@ export class EmpresaService {
 
   cadastraEmpresa() {
     this.createAuthenticationHeader();
-    return this.http.post(this.domain + 'authentication/cadastraEmpresa', this.empresa, this.options).map(res => res.json());
+    this.empresaChanged.next('desabilitarcampos');
+
+    let empresa = this.empresa.cadastro;
+    empresa.convidado = this.empresa.funcionario;
+    empresa.servico = this.empresa.servico;
+
+    this.http.post(this.domain + 'authentication/cadastraEmpresa', empresa, this.options).map(res => res.json()).subscribe(
+      (data) => {
+      if (!data.success) {
+        this.messageClass = 'alert alert-danger';
+        this.message = data.message;
+        this.processing = false;
+        this.empresaChanged.next('habilitarcampos');
+      } else {
+        this.messageClass = 'alert alert-success';
+        this.message = data.message;
+        setTimeout(() => {
+          this.empresaChanged.next('habilitarcampos');
+          this.empresaChanged.next('cancelaracao');
+        }, 2000);
+      }
+      }
+    );
   }
 
   addEmpresa(empresa){
@@ -79,27 +105,12 @@ export class EmpresaService {
     this.empresa.funcionario=funcionario;
   }
 
-  submitEmpresa() {
-    this.processing = true;
-    //this.desabilitaCampos();
-    this.authSerSub = this.empresa.cadastraEmpresa(this.empresa).subscribe((data) => {
-      /*if (!data.success) {
-        this.messageClass = 'alert alert-danger';
-        this.message = data.message;
-        this.processing = false;
-        this.habilitaCampo();
-      } else {
-        this.messageClass = 'alert alert-success';
-        this.message = data.message;
-        setTimeout(() => {
-          this.processing = false; // Enable submit button
-          //this.message = false; // Erase error/success message
-          //this.form.reset(); // Reset all form fields
-        }, 2000);
-
-      }
-      */
-    });
+  setCadastroValido(valido){
+    this.cadastroValido = valido;
+    if (this.cadastroValido) {
+      //informa o botão que pode ficar habilitado para cadastro.
+      this.empresaChanged.next('cadastroValido');
+    }
 
   }
 }

@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 ///TODO: Quando o navbar vem selecinado, ele não está indicando qual opção está selecionada.
 import { AuthService } from './../../autenticar/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -10,21 +11,40 @@ import { EmpresaService } from './empresa.service';
   styleUrls: ['./empresa.component.css']
 })
 
-export class EmpresaComponent implements OnInit {
-  form: FormGroup;
+export class EmpresaComponent implements OnInit,OnDestroy {
+
+  cadastroInvalido = true;
+  subscription: Subscription;
+
   constructor(
     private formBuilder: FormBuilder,
     private empresaService: EmpresaService
   ) {
+
+
   }
 
   ngOnInit() {
+    this.subscription = this.empresaService.empresaChanged.subscribe(
+      (acao: any) => {
+        if (acao === "cadastroValido"){
+          this.cadastroInvalido = false;
+          return;
+        }
+      }
+    );
+   }
 
-  }
   cancelarAcao(){
-    console.log('cancelar ação');
     this.empresaService.cancelarAcao();
   }
 
+  salvar(){
 
+
+
+  }
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
+  }
 }
