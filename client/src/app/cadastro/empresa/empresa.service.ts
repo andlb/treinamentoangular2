@@ -62,7 +62,9 @@ export class EmpresaService {
 
     let empresa = this.empresa.cadastro;
     empresa.convidado = this.empresa.funcionario;
+    console.log(empresa.convidado);
     empresa.servico = this.empresa.servico;
+    console.log(empresa.servico);
 
     return this.http.post(this.domain + 'authentication/cadastraEmpresa', empresa, this.options).map(res => res.json());
   }

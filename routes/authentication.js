@@ -220,7 +220,7 @@ module.exports = (router) => {
       res.json(retorno);  
       return;
     } 
- 
+
     const empresa = new Empresa({
       nomeresponsavel:req.body.nomeresponsavel,
       nomefantasia:req.body.nomefantasia,
@@ -236,6 +236,8 @@ module.exports = (router) => {
         estado: req.body.estado,
         CEP: req.body.CEP
       },
+      convidados:req.body.convidado,
+      servicos:req.body.servico,
       respUltimaAlteracao:[{
         usuario: null,
         Data: Date.now()
