@@ -36,10 +36,6 @@ export class EmpresaService {
     });
   }
 
-  checkEmailEmpresa(email){
-    return this.http.get(this.domain+'authentication/checkEmailEmpresa/'+email,this.options).map(res => res.json());
-  }
-
   cancelarAcao(){
     this.empresa = {
       cadastro:{},
@@ -59,14 +55,10 @@ export class EmpresaService {
 
   cadastraEmpresa() {
     this.createAuthenticationHeader();
-
     let empresa = this.empresa.cadastro;
     empresa.convidado = this.empresa.funcionario;
-    console.log(empresa.convidado);
     empresa.servico = this.empresa.servico;
-    console.log(empresa.servico);
-
-    return this.http.post(this.domain + 'authentication/cadastraEmpresa', empresa, this.options).map(res => res.json());
+    return this.http.post(this.domain + 'empresa/cadastraEmpresa', empresa, this.options).map(res => res.json());
   }
 
   addEmpresa(empresa){
@@ -87,6 +79,11 @@ export class EmpresaService {
 
   getFuncionario(){
     return this.empresa.funcionario;
+  }
+
+  getTodasEmpresas() {
+    this.createAuthenticationHeader();
+    return this.http.post(this.domain + 'empresa/getTodasEmpresas', this.options).map(res => res.json());
   }
 
   addFuncionario(funcionario){
