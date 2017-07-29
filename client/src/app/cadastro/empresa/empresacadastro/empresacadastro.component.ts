@@ -58,12 +58,10 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
       CEP: [this.empresa.cep, Validators.pattern(/\d{5}\-\d{3}/)]
     });
     this.valueChanged = this.form.valueChanges
-      .subscribe(data => this.onValueChanged(data));
-  }
-
-  onValueChanged(data){
-    this.empresaService.setCadastroValido(this.form.valid);
-    this.addEmpresa();
+      .subscribe(data => {
+        this.empresaService.setCadastroValido(this.form.valid);
+        this.addEmpresa();
+      });
   }
 
 
@@ -115,7 +113,6 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy(){
-
     if (this.subscription) this.subscription.unsubscribe();
     if (this.valueChanged) this.valueChanged.unsubscribe();
   }

@@ -14,8 +14,7 @@ export class EmpresaService {
   empresa;
   processing;
   authSerSub;
-  messageClass;
-  message;
+
 
 
   constructor(
@@ -62,23 +61,7 @@ export class EmpresaService {
     empresa.convidado = this.empresa.funcionario;
     empresa.servico = this.empresa.servico;
 
-    this.http.post(this.domain + 'authentication/cadastraEmpresa', empresa, this.options).map(res => res.json()).subscribe(
-      (data) => {
-      if (!data.success) {
-        this.messageClass = 'alert alert-danger';
-        this.message = data.message;
-        this.processing = false;
-        this.empresaChanged.next('habilitarcampos');
-      } else {
-        this.messageClass = 'alert alert-success';
-        this.message = data.message;
-        setTimeout(() => {
-          this.empresaChanged.next('habilitarcampos');
-          this.empresaChanged.next('cancelaracao');
-        }, 2000);
-      }
-      }
-    );
+    return this.http.post(this.domain + 'authentication/cadastraEmpresa', empresa, this.options).map(res => res.json());
   }
 
   addEmpresa(empresa){
