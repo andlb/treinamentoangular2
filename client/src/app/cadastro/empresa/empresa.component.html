@@ -5,13 +5,13 @@
   </div>
 </div>
 
-<button class="btn btn-success" [disabled]='processing' (click)='salvar'>Salvar</button>
+<button class="btn btn-success" [disabled]='processing' (click)='salvar()'>Salvar</button>
 <button class="btn btn-danger" [disabled]='processing' (click)='cancelarAcao()'>Limpar</button>
 <br/>
-<ul class="nav nav-tabs">
-  <li [routerLinkActive]="['active']"><a routerLink="/empresa/cadastro" aria-expanded="true" >Cadastro</a></li>
-  <li [routerLinkActive]="['active']"><a routerLink="/empresa/funcionario" >Funcionário</a></li>
-  <li [routerLinkActive]="['active']"><a routerLink="/empresa/servico">Serviço</a></li>
+<ul class="nav nav-tabs"  >
+  <li [routerLinkActive]="['active']"><a  routerLink="/empresa/cadastro" aria-expanded="true" >Cadastro</a></li>
+  <li [routerLinkActive]="['active']"><a  routerLink="/empresa/funcionario" >Funcionário</a></li>
+  <li [routerLinkActive]="['active']"><a  routerLink="/empresa/servico">Serviço</a></li>
 </ul>
 <router-outlet></router-outlet>
 

@@ -42,21 +42,35 @@ export class EmpresaComponent implements OnInit,OnDestroy {
   }
 
   salvar(){
+    this.processing = true;
+    if  (!this.empresaService.verificaDadosValido()){
+       //TODO:Mostra a tela de cadastro quando retornar false;
+         this.messageClass = 'alert alert-danger';
+         this.message = 'Dados da tela de cadastro inválido';
+         this.processing = false;
+         this.empresaService.empresaChanged.next('habilitarcampos');
+       return;
+     }
+      console.log('chamando o desabilitar campo');
+    this.empresaService.empresaChanged.next('desabilitarcampos');
     this.subsEnvio = this.empresaService.cadastraEmpresa().subscribe(
       (data) => {
-      if (!data.success) {
-        this.messageClass = 'alert alert-danger';
-        this.message = data.message;
-        this.processing = false;
-        this.empresaService.empresaChanged.next('habilitarcampos');
-      } else {
-        this.messageClass = 'alert alert-success';
-        this.message = data.message;
-        setTimeout(() => {
+        if (!data.success) {
+          this.messageClass = 'alert alert-danger';
+          this.message = data.message;
+          this.processing = false;
           this.empresaService.empresaChanged.next('habilitarcampos');
-          this.empresaService.empresaChanged.next('cancelaracao');
-        }, 2000);
-      }
+        } else {
+          this.messageClass = 'alert alert-success';
+          this.message = data.message;
+          setTimeout(() => {
+            this.processing = false;
+            this.empresaService.empresaChanged.next('habilitarcampos');
+            this.empresaService.empresaChanged.next('cancelaracao');
+            this.messageClass = '';
+            this.message = '';
+          }, 2000);
+        }
       }
     );;
   }

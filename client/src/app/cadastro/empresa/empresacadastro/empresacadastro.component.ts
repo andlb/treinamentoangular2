@@ -55,10 +55,19 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
       complemento: [this.empresa.complemento],
       cidade: [this.empresa.cidade],
       estado: [this.empresa.estado],
-      CEP: [this.empresa.cep, Validators.pattern(/\d{5}\-\d{3}/)]
+      CEP: [this.empresa.cep, Validators.pattern(/\d{5}\-\d{3}/)],
+      email: [this.empresa.email,
+        [Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(30),
+          Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+        ]
+      ],
+
     });
     this.valueChanged = this.form.valueChanges
       .subscribe(data => {
+        console.log(this.form.valid);
         this.empresaService.setCadastroValido(this.form.valid);
         this.addEmpresa();
       });
@@ -78,6 +87,7 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
     this.form.controls["estado"].enable();
     this.form.controls["cidade"].enable();
     this.form.controls["CEP"].enable();
+    this.form.controls["email"].enable();
   }
 
   desabilitaCampos() {
@@ -93,6 +103,7 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
     this.form.controls["estado"].disable();
     this.form.controls["cidade"].disable();
     this.form.controls["CEP"].disable();
+    this.form.controls["email"].disable();
   }
 
   addEmpresa(){
@@ -107,7 +118,8 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
       complemento: this.form.get('complemento').value,
       cidade: this.form.get('cidade').value,
       estado: this.form.get('estado').value,
-      CEP: this.form.get('CEP').value
+      CEP: this.form.get('CEP').value,
+      email:this.form.get('email').value
     }
     this.empresaService.addEmpresa(empresa);
   }

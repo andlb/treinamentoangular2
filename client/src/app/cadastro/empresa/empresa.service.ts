@@ -8,14 +8,10 @@ import { Subject } from "rxjs/Subject";
 
 @Injectable()
 export class EmpresaService {
+  private cadastroValido=false;
+  private empresa;
   empresaChanged = new Subject();
-  cadastroValido=false;
   options;
-  empresa;
-  processing;
-  authSerSub;
-
-
 
   constructor(
     private authService: AuthService,
@@ -53,9 +49,16 @@ export class EmpresaService {
     this.empresaChanged.next('cancelaracao');
   }
 
+  //verifica se os dados dos cadastros estão valido
+  verificaDadosValido(){
+    if (!this.cadastroValido) {
+      return false;
+    }
+    return true
+  }
+
   cadastraEmpresa() {
     this.createAuthenticationHeader();
-    this.empresaChanged.next('desabilitarcampos');
 
     let empresa = this.empresa.cadastro;
     empresa.convidado = this.empresa.funcionario;
@@ -90,10 +93,5 @@ export class EmpresaService {
 
   setCadastroValido(valido){
     this.cadastroValido = valido;
-    if (this.cadastroValido) {
-      //informa o botão que pode ficar habilitado para cadastro.
-      this.empresaChanged.next('cadastroValido');
-    }
-
   }
 }
