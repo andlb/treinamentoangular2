@@ -78,7 +78,7 @@ const empresaSchema = new Schema({
     perguntas: [{
         descricao: { type: String },
         tipo: { type: String } ,
-        ativo: { type: Boolean }       
+        status: { type: String }       
     }],    
     respUltimaAlteracao: [{
         usuario: { type: String },

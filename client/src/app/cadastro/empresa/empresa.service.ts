@@ -1,3 +1,4 @@
+import { Pergunta } from './empresapergunta/pergunta.model';
 import { Servico } from './empresaservico/servico.model';
 import { Funcionario } from './empresafuncionario/funcionario.model';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -44,7 +45,8 @@ export class EmpresaService {
     this.empresa = {
       cadastro: {},
       servico: [],
-      funcionario: []
+      funcionario: [],
+      pergunta: []
     };
     this.empresaChanged.next('cancelaracao');
   }
@@ -103,6 +105,7 @@ export class EmpresaService {
     };
     this.empresa.servico = empresa.servicos;
     this.empresa.funcionario = empresa.convidados;
+    this.empresa.pergunta = empresa.perguntas;
 
   }
 

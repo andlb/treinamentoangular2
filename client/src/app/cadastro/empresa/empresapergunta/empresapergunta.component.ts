@@ -1,6 +1,6 @@
 import { Status } from './../../../share/status.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,9 +13,9 @@ import { Tipopergunta } from './tipopergunta.model';
   templateUrl: './empresapergunta.component.html',
   styleUrls: ['./empresapergunta.component.css']
 })
-export class EmpresaperguntaComponent implements OnInit {
-  @ViewChild('descricao') descricao: ElementRef;
+export class EmpresaperguntaComponent implements OnInit, OnDestroy {
 
+  @ViewChild('descricao') descricao: ElementRef;
   form: FormGroup;
   subscription: Subscription;
   perguntas: Pergunta[] = [];
@@ -29,9 +29,9 @@ export class EmpresaperguntaComponent implements OnInit {
     new Tipopergunta("3", "5 estrelas")
   ];
 
-  status:Status[] = [
-    new Status("1","Ativo"),
-    new Status("0","Inativo")
+  status: Status[] = [
+    new Status("1", "Ativo"),
+    new Status("0", "Inativo")
   ]
 
   constructor(
@@ -42,7 +42,13 @@ export class EmpresaperguntaComponent implements OnInit {
 
   ngOnInit(
   ) {
+    this.perguntas = [];
+    this.edit = false;
+    this.indexPergunta = -1;
     this.createForm();
+    this.perguntas = this.empresaService.getPergunta();
+
+    if (!this.perguntas) this.perguntas = [];
     this.subscription = this.empresaService.empresaChanged.subscribe(
       (acao: any) => {
         if (acao === "cancelaracao") {
@@ -58,6 +64,9 @@ export class EmpresaperguntaComponent implements OnInit {
       }
     )
   }
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
+  }
 
   desabilitaCampos() {
     this.form.controls["descricao"].disable();
@@ -70,15 +79,43 @@ export class EmpresaperguntaComponent implements OnInit {
     this.form.controls["descricao"].enable();
     this.form.controls["tipo"].enable();
     this.form.controls["status"].enable();
-
     this.processing = false;
   }
 
   createForm() {
     this.form = this.formBuilder.group({
       descricao: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(5)]],
-      tipo: ''
+      tipo: ['1', Validators.required],
+      status: ['1', Validators.required]
     });
+  }
+
+  onLimpar() {
+    this.form.get("descricao").setValue("");
+    this.form.get("tipo").setValue("1");
+    this.form.get("status").setValue("1");
+    this.descricao.nativeElement.focus();
+    this.edit = false;
+    this.indexPergunta = -1;
+
+  }
+
+  //coloca o formulario em estado de edição.
+  onEditItem(index) {
+    let pergunta = this.perguntas[index];
+    this.form.get("descricao").setValue(pergunta.descricao);
+    this.form.get("tipo").setValue(pergunta.tipo);
+    this.form.get("status").setValue(pergunta.status);
+    this.edit = true;
+    this.indexPergunta = index;
+  }
+
+  //deleta um registro da tela
+  onDeletar() {
+    this.perguntas.splice(this.indexPergunta, 1);
+    this.indexPergunta = -1
+    this.empresaService.addPergunta(this.perguntas);
+    this.onLimpar();
   }
 
   enviaPergunta() {
@@ -86,7 +123,7 @@ export class EmpresaperguntaComponent implements OnInit {
       descricao: this.form.get("descricao").value,
       tipo: this.form.get("tipo").value,
       status: this.form.get("status").value
-    }
+    };
     if (!this.edit) {
       this.perguntas.push(pergunta);
     } else {
@@ -100,38 +137,12 @@ export class EmpresaperguntaComponent implements OnInit {
     return this.tipos.find(tipo => tipo.id === codigo).descricao;
   }
 
-  getStatus(codigo){
-    console.log(codigo);
-    return  this.status.find(status => status.id === codigo ).descricao;
+  getStatus(codigo) {
+    let oStatus = this.status.find(status => status.id === codigo)
+    if (oStatus) {
+      return this.status.find(status => status.id === codigo).descricao;
+    }else {
+      return "";
+    }
   }
-
-  onLimpar() {
-    this.form.get("descricao").setValue("");
-    this.form.get("tipo").setValue("");
-    this.form.get("status").setValue("");
-
-    this.descricao.nativeElement.focus();
-    this.edit = false;
-    this.indexPergunta = -1;
-
-  }
-
-  //deleta um registro da tela
-  onDeletar() {
-    this.perguntas.splice(this.indexPergunta, 1);
-    this.indexPergunta = -1
-    this.empresaService.addPergunta(this.perguntas);
-    this.onLimpar();
-  }
-
-  //coloca o formulario em estado de edição.
-  onEditItem(index) {
-    let pergunta = this.perguntas[index];
-    this.form.get("descricao").setValue(pergunta.descricao);
-    this.form.get("tipo").setValue(pergunta.tipo);
-    this.form.get("status").setValue(pergunta.status);
-    this.edit = true;
-    this.indexPergunta = index;
-  }
-
 }

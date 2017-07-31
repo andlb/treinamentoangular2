@@ -116,6 +116,7 @@ router.get('/getTodasEmpresas',(req,res)=>{
         };
         empresa.convidados = req.body.convidado;
         empresa.servicos = req.body.servico;
+        empresa.perguntas = req.body.pergunta;
         //TODO: Verificar como passar o usuário através dos parametros.
         //TODO: Verificar se o usuário tem acesso para alterar a informação.
         //empresa.respUltimaAlteracao.push({})
@@ -152,6 +153,7 @@ router.get('/getTodasEmpresas',(req,res)=>{
       },
       convidados:req.body.convidado,
       servicos:req.body.servico,
+      perguntas:req.body.pergunta,
       respUltimaAlteracao:[{
         usuario: null,
         Data: Date.now()
