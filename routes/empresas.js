@@ -1,11 +1,12 @@
 const Empresa = require('../models/empresa');
-const database = require('../config/database');
+//const database = require('../config/database');
 
  module.exports = (router) => {
 
-  router.get('/getTodasEmpresa',(req,res)=>{
+  router.get('/getTodasEmpresas',(req,res)=>{
     let retorno = {success:false, message:'', empresas:undefined};
-    Empresa.find({},(err,empresas) => {
+    console.log(retorno);
+    Empresa.find({},{nomeresponsavel:1,nomefantasia:1,celular:1},(err,empresas) => {
       if (err) {
         retorno.message = err;
         res.json(retorno);
@@ -16,8 +17,10 @@ const database = require('../config/database');
         res.json(retorno);
         return;        
       }
+      retorno.message = "Empresas encontradas com sucesso";
       retorno.success = true;      
       retorno.empresas = empresas;
+
       res.json(retorno);
     })
 

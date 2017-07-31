@@ -5,13 +5,16 @@ import { AuthService } from './../../autenticar/auth.service';
 import { Injectable } from '@angular/core';
 import { environment } from './../../../environments/environment';
 import { Subject } from "rxjs/Subject";
+import { ErroMessage } from './../../share/erro.model';
 
 @Injectable()
 export class EmpresaService {
   private cadastroValido=false;
   private empresa;
   empresaChanged = new Subject();
+  empresaMessage = new Subject();
   options;
+  domain = environment.domain;
 
   constructor(
     private authService: AuthService,
@@ -26,12 +29,14 @@ export class EmpresaService {
     };
   }
 
-  domain = environment.domain;
+
   createAuthenticationHeader() {
+    this.authService.loadToken();
+    console.log('token: == '+this.authService.authToken);
     this.options = new RequestOptions({
       headers: new Headers({
         'Content-Type': 'application/json',
-        'authorization': localStorage.getItem('token')
+        'authorization': this.authService.authToken
       })
     });
   }
@@ -61,6 +66,12 @@ export class EmpresaService {
     return this.http.post(this.domain + 'empresa/cadastraEmpresa', empresa, this.options).map(res => res.json());
   }
 
+  getTodasEmpresas() {
+    this.createAuthenticationHeader();
+    console.log(this.domain+'empresa/getTodasEmpresas');
+    return this.http.get(this.domain + 'empresa/getTodasEmpresas',this.options).map(res => res.json());
+  }
+
   addEmpresa(empresa){
     this.empresa.cadastro = empresa
   }
@@ -81,10 +92,6 @@ export class EmpresaService {
     return this.empresa.funcionario;
   }
 
-  getTodasEmpresas() {
-    this.createAuthenticationHeader();
-    return this.http.post(this.domain + 'empresa/getTodasEmpresas', this.options).map(res => res.json());
-  }
 
   addFuncionario(funcionario){
     this.empresa.funcionario=funcionario;
@@ -92,5 +99,9 @@ export class EmpresaService {
 
   setCadastroValido(valido){
     this.cadastroValido = valido;
+  }
+  //
+  setMensagemErro(message:ErroMessage) {
+    this.empresaMessage.next(message);
   }
 }

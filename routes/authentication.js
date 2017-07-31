@@ -172,7 +172,7 @@ module.exports = (router) => {
       });
     } else {
       //verifica se o token é valido
-      jwt.verify(token, config.secret, (err, decoded) => {
+      jwt.verify(token, database.secret, (err, decoded) => {
         if (err) {
           res.json({
             success: false,
