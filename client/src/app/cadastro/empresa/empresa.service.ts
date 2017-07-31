@@ -9,8 +9,9 @@ import { ErroMessage } from './../../share/erro.model';
 
 @Injectable()
 export class EmpresaService {
-  private cadastroValido=false;
+  private cadastroValido = false;
   private empresa;
+  private empresaid;
   empresaChanged = new Subject();
   empresaMessage = new Subject();
   options;
@@ -19,20 +20,18 @@ export class EmpresaService {
   constructor(
     private authService: AuthService,
     private http: Http
-  )
-  {
+  ) {
 
     this.empresa = {
-      cadastro:{},
-      servico:[],
-      funcionario:[]
+      cadastro: {},
+      servico: [],
+      funcionario: []
     };
   }
 
 
   createAuthenticationHeader() {
     this.authService.loadToken();
-    console.log('token: == '+this.authService.authToken);
     this.options = new RequestOptions({
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -41,67 +40,108 @@ export class EmpresaService {
     });
   }
 
-  cancelarAcao(){
+  cancelarAcao() {
     this.empresa = {
-      cadastro:{},
-      servico:[],
-      funcionario:[]
+      cadastro: {},
+      servico: [],
+      funcionario: []
     };
     this.empresaChanged.next('cancelaracao');
   }
 
   //verifica se os dados dos cadastros estão valido
-  verificaDadosValido(){
+  verificaDadosValido() {
     if (!this.cadastroValido) {
       return false;
     }
     return true
   }
 
-  cadastraEmpresa() {
+  atualizaEmpresa() {
     this.createAuthenticationHeader();
     let empresa = this.empresa.cadastro;
     empresa.convidado = this.empresa.funcionario;
     empresa.servico = this.empresa.servico;
-    return this.http.post(this.domain + 'empresa/cadastraEmpresa', empresa, this.options).map(res => res.json());
+    empresa.pergunta = this.empresa.pergunta;
+    if (this.empresaid) {
+      empresa.id = this.empresaid;
+    }
+    return this.http.post(this.domain + 'empresa/updateEmpresa', empresa, this.options).map(res => res.json());
+  }
+
+
+  getEmpresa(empresaid) {
+    this.createAuthenticationHeader();
+    return this.http.get(this.domain + 'empresa/getEmpresa/' + empresaid, this.options).map(res => res.json());
   }
 
   getTodasEmpresas() {
     this.createAuthenticationHeader();
-    console.log(this.domain+'empresa/getTodasEmpresas');
-    return this.http.get(this.domain + 'empresa/getTodasEmpresas',this.options).map(res => res.json());
+    return this.http.get(this.domain + 'empresa/getTodasEmpresas', this.options).map(res => res.json());
   }
 
-  addEmpresa(empresa){
-    this.empresa.cadastro = empresa
+  setEmpresaid(empresaid) {
+    this.empresaid = empresaid
+    this.empresaChanged.next("edicao");
   }
 
-  getEmpresa(){
+  addEmpresa(empresa) {
+    this.empresa.cadastro = {
+      razaosocial: empresa.razaosocial,
+      nomefantasia: empresa.nomefantasia,
+      nomeresponsavel: empresa.nomeresponsavel,
+      telefone: empresa.telefone,
+      celular: empresa.celular,
+      email: empresa.email,
+      endereco: empresa.endereco.endereco,
+      bairro: empresa.endereco.bairro,
+      numero: empresa.endereco.numero,
+      complemento: empresa.endereco.complemento,
+      cidade: empresa.endereco.cidade,
+      estado: empresa.endereco.estado,
+      cep: empresa.endereco.cep
+    };
+    this.empresa.servico = empresa.servicos;
+    this.empresa.funcionario = empresa.convidados;
+
+  }
+
+  addCadastro(cadastro) {
+    this.empresa.cadastro = cadastro
+  }
+
+  getCadastro() {
     return this.empresa.cadastro;
   }
 
-  getServico(){
+  getServico() {
     return this.empresa.servico;
   }
 
-  addServico(servico){
+  addServico(servico) {
     this.empresa.servico = servico;
   }
 
-  getFuncionario(){
+  getFuncionario() {
     return this.empresa.funcionario;
   }
 
-
-  addFuncionario(funcionario){
-    this.empresa.funcionario=funcionario;
+  addFuncionario(funcionario) {
+    this.empresa.funcionario = funcionario;
   }
 
-  setCadastroValido(valido){
+  getPergunta() {
+    return this.empresa.pergunta;
+  }
+
+  addPergunta(pergunta) {
+    this.empresa.pergunta = pergunta;
+  }
+  setCadastroValido(valido) {
     this.cadastroValido = valido;
   }
   //
-  setMensagemErro(message:ErroMessage) {
+  setMensagemErro(message: ErroMessage) {
     this.empresaMessage.next(message);
   }
 }

@@ -2,7 +2,7 @@
    <div class="control-group">
       <label class="control-label" for="email">E-mail</label>
       <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
-      <input type="text" class="form-control" id="email" name="email" placeholder="*E-mail" formControlName="email" autofocus >
+      <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail"  autofocus >
         <ul class="help-block">
           <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
          <li *ngIf="((form.controls.email.touched) && (form.controls.email.errors?.maxlength || form.controls.email.errors?.minlength))">Caracters mínimo: 3, máximo: 15</li>

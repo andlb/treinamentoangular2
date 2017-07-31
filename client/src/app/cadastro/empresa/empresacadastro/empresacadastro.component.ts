@@ -1,3 +1,4 @@
+import { Params, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -12,15 +13,38 @@ import { AuthService } from './../../../autenticar/auth.service';
 export class EmpresacadastroComponent implements OnInit,OnDestroy {
   form: FormGroup;
   empresa;
+  empresaid;
   subscription: Subscription;
+  subsPesquisa: Subscription;
   valueChanged: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
-    private empresaService: EmpresaService
-  ) { }
+    private empresaService: EmpresaService,
+    private route: ActivatedRoute
+  ) {
+   }
 
   ngOnInit() {
+    this.createForm();
+    //realiza a consulta.
+    this.route.params
+      .subscribe(
+        (params: Params) => {
+          this.empresaid = params.id;
+          if (this.empresaid) {
+            this.subsPesquisa = this.empresaService.getEmpresa(this.empresaid).subscribe(data => {
+              if (!data.success){
+                //TODO: mostrar um erro quando a informação não é encontrada.
+                return;
+              }
+              this.empresaService.addEmpresa(data.empresa);
+              this.empresaService.setEmpresaid(this.empresaid);
+              this.atualizaForm();
+            });
+          }
+        }
+      );
     this.subscription = this.empresaService.empresaChanged.subscribe(
       (acao: any) => {
         if (acao === "cancelaracao"){
@@ -35,11 +59,27 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
         }
       }
     )
-    this.createForm();
+
+  }
+  atualizaForm(){
+    this.empresa = this.empresaService.getCadastro();
+    this.form.controls["nomeresponsavel"].setValue(this.empresa.nomeresponsavel);
+    this.form.controls["nomefantasia"].setValue(this.empresa.nomefantasia);
+    this.form.controls["razaosocial"].setValue(this.empresa.razaosocial);
+    this.form.controls["telefone"].setValue(this.empresa.telefone);
+    this.form.controls["celular"].setValue(this.empresa.celular);
+    this.form.controls["endereco"].setValue(this.empresa.endereco);
+    this.form.controls["bairro"].setValue(this.empresa.bairro);
+    this.form.controls["numero"].setValue(this.empresa.numero);
+    this.form.controls["complemento"].setValue(this.empresa.complemento);
+    this.form.controls["estado"].setValue(this.empresa.estado);
+    this.form.controls["cidade"].setValue(this.empresa.cidade);
+    this.form.controls["CEP"].setValue(this.empresa.cep);
+    this.form.controls["email"].setValue(this.empresa.email);
   }
 
   createForm() {
-    this.empresa = this.empresaService.getEmpresa();
+    this.empresa = this.empresaService.getCadastro();
     if (!this.empresa) {
       this.empresa = {};
     }
@@ -67,9 +107,8 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
     });
     this.valueChanged = this.form.valueChanges
       .subscribe(data => {
-        console.log(this.form.valid);
         this.empresaService.setCadastroValido(this.form.valid);
-        this.addEmpresa();
+        this.addCadastro();
       });
   }
 
@@ -106,7 +145,7 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
     this.form.controls["email"].disable();
   }
 
-  addEmpresa(){
+  addCadastro(){
     const empresa = {
       nomeresponsavel: this.form.get("nomeresponsavel").value,
       nomefantasia: this.form.get("nomefantasia").value,
@@ -121,11 +160,13 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
       CEP: this.form.get('CEP').value,
       email:this.form.get('email').value
     }
-    this.empresaService.addEmpresa(empresa);
+    this.empresaService.addCadastro(empresa);
   }
 
   ngOnDestroy(){
     if (this.subscription) this.subscription.unsubscribe();
     if (this.valueChanged) this.valueChanged.unsubscribe();
+    if (this.subsPesquisa) this.subsPesquisa.unsubscribe();
+
   }
 }

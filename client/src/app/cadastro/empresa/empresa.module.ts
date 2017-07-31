@@ -9,6 +9,7 @@ import { EmpresacadastroComponent } from './empresacadastro/empresacadastro.comp
 import { EmpresaservicoComponent } from './empresaservico/empresaservico.component';
 import { EmpresafuncionarioComponent } from './empresafuncionario/empresafuncionario.component';
 import { EmpresalistaComponent } from './empresalista/empresalista.component';
+import { EmpresaperguntaComponent } from './empresapergunta/empresapergunta.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { EmpresalistaComponent } from './empresalista/empresalista.component';
     EmpresacadastroComponent,
     EmpresaservicoComponent,
     EmpresafuncionarioComponent,
-    EmpresalistaComponent
+    EmpresalistaComponent,
+    EmpresaperguntaComponent
   ],
   imports: [
     CommonModule,

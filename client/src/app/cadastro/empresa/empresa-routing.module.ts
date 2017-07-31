@@ -1,4 +1,5 @@
 
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -10,14 +11,17 @@ import { EmpresaservicoComponent } from './empresaservico/empresaservico.compone
 import { EmpresafuncionarioComponent } from './empresafuncionario/empresafuncionario.component';
 import { EmpresacadastroComponent } from './empresacadastro/empresacadastro.component';
 import { EmpresalistaComponent } from './empresalista/empresalista.component';
+import { EmpresaperguntaComponent } from './empresapergunta/empresapergunta.component';
 
 const empresaRoutes: Routes = [
   { path: '', component: EmpresaComponent, children: [
-    { path: '', component: EmpresacadastroComponent },
+    { path: '', component: EmpresalistaComponent },
     { path: 'lista', component: EmpresalistaComponent},
     { path: 'cadastro', component: EmpresacadastroComponent},
     { path: 'funcionario', component: EmpresafuncionarioComponent },
     { path: 'servico', component: EmpresaservicoComponent},
+    { path: 'pergunta', component: EmpresaperguntaComponent},
+    { path: ':id', component: EmpresacadastroComponent},
   ] },
 ];
 

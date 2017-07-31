@@ -56,6 +56,7 @@ const empresaSchema = new Schema({
     nomeresponsavel: { type: String, required: [true, "Nome responsável não informado"] },    
     telefone: { type: String,required: [true, "Telefone não informado"],validate:telefoneValidators },
     celular: { type: String, required: [true, "Celular não informado"],validate:telefoneValidators },    
+    email: { type: String , validate: emailValidators},    
     endereco: {
         endereco: { type: String },
         bairro: { type: String },
@@ -74,6 +75,11 @@ const empresaSchema = new Schema({
         tempo: { type: String },
         quilometragem: { type: Number }
     }],
+    perguntas: [{
+        descricao: { type: String },
+        tipo: { type: String } ,
+        ativo: { type: Boolean }       
+    }],    
     respUltimaAlteracao: [{
         usuario: { type: String },
         Data: { type: Date, default: Date.now() }

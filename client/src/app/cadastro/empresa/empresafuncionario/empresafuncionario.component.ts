@@ -73,8 +73,6 @@ export class EmpresafuncionarioComponent implements OnInit, OnDestroy {
 
   //TODO: Verificar para não existir duplicidade de e-mail cadastrado.
   enviaFuncionario() {
-    console.log('teste');
-
     let funcionario = {
       nome: this.form.get("nome").value,
       email: this.form.get("email").value
