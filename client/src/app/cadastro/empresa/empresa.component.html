@@ -4,9 +4,11 @@
     {{message}}
   </div>
 </div>
-<button *ngIf="!edicao&&!novo" class="btn btn-success" [disabled]='processing' (click)='onNovo()'>Novo</button>
-<button *ngIf="edicao" class="btn btn-success" [disabled]='processing' (click)='salvar()'>Salvar</button>
-<button *ngIf="edicao||novo" class="btn btn-danger" [disabled]='processing' (click)='cancelarAcao()'>Limpar</button>
+
+<button *ngIf="!edicao && !novo" class="btn btn-success" [disabled]='processing' (click)='onNovo()'>Novo</button>
+<button *ngIf="edicao || novo" class="btn btn-danger" [disabled]='processing' (click)='cancelarAcao()'>Inicio</button>
+<button *ngIf="edicao || novo" class="btn btn-success" [disabled]='processing' (click)='salvar()'>Salvar</button>
+
 <br/>
 <ul class="nav nav-tabs" *ngIf="edicao||novo" >
   <li [routerLinkActive]="['active']"><a  routerLink="/empresa/cadastro" routerLinkActive="active" >Cadastro</a></li>

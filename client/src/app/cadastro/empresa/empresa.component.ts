@@ -90,7 +90,7 @@ export class EmpresaComponent implements OnInit, OnDestroy {
             this.empresaService.empresaChanged.next('cancelaracao');
             this.messageClass = '';
             this.message = '';
-            this.router.navigate(["/empresa/lista"]);
+            this.router.navigate(["/empresa/lista"],{ skipLocationChange: true });
           }, 2000);
         }
       }

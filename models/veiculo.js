@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 //terá que ter uma chave unica de placa e usuário.
 const veiculoSchema = new Schema({
     usuarioid: { type: String, required: [true, "Usuário não definido"] },
-    fabricante: { type: String },
+    marca: { type: String },
     modelo: { type: String },
     placa: { type: String, required: [true, "Placa não definida"] },
     ano: { type: String },

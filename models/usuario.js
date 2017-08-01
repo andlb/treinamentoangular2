@@ -56,6 +56,7 @@ const usuarioSchema = new Schema({
     email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },
     password: { type: String, required: true, validate: passwordValidator },    
     tipo: { type: Number, required: true, validate:tipoValidator },//0 - proprietário, 1 convidado, 2 proprietário e convidado
+    cpf:{type:String},
     endereco: {
         endereco: { type: String },
         bairro: { type: String },

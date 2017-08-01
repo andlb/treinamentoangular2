@@ -28,7 +28,7 @@ export class EmpresalistaComponent implements OnInit, OnDestroy {
     this.subscription = this.empresaService.empresaChanged.subscribe(
       (acao: any) => {
         if (acao === "novo"){
-          this.router.navigate(["/empresa/cadastro"]);
+          this.router.navigate(["/empresa/cadastro"],{ skipLocationChange: true });
         }
       }
     );
@@ -42,7 +42,7 @@ export class EmpresalistaComponent implements OnInit, OnDestroy {
   }
   onEditItem(empresaid){
     //TODO: Fazer uma chamada para carregar a empresa com o id.
-    this.router.navigate(['/empresa/cadastro',empresaid]);
+    this.router.navigate(['/empresa/cadastro',empresaid],{ skipLocationChange: true });
   }
 
 }
