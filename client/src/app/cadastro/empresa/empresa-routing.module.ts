@@ -21,7 +21,7 @@ const empresaRoutes: Routes = [
     { path: 'funcionario', component: EmpresafuncionarioComponent },
     { path: 'servico', component: EmpresaservicoComponent},
     { path: 'pergunta', component: EmpresaperguntaComponent},
-    { path: ':id', component: EmpresacadastroComponent},
+    { path: 'cadastro/:id', component: EmpresacadastroComponent},
   ] },
 ];
 

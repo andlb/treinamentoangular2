@@ -1,6 +1,6 @@
 import { Params, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmpresaService } from './../empresa.service';
 import { AuthService } from './../../../autenticar/auth.service';
@@ -11,6 +11,7 @@ import { AuthService } from './../../../autenticar/auth.service';
   styleUrls: ['./empresacadastro.component.css']
 })
 export class EmpresacadastroComponent implements OnInit,OnDestroy {
+  @ViewChild('email') email: ElementRef;
   form: FormGroup;
   empresa;
   empresaid;
@@ -26,7 +27,9 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
    }
 
   ngOnInit() {
+
     this.createForm();
+    this.email.nativeElement.focus();
     //realiza a consulta.
     this.route.params
       .subscribe(
@@ -76,6 +79,7 @@ export class EmpresacadastroComponent implements OnInit,OnDestroy {
     this.form.controls["cidade"].setValue(this.empresa.cidade);
     this.form.controls["CEP"].setValue(this.empresa.cep);
     this.form.controls["email"].setValue(this.empresa.email);
+    this.email.nativeElement.focus();
   }
 
   createForm() {
