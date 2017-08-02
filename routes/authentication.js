@@ -164,7 +164,7 @@ module.exports = (router) => {
   /********************************************
   middleware: usado para pegar o token do cabeçalho
   ********************************************/
-  router.use((req, res, next) => {
+  /*router.use((req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) {
       res.json({
@@ -189,6 +189,7 @@ module.exports = (router) => {
 
     }
   });
+  */
   
 
   router.get('/getUsuario', (req, res) => {

@@ -17,8 +17,14 @@
     <div class="form-group">
       <label for="placa" class="col-lg-1 control-label">Placa</label>
       <div class="col-lg-2">
-        <input type="text" class="form-control" autofocus #placa id="placa" name="placa" formControlName="placa" placeholder="*Placa do veículo"
-          (blur)="onPesquisarPlaca()">
+        <div [ngClass]="{'has-error':((form.controls.placa.touched) &&  (form.controls.placa.errors)), 'has-success': !form.controls.placa.errors }">
+          <input type="text" class="form-control" autofocus #placa id="placa" name="placa" formControlName="placa" placeholder="*Placa do veículo"
+            (blur)="onPesquisarPlaca()">
+          <ul class="help-block">
+            <li *ngIf="form.controls.placa.touched && form.controls.placa.errors?.required">Informe a placa</li>
+            <li *ngIf="form.controls.placa.touched && form.controls.placa.errors?.pattern">Placa inválida: AAA-9999</li>
+          </ul>
+        </div>
       </div>
       <label for="marca" class="col-lg-2 control-label">Marca</label>
       <div class="col-lg-2">
@@ -29,7 +35,6 @@
         <input type="text" class="form-control" id="modelo" name="modelo" formControlName="modelo" placeholder="*Modelo do veiculo">
       </div>
     </div>
-
     <div class="form-group">
       <label for="ano" class="col-lg-1 control-label">Ano</label>
       <div class="col-lg-2">
@@ -39,6 +44,16 @@
       <div class="col-lg-2 col-lg-off-8">
         <input type="text" class="form-control" id="anomodelo" name="anomodelo" formControlName="anomodelo" placeholder="*Ano modelo">
       </div>
+      <label for="quilometragem" class="col-lg-1 control-label">KM</label>
+      <div class="col-lg-2 col-lg-off-8">
+        <div [ngClass]="{'has-error':form.controls.quilometragem.touched &&  (form.controls.quilometragem.errors), 'has-success': !form.controls.quilometragem.errors }">
+          <input type="text" class="form-control" id="quilometragem" name="quilometragem" formControlName="quilometragem" placeholder="*Quilometragem">
+          <ul class="help-block">
+            <li *ngIf="form.controls.quilometragem.touched && form.controls.quilometragem.errors?.required ">Informe quilometragem</li>
+            <li *ngIf="form.controls.quilometragem.touched && form.controls.quilometragem.errors?.pattern ">Campo numérico </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="form-group">
       <label for="cpf" class="col-lg-1 control-label">CPF</label>
@@ -47,17 +62,35 @@
       </div>
       <label for="nome" class="col-lg-2 control-label">Nome</label>
       <div class="col-lg-6">
-        <input type="text" class="form-control" id="nome" name="nome" formControlName="nome" placeholder="*Nome do proprietário">
+        <div [ngClass]="{'has-error':form.controls.nome.touched &&  (form.controls.nome.errors), 'has-success': !form.controls.nome.errors }">
+          <input type="text" class="form-control" id="nome" name="nome" formControlName="nome" placeholder="*Nome do proprietário">
+          <ul class="help-block">
+            <li *ngIf="form.controls.nome.touched && form.controls.nome.errors?.required ">Informe a data de nascimento</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="form-group">
       <label for="dtnascimento" class="col-lg-1 control-label">Dt. Nasc.</label>
       <div class="col-lg-2">
-        <input type="text" class="form-control" id="dtnascimento" name="dtnascimento" formControlName="dtnascimento" placeholder="*Data nasc. do proprietário">
+        <div [ngClass]="{'has-error':form.controls.dtnascimento.touched &&  (form.controls.dtnascimento.errors), 'has-success': !form.controls.dtnascimento.errors }">
+          <input type="text" class="form-control" id="dtnascimento" name="dtnascimento" formControlName="dtnascimento" placeholder="*Data nasc. do proprietário">
+          <ul class="help-block">
+            <li *ngIf="form.controls.dtnascimento.touched && form.controls.dtnascimento.errors?.required ">Informe a data de nascimento</li>
+            <li *ngIf="((form.controls.dtnascimento.touched) && ((form.controls.dtnascimento.errors?.pattern) || (form.controls.dtnascimento.errors?.maxlength || form.controls.dtnascimento.errors?.minlength)))">Data inválida</li>
+          </ul>
+        </div>
       </div>
       <label for="email" class="col-lg-2 control-label">E-mail</label>
       <div class="col-lg-4">
-        <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail do proprietário">
+        <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
+          <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail do proprietário">
+          <ul class="help-block">
+            <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
+            <li *ngIf="((form.controls.email.touched) && (form.controls.email.errors?.maxlength || form.controls.email.errors?.minlength))">Caracters mínimo: 3, máximo: 15</li>
+            <li *ngIf="form.controls.email.touched && form.controls.email.errors?.pattern">Este e-mail deve ser válido</li>
+          </ul>
+        </div>
       </div>
     </div>
   </form>
@@ -74,15 +107,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let servico of servicos; let cont = index" (click)="onEditItem(cont)" >
+        <tr *ngFor="let servico of servicos; let cont = index">
           <th scope="row">{{cont}}</th>
           <td>
-              {{servico.descricao}}
+            {{servico.descricao}}
           </td>
-          <td><input type="checkbox"></td>
+          <td><input type="checkbox" value='{{servico._id}}' (click)="defineServico($event)"></td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-

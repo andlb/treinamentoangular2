@@ -140,7 +140,7 @@ export class EmpresaperguntaComponent implements OnInit, OnDestroy {
   getStatus(codigo) {
     let oStatus = this.status.find(status => status.id === codigo)
     if (oStatus) {
-      return this.status.find(status => status.id === codigo).descricao;
+      return oStatus.descricao;
     }else {
       return "";
     }

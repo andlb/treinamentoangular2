@@ -25,7 +25,8 @@ export class OficinaService {
         modelo: String,
         placa: String,
         ano : String,
-        anoModelo : String
+        anomodelo : String,
+        quilometragem: String
     },
     servicosRealizar: [{}],
     servicosRealizado: [{}]
@@ -59,6 +60,10 @@ export class OficinaService {
     this.cadastroProprietario.veiculo = veiculo;
   }
 
+  setServicosRealizar(servicosRealiar) {
+    this.cadastroProprietario.servicosRealizar = servicosRealiar;
+  }
+
   getProprietario() {
     return this.cadastroProprietario.proprietario;
   }
@@ -66,6 +71,12 @@ export class OficinaService {
   getVeiculo() {
     return this.cadastroProprietario.veiculo;
   }
+
+  getServicosRealizar(){
+    return this.cadastroProprietario.servicosRealizar;
+  }
+
+
   atualizarDados() {
     this.createAuthenticationHeader();
 
@@ -74,13 +85,20 @@ export class OficinaService {
         modelo : this.cadastroProprietario.veiculo.modelo,
         placa : this.cadastroProprietario.veiculo.placa,
         ano : this.cadastroProprietario.veiculo.ano,
-        anoModelo : this.cadastroProprietario.veiculo.anoModelo,
+        anomodelo : this.cadastroProprietario.veiculo.anomodelo,
+        quilometragem : this.cadastroProprietario.veiculo.quilometragem,
         cpf:this.cadastroProprietario.proprietario.cpf,
         nome:this.cadastroProprietario.proprietario.nome,
         email:this.cadastroProprietario.proprietario.email,
         dtnascimento:this.cadastroProprietario.proprietario.dtnascimento,
     }
     return this.http.post(this.domain + 'oficina/updateOficina', oficina, this.options).map(res => res.json());
+  }
+
+  //TODO:pesquisa de placa.
+  pesquisaVeiculo(placa){
+    this.createAuthenticationHeader();
+    return this.http.get(this.domain + 'oficina/pesquisaplaca/'+placa, this.options).map(res => res.json());
   }
 
 
