@@ -20,6 +20,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   messageClass;
   message;
   empresa;
+  servicos=[];
   subEnviar: Subscription;
   subEmpresa: Subscription;
   constructor(
@@ -53,7 +54,9 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
 
         }
         if (data.success){
-          this.empresa = data.empresa
+          this.empresa = data.empresa;
+          this.servicos = data.empresa.servicos;
+          console.log(this.servicos);
         }
       });
     }

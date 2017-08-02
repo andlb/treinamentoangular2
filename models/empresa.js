@@ -85,5 +85,4 @@ const empresaSchema = new Schema({
         Data: { type: Date, default: Date.now() }
     }]    
 });
-
 module.exports = mongoose.model('Empresa', empresaSchema);

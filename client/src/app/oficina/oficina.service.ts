@@ -7,7 +7,7 @@ import { Subject } from "rxjs/Subject";
 import { ErroMessage } from './../share/erro.model';
 
 @Injectable()
-export class OficinaService implements OnDestroy {
+export class OficinaService {
 
   options;
   domain = environment.domain;
@@ -38,7 +38,6 @@ export class OficinaService implements OnDestroy {
   ) {
     authService.loadToken();
     let usuario = JSON.parse(authService.usuarioToken);
-    console.log(usuario.empresa);
     this.empresaid = usuario.empresa
   }
 
@@ -84,8 +83,5 @@ export class OficinaService implements OnDestroy {
     return this.http.post(this.domain + 'oficina/updateOficina', oficina, this.options).map(res => res.json());
   }
 
-  ngOnDestroy(): void {
-    console.log("saiu da oficina");
-  }
 
 }
