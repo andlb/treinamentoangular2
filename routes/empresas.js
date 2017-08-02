@@ -1,6 +1,4 @@
 const Empresa = require('../models/empresa');
-//const database = require('../config/database');
-
 module.exports = (router) => {
 
 router.get('/getTodasEmpresas',(req,res)=>{

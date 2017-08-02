@@ -15,6 +15,8 @@ import { LoginComponent } from './autenticar/login/login.component';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { ProfileComponent } from './cadastro/profile/profile.component';
 import { EmpresaService } from './cadastro/empresa/empresa.service';
+import { OficinaService } from './oficina/oficina.service';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +34,7 @@ import { EmpresaService } from './cadastro/empresa/empresa.service';
     FlashMessagesModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService,EmpresaService, AuthGuard,NoAuthGuard],
+  providers: [AuthService,EmpresaService,OficinaService, AuthGuard,NoAuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

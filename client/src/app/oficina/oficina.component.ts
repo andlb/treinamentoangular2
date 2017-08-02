@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./oficina.component.css']
 })
 export class OficinaComponent implements OnInit {
+  messageClass;
+  message;
 
   constructor() { }
 

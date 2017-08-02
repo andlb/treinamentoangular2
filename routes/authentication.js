@@ -121,6 +121,7 @@ module.exports = (router) => {
               usuarioid: user._id,
               email: user.email,
               tipo: user.tipo,
+              empresa: user.empresa,
               cadastrocompleto: user.cadastrocompleto
             };
           }
@@ -188,6 +189,7 @@ module.exports = (router) => {
 
     }
   });
+  
 
   router.get('/getUsuario', (req, res) => {
     const retorno = {
@@ -275,8 +277,6 @@ module.exports = (router) => {
 
     })
   });
-
-
 
   return router;
 }

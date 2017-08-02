@@ -1,0 +1,75 @@
+<h3 class="page-header">Cadastro veículos</h3>
+<div class="row show-hide-message">
+  <div [ngClass]="messageClass">
+    {{message}}
+  </div>
+</div>
+<div class="container">
+  <form class="form-horizontal" [formGroup]="form" (submit)="enviaDados()">
+    <div class="form-group">
+      <div class="col-lg-11 col-lg-offset-1">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-success">{{(!edit) ? 'Incluir' : 'Editar' }}</button>
+        <button *ngIf="(edit)" type="button" class="btn btn-danger" (click)="onDeletar()">Deletar</button>
+        <button type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="placa" class="col-lg-1 control-label">Placa</label>
+      <div class="col-lg-2">
+        <input type="text" class="form-control" autofocus #placa id="placa" name="placa" formControlName="placa" placeholder="*Placa do veículo"
+          (blur)="onPesquisarPlaca()">
+      </div>
+      <label for="marca" class="col-lg-2 control-label">Marca</label>
+      <div class="col-lg-2">
+        <input type="text" class="form-control" id="marca" name="marca" formControlName="marca" placeholder="*Marca do veículo">
+      </div>
+      <label for="modelo" class="col-lg-1 control-label">Modelo</label>
+      <div class="col-lg-2">
+        <input type="text" class="form-control" id="modelo" name="modelo" formControlName="modelo" placeholder="*Modelo do veiculo">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="ano" class="col-lg-1 control-label">Ano</label>
+      <div class="col-lg-2">
+        <input type="text" class="form-control" id="ano" name="ano" formControlName="ano" placeholder="*ano do veiculo">
+      </div>
+      <label for="anomodelo" class="col-lg-2 control-label">Ano modelo</label>
+      <div class="col-lg-2 col-lg-off-8">
+        <input type="text" class="form-control" id="anomodelo" name="anomodelo" formControlName="anomodelo" placeholder="*Ano modelo">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="cpf" class="col-lg-1 control-label">CPF</label>
+      <div class="col-lg-2">
+        <input type="text" class="form-control" id="cpf" name="cpf" formControlName="cpf" placeholder="*CPF do proprietário">
+      </div>
+      <label for="nome" class="col-lg-2 control-label">Nome</label>
+      <div class="col-lg-6">
+        <input type="text" class="form-control" id="nome" name="nome" formControlName="nome" placeholder="*Nome do proprietário">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="dtnascimento" class="col-lg-1 control-label">Dt. Nasc.</label>
+      <div class="col-lg-2">
+        <input type="text" class="form-control" id="dtnascimento" name="dtnascimento" formControlName="dtnascimento" placeholder="*Data nasc. do proprietário">
+      </div>
+      <label for="email" class="col-lg-2 control-label">E-mail</label>
+      <div class="col-lg-4">
+        <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail do proprietário">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="checkbox">
+        <label>
+            <input type="checkbox"> Checkbox
+          </label>
+      </div>
+    </div>
+
+  </form>
+</div>
+<ul class="nav nav-tabs">
+  <li [routerLinkActive]="['active']"><a routerLink="/centroautomotivo/service" routerLinkActive="active">Serviço</a></li>
+</ul>

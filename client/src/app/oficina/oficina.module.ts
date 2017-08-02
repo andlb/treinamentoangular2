@@ -6,12 +6,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ServiceComponent } from './service/service.component';
 import { SurveyComponent } from './survey/survey.component';
 import { OficinaComponent } from './oficina.component';
+import { OficinacadastroComponent } from './oficinacadastro/oficinacadastro.component';
 
 @NgModule({
   declarations: [
     ServiceComponent,
     SurveyComponent,
     OficinaComponent,
+    OficinacadastroComponent,
   ],
   imports: [
     CommonModule,
