@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 //terá que ter uma chave unica de placa e usuário.
-const veiculoSchema = new Schema({
-    usuarioid: { type: String, required: [true, "Usuário não definido"] },
+const veiculoSchema = new Schema({    
+    usuarioid: { type: String, ref:"Usuario", required: [true, "Usuário não definido"] },
     marca: { type: String },
     modelo: { type: String },
     placa: { type: String, required: [true, "Placa não definida"] },

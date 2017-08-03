@@ -4,6 +4,7 @@ MongoClient.connect('mongodb://localhost:27017/yucar', function(err, db) {
     assert.equal(err, null);
     console.log("Successfully connected to MongoDB.");
     var query = {"email": "andlbp@gmail.com"};
+    
     db.collection('usuarios').find(query).toArray(function(err, docs) {
         empresaid = docs[0].empresa;
         var query1 = {"_id": empresaid};

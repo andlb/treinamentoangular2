@@ -13,6 +13,7 @@ export class OficinaService {
   domain = environment.domain;
 
   empresaid;
+  usuarioid;
   cadastroProprietario = {
     proprietario: {
       cpf:String,
@@ -37,9 +38,10 @@ export class OficinaService {
     private empresaService:EmpresaService,
     private http: Http
   ) {
-    authService.loadToken();
-    let usuario = JSON.parse(authService.usuarioToken);
-    this.empresaid = usuario.empresa
+    this.authService.loadToken();
+    let usuario = JSON.parse(this.authService.usuarioToken);
+    this.empresaid = usuario.empresa;
+    this.usuarioid = usuario.usuarioid;
   }
 
   createAuthenticationHeader() {
@@ -79,7 +81,6 @@ export class OficinaService {
 
   atualizarDados() {
     this.createAuthenticationHeader();
-
     let oficina = {
         marca : this.cadastroProprietario.veiculo.marca,
         modelo : this.cadastroProprietario.veiculo.modelo,
@@ -99,6 +100,13 @@ export class OficinaService {
   pesquisaVeiculo(placa){
     this.createAuthenticationHeader();
     return this.http.get(this.domain + 'oficina/pesquisaplaca/'+placa, this.options).map(res => res.json());
+  }
+
+  getTodosVeiculos(){
+    this.createAuthenticationHeader();
+    console.log('empresaid ' + this.empresaid + ' usuarioid ' + this.usuarioid );
+    return this.http.get(this.domain + 'oficina/getTodosVeiculos/'+this.empresaid+"/"+this.usuarioid, this.options).map(res => res.json());
+
   }
 
 

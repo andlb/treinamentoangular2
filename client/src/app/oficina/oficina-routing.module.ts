@@ -4,13 +4,14 @@ import { AuthGuard } from './../autenticar/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OficinacadastroComponent } from './oficinacadastro/oficinacadastro.component';
-import { OficinaComponent } from './oficina.component';
 import { SurveyComponent } from './survey/survey.component';
 import { ServiceComponent } from './service/service.component';
+import { OficinalistComponent } from './oficinalist/oficinalist.component';
 
 const oficinaRoutes: Routes = [
-    { path: '', component:OficinacadastroComponent, children: [
+    { path: '', component:OficinalistComponent, children: [
       { path: '', component: SurveyComponent },
+      { path: 'cadastro', component: OficinacadastroComponent },
       { path: 'pesquisa', component: SurveyComponent },
       { path: 'service', component: ServiceComponent },
 
