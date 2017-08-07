@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const respostaSchema = new Schema({
     ordemservicoid: {type: String, ref: 'Ordemservico'},
     perguntaid: { type: String },
+    tipo: { type: String },
     descricao: { type: String },
     resposta: { type: String }
 });

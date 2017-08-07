@@ -2,6 +2,7 @@ const Veiculo = require("../models/veiculo");
 const Usuario = require("../models/usuario");
 const Ordemservico = require("../models/ordemservico");
 const Empresa = require("../models/empresa");
+const Resposta = require("../models/resposta");
 
 module.exports = router => {
   "use strict";
@@ -88,30 +89,42 @@ module.exports = router => {
         return res.json(retorno);
       });
   });
-  router.get("/getAvaliacao/:empresaid", (req, res) => {
+
+  router.get("/getAvaliacao/:ordemservicoid", (req, res) => {
     let retorno = {
       success: false,
       message: "",
-      servicos: [{}]
+      perguntas: [{}]
     };
     //verify if the compane was informed.
-    if (!req.params.empresaid) {
-      retorno.message = "";
+    if (!req.params.ordemservicoid) {
+      retorno.message = "ordem de servico não informada";
       return res.json(retorno);
-    }    
-    Empresa.findOne(req.params.empresaid).exec((err,oEmpresa)=>{
-      if (err){
-        retorno.message = err.code + " " + err.message;
-        return res.json(retorno);
-      }
-      if (!oEmpresa) {
-        retorno.message = "Empresa não encontrada";
-        return res.json(retorno);
-      }
-      
-
-    });
-
+    }
+    OrdemServico.findById(req.params.ordemservicoid)
+      .populate("empresaid")
+      .exec((err, oOrdemservico) => {
+        if (err) {
+          retorno.message = err.code + " " + err.message;
+          return res.json(retorno);
+        }
+        Resposta.find({
+          ordemservicoid: req.params.ordemservicoid
+        }).exec((err, respostas) => {
+          if (err) {
+            retorno.message = err.code + " " + err.message;
+            return res.json(retorno);
+          }
+          retorno.success = true;
+          retorno.message = "Pesquisa realizada com sucesso";
+          if (respostas.length > 0) {
+            retorno.perguntas = respostas;
+          } else {
+            retorno.perguntas = oEmpresa.perguntas;
+          }
+          return res.json(retorno);
+        });
+      });
   });
 
   router.get("/getAllOrdemServico/:empresaid/:usuarioid", (req, res) => {
@@ -158,7 +171,7 @@ module.exports = router => {
         }
         //TODO: Pesquisa por periodo veiculo e status para saber se esta em aberto.
         //pesquisas os atendimentos em aberto.
-        Ordemservico.find({ empresaid: req.params.empresaid })
+        Ordemservico.find({ empresaid: req.params.empresaid, status:1 })
           .populate("veiculoid usuarioid empresaid", "placa email nomefantasia")
           .exec((err, ordens) => {
             if (err) {
@@ -171,6 +184,50 @@ module.exports = router => {
           });
       }
     );
+  });
+
+  router.post("/salvarAvaliacao", (req, res) => {
+    let retorno = {
+      success: false,
+      message: ""
+    };
+    let erroMsg = "";
+    if (!req.body.ordemservicoid) {
+      retorno.message = "Ordem de servico não foi informada";
+      return req.json(retorno);
+    }
+
+    if (!req.body.json) {
+      retorno.message = "Variável JSON não foi preenchido com as repostas";
+      return req.json(retorno);
+    }
+    
+    var oJson = JSON.parse(req.body.json);
+    if (!oJson) {
+      retorno.message = "Não foi possivel transformar a variavel JSON";
+      return req.json(retorno);
+    }
+    
+    Ordemservico.findById(
+      req.body.ordemservicoid
+    ).exec((err, oOrdemservico) => {
+      if (err){
+        retorno.message = err.code + " " + err.message;
+        return res.json(retorno);
+      }
+      if (!oOrdemservico){
+        retorno.message = "Ordem de serviço não encontrado";
+        return res.json(retorno);
+      }
+      for (var c=0;c < oJson.length;c++){
+        new Resposta(oJson[c]).save();
+      }
+      ordemservico.status = 2;
+      ordemservico.save();
+      retorno.success = true;
+      retorno.message = ""
+      return res.json(retorno);      
+    });
   });
 
   router.post("/cadastra", (req, res) => {
@@ -232,16 +289,16 @@ module.exports = router => {
       tipo: 1,
       cpf: req.body.cpf
     };
-    Empresa.findOne({_id:req.body.empresaid}).exec((err,oEmpresa)=>{
+    Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
       if (err) {
         retorno.message = err.code + " - " + err.message;
         return res.json(retorno);
       }
-      if (!oEmpresa){
+      if (!oEmpresa) {
         retorno.message = "Empresa não encontrada";
         return res.json(retorno);
       }
-      Usuario.findOne({cpf: req.body.cpf }).exec((err, oUsuario) => {
+      Usuario.findOne({ cpf: req.body.cpf }).exec((err, oUsuario) => {
         if (err) {
           retorno.message = err.code + " - " + err.message;
           return res.json(retorno);
@@ -251,7 +308,7 @@ module.exports = router => {
           //cadastra
           oUsuario = new Usuario(usuario);
         }
-        oUsuario.save((err) => {
+        oUsuario.save(err => {
           if (err) {
             //return err message
             if (err.code === 11000) {
@@ -275,13 +332,15 @@ module.exports = router => {
               oVeiculo = new Veiculo(veiculo);
             }
             oVeiculo.usuarioid = oUsuario._id;
-            oVeiculo.save((err) => {
+            oVeiculo.save(err => {
               if (err) {
                 retorno.message = err.code + " " + err.message;
                 return res.json(retorno);
-              }              
+              }
               var ordemservicoid = req.body.ordemservicoid;
-              Ordemservico.findById(ordemservicoid).exec((err, ordemservico) => {
+              Ordemservico.findById(
+                ordemservicoid
+              ).exec((err, ordemservico) => {
                 if (err) {
                   retorno.message = err.code + " " + err.message;
                   return res.json(retorno);
