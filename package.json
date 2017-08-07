@@ -3,8 +3,13 @@
   "version": "0.0.1",
   "description": "projeto yucar para mecanicas e centros automotivos",
   "main": "index.js",
+  "engines": {
+    "node":"7.9.0",
+    "npm":"3.10.10"
+  },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev":"nodemon index.js"
   },
   "repository": {
     "type": "git",

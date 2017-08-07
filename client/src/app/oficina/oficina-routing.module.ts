@@ -9,13 +9,10 @@ import { ServiceComponent } from './service/service.component';
 import { OficinalistComponent } from './oficinalist/oficinalist.component';
 
 const oficinaRoutes: Routes = [
-    { path: '', component:OficinalistComponent, children: [
-      { path: '', component: SurveyComponent },
-      { path: 'cadastro', component: OficinacadastroComponent },
-      { path: 'pesquisa', component: SurveyComponent },
-      { path: 'service', component: ServiceComponent },
-
-  ]}
+  { path: '', component: OficinalistComponent },
+  { path: 'lista', component: OficinalistComponent },
+  { path: 'cadastro', component: OficinacadastroComponent },
+  { path: 'cadastro/:id', component: OficinacadastroComponent }
 ];
 
 @NgModule({
@@ -28,4 +25,4 @@ const oficinaRoutes: Routes = [
     NoAuthGuard
   ]
 })
-export class OficinaRoutingModule {}
+export class OficinaRoutingModule { }

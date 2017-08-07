@@ -32,7 +32,7 @@ export class OficinalistComponent implements OnInit {
   }
   onEditItem(empresaid) {
     //TODO: Fazer uma chamada para carregar a empresa com o id.
-    this.router.navigate(['/empresa/cadastro',empresaid],{ skipLocationChange: true });
+    this.router.navigate(['centroautomotivo/cadastro',empresaid]);
   }
 
 }

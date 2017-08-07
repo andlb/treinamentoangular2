@@ -109,5 +109,10 @@ export class OficinaService {
 
   }
 
+  getAtendimento(atendimentoid){
+    this.createAuthenticationHeader();
+
+  }
+
 
 }

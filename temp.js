@@ -1,20 +1,45 @@
-var MongoClient = require('mongodb').MongoClient,
- assert = require('assert');
-MongoClient.connect('mongodb://localhost:27017/yucar', function(err, db) {
-    assert.equal(err, null);
-    console.log("Successfully connected to MongoDB.");
-    var query = {"email": "andlbp@gmail.com"};
-    
-    db.collection('usuarios').find(query).toArray(function(err, docs) {
-        empresaid = docs[0].empresa;
-        var query1 = {"_id": empresaid};
-        console.log(docs[0]);
-        db.collection('empresas').find(query).toArray(function(err1, docs1) {
-            console.log(docs1[0]);    
-        });
-        
-        db.close();
-        
-    });
 
+const mongoose = require('mongoose');
+const config = require('./config/database');
+const Veiculo = require('./models/veiculo');
+
+const Usuario = require('./models/usuario');
+const Ordemservico = require('./models/ordemservico');
+
+mongoose.Promise = global.Promise;
+mongoose.connect(config.uri, (err) => {
+    if (err) {
+        console.log('could not connect to database', err);
+
+    } else {
+        //cadastrar veiculo, usuario e empresa.
+        console.log('connected to database : ' + config.db);
+        Veiculo.remove({},err => {
+            Ordemservico.remove({}, err => {
+                //cadastrar veiculo
+                for (c=0;c<10;c++) {
+                    placa = "AAA-101"+c
+                    veiculo = {
+                        usuarioid:'598369586e64a13c788bae5d' ,
+                        placa:placa ,
+                    }
+                    new Veiculo(veiculo).save((err,veiculo) => {
+                        if (veiculo) {
+                            console.log('veiculo'+veiculo);
+                            ordemservico = {
+                                veiculoid: veiculo._id,
+                                usuarioid: '598369586e64a13c788bae5d',
+                                empresaid: '597c84031541c104080666e4',
+                                data:Date.now(),
+                            }
+                            new Ordemservico(ordemservico).save();
+
+                        }
+                    });
+                }                
+            });
+        } );
+        
+
+    }
 });

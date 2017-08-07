@@ -1,7 +1,7 @@
 import { EmpresaService } from './../../cadastro/empresa/empresa.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { OficinaService } from './../oficina.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
@@ -21,10 +21,12 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   empresa;
   servicos=[];
   servicosRealizados=[];
+  atendimentoid;
 
   subEnviar: Subscription;
   subEmpresa: Subscription;
   subPlaca: Subscription;
+  subsPesquisa:Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +37,28 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // this.route.params
+    //   .subscribe(
+    //     (params: Params) => {
+    //       this.atendimentoid = params.id;
+    //       if (this.atendimentoid) {
+    //         this.subsPesquisa = this.oficinaService.getAtendimento(this.atendimentoid).subscribe({
+
+    //             this.atualizaForm();
+    //         });
+
+    //         this.subsPesquisa = this.empresaService.getEmpresa(this.empresaid).subscribe(data => {
+    //           if (!data.success){
+    //             //TODO: mostrar um erro quando a informação não é encontrada.
+    //             return;
+    //           }
+    //           this.empresaService.addEmpresa(data.empresa);
+    //           this.empresaService.setEmpresaid(this.empresaid);
+    //           //this.atualizaForm();
+    //         });
+    //       }
+    //     }
+    //   );
     this.createForm();
     let empresaid = this.oficinaService.empresaid;
     if (!empresaid) {
@@ -43,7 +67,6 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     }else {
       this.empresa = this.empresaService.getEmpresa(empresaid).subscribe(data => {
         this.message = "";
-        console.log(data);
         if (!data){
           this.messageClass = 'alert alert-danger';
           this.message = "Empresa não encontrada";
@@ -59,7 +82,6 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
           this.empresa = data.empresa;
           this.servicos = data.empresa.servicos;
           this.servicosRealizados = [];
-          console.log(this.servicos);
         }
       });
     }
@@ -88,6 +110,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     if (this.subEnviar) this.subEnviar.unsubscribe();
     if (this.subEmpresa) this.subEmpresa.unsubscribe();
     if (this.subPlaca) this.subPlaca.unsubscribe();
+    if (this.subsPesquisa) this.subsPesquisa.unsubscribe();
   }
   preencheFormulario(){
     let veiculo = this.oficinaService.getVeiculo();

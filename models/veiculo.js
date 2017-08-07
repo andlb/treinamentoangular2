@@ -10,7 +10,7 @@ const veiculoSchema = new Schema({
     usuarioid: { type: String, ref:"Usuario", required: [true, "Usuário não definido"] },
     marca: { type: String },
     modelo: { type: String },
-    placa: { type: String, required: [true, "Placa não definida"] },
+    placa: { type: String, required: [true, "Placa não definida"], unique: true, uppercase: true  },
     ano: { type: String },
     anoModelo: { type: String },
     atributos: [{
