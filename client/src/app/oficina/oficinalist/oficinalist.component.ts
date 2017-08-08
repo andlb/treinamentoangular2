@@ -11,17 +11,21 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class OficinalistComponent implements OnInit {
   private httpSubs: Subscription;
-
+  messageClass = "";
+  message = "";
   ordemservicos = [];
   constructor(
     private oficinaService: OficinaService,
     private router: Router,
-  ) { }
+  ) {
+
+  }
 
   ngOnInit() {
     this.httpSubs = this.oficinaService.getTodosVeiculos().subscribe((data) => {
       if (!data.success) {
-        //console.log('Erro:'+data.message);
+          this.messageClass = 'alert alert-danger';
+          this.message = data.message;
       }
       console.log(data.ordensservico);
       this.ordemservicos = data.ordensservico;
@@ -33,7 +37,7 @@ export class OficinalistComponent implements OnInit {
   }
   onEditItem(ordemservicoid) {
     //TODO: Fazer uma chamada para carregar a empresa com o id.
-    this.router.navigate(['centroautomotivo/cadastro',ordemservicoid]);
+    this.router.navigate(['centroautomotivo/survey',ordemservicoid]);
   }
 
 }

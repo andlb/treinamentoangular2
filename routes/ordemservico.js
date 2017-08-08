@@ -26,8 +26,7 @@ module.exports = router => {
       (err, veiculo) => {
         if (err) {
           retorno.message = err.code + " " + err.message;
-          res.json(retorno);
-          return;
+          return res.json(retorno);
         }
         usuarioid = veiculo[0].usuarioid;
         Usuario.find(
@@ -37,14 +36,12 @@ module.exports = router => {
           (errUsuario, usuario) => {
             if (errUsuario) {
               retorno.message = err.code + " " + err.message;
-              res.json(retorno);
-              return;
+              return res.json(retorno);
             }
             retorno.success = true;
             retorno.veiculo = veiculo;
             retorno.proprietario = usuario;
-            res.json(retorno);
-            return;
+            return res.json(retorno);
           }
         );
       }
@@ -53,8 +50,7 @@ module.exports = router => {
     });
     if (!req.params.placa) {
       message: "Placa não encontrada";
-      res.json(retorno);
-      return;
+      return res.json(retorno);
     }
   });
 
@@ -79,13 +75,16 @@ module.exports = router => {
     })
       .populate("usuarioid", "nome email cpf")
       .populate("veiculoid")
-      .exec((err, ordens) => {
+      .exec((err, oOrdemServico) => {
         if (err) {
           retorno.message = "Ordem de serviço não encontrada";
           return res.json(retorno);
         }
         retorno.success = true;
-        retorno.ordensservico = ordens;
+        retorno.ordensservico = oOrdemServico;
+        retorno.veiculo = oOrdemServico.veiculoid;
+        retorno.proprietario = oOrdemServico.usuarioid;        
+        console.log("retorno "+ retorno);
         return res.json(retorno);
       });
   });
@@ -101,7 +100,7 @@ module.exports = router => {
       retorno.message = "ordem de servico não informada";
       return res.json(retorno);
     }
-    OrdemServico.findById(req.params.ordemservicoid)
+    Ordemservico.findById(req.params.ordemservicoid)
       .populate("empresaid")
       .exec((err, oOrdemservico) => {
         if (err) {
@@ -111,16 +110,17 @@ module.exports = router => {
         Resposta.find({
           ordemservicoid: req.params.ordemservicoid
         }).exec((err, respostas) => {
+          console.log('entrou em perguntas ' + respostas );
           if (err) {
             retorno.message = err.code + " " + err.message;
             return res.json(retorno);
           }
           retorno.success = true;
           retorno.message = "Pesquisa realizada com sucesso";
-          if (respostas.length > 0) {
+           if ((respostas) && (respostas.length > 0)) {
             retorno.perguntas = respostas;
           } else {
-            retorno.perguntas = oEmpresa.perguntas;
+            retorno.perguntas = oOrdemservico.empresaid.perguntas;
           }
           return res.json(retorno);
         });
@@ -308,6 +308,10 @@ module.exports = router => {
           //cadastra
           oUsuario = new Usuario(usuario);
         }
+        oUsuario.nome = usuario.nome;
+        //somente troca de email se ele não ter e-mail cadastrado
+        if (!oUsuario.email) oUsuario.email = usuario.email;
+        oUsuario.cpf = usuario.cpf;
         oUsuario.save(err => {
           if (err) {
             //return err message
@@ -329,9 +333,15 @@ module.exports = router => {
             }
             //se o veiculo não for encontrado
             if (!oVeiculo) {
-              oVeiculo = new Veiculo(veiculo);
+              oVeiculo = new Veiculo();
             }
             oVeiculo.usuarioid = oUsuario._id;
+            oVeiculo.marca = veiculo.marca;
+            oVeiculo.modelo = veiculo.modelo;
+            oVeiculo.placa = veiculo.placa;
+            oVeiculo.ano = veiculo.ano;
+            oVeiculo.anoModelo = veiculo.anoModelo;
+            oVeiculo.atributos = veiculo.atributos;
             oVeiculo.save(err => {
               if (err) {
                 retorno.message = err.code + " " + err.message;

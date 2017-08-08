@@ -36,14 +36,6 @@ mongoose.connect(config.uri, (err) => {
                 }
 
             })
-/*
-    perguntas: [{
-        descricao: { type: String },
-        tipo: { type: String } ,
-        status: { type: String }       
-    }],  
-*/
-
         });
 
         console.log('connected to database : ' + config.db);

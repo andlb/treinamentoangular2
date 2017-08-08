@@ -92,27 +92,34 @@ export class OficinaService {
         nome:this.cadastroProprietario.proprietario.nome,
         email:this.cadastroProprietario.proprietario.email,
         dtnascimento:this.cadastroProprietario.proprietario.dtnascimento,
+        empresaid:this.empresaid
     }
-    return this.http.post(this.domain + 'ordemservico/updateOficina', oficina, this.options).map(res => res.json());
+    return this.http.post(this.domain + 'ordemservico/cadastra', oficina, this.options).map(res => res.json());
   }
 
   //TODO:pesquisa de placa.
   pesquisaVeiculo(placa){
     this.createAuthenticationHeader();
-    return this.http.get(this.domain + 'ordemservico/pesquisaplaca/'+placa, this.options).map(res => res.json());
+    return this.http.get(this.domain + 'ordemservico/placa/'+placa, this.options).map(res => res.json());
+  }
+
+  getSurvey(ordemservicoid){
+    this.createAuthenticationHeader();
+    return this.http.get(this.domain + 'ordemservico/getAvaliacao/'+ordemservicoid, this.options).map(res => res.json());
   }
 
   getTodosVeiculos(){
     this.createAuthenticationHeader();
-    console.log('empresaid ' + this.empresaid + ' usuarioid ' + this.usuarioid );
-    let path = this.domain + 'ordemservico/getAllOrdemServico/'+this.empresaid+'/'+this.usuarioid;
-    console.log(path);
+    const path = this.domain + 'ordemservico/getAllOrdemServico/'+this.empresaid+'/'+this.usuarioid;
     return this.http.get(path, this.options).map(res => res.json());
 
   }
 
-  getAtendimento(atendimentoid){
+  getAtendimento(ordemservicoid){
     this.createAuthenticationHeader();
+    let path = this.domain + 'ordemservico/getOrdemservico/'+ordemservicoid+'/'+this.empresaid
+    console.log('path '+path);
+    return this.http.get(path, this.options).map(res => res.json());
   }
 
 

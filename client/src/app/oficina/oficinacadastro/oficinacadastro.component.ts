@@ -1,7 +1,7 @@
 import { EmpresaService } from './../../cadastro/empresa/empresa.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { OficinaService } from './../oficina.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
@@ -27,45 +27,42 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   subEmpresa: Subscription;
   subPlaca: Subscription;
   subsPesquisa:Subscription;
+  subsPesquisaAtendimento:Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
     private oficinaService: OficinaService,
     private empresaService: EmpresaService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
   }
 
   ngOnInit() {
-    // this.route.params
-    //   .subscribe(
-    //     (params: Params) => {
-    //       this.atendimentoid = params.id;
-    //       if (this.atendimentoid) {
-    //         this.subsPesquisa = this.oficinaService.getAtendimento(this.atendimentoid).subscribe({
+    this.subsPesquisaAtendimento = this.route.params
+      .subscribe(
+        (params: Params) => {
+          this.atendimentoid = params.id;
+          if (this.atendimentoid) {
+            this.processing = true;
+            this.subsPesquisa = this.oficinaService.getAtendimento(this.atendimentoid).subscribe((data) => {
+                this.edit = true;
+                this.oficinaService.setVeiculo(data.veiculo);
+                this.oficinaService.setProprietario(data.proprietario);
+                this.preencheFormulario();
+                this.processing = false;
 
-    //             this.atualizaForm();
-    //         });
-
-    //         this.subsPesquisa = this.empresaService.getEmpresa(this.empresaid).subscribe(data => {
-    //           if (!data.success){
-    //             //TODO: mostrar um erro quando a informação não é encontrada.
-    //             return;
-    //           }
-    //           this.empresaService.addEmpresa(data.empresa);
-    //           this.empresaService.setEmpresaid(this.empresaid);
-    //           //this.atualizaForm();
-    //         });
-    //       }
-    //     }
-    //   );
+            });
+          }
+        }
+      );
     this.createForm();
     let empresaid = this.oficinaService.empresaid;
     if (!empresaid) {
         this.messageClass = 'alert alert-danger';
         this.message = "Empresa não cadastrada para o usuário";
     }else {
-      this.empresa = this.empresaService.getEmpresa(empresaid).subscribe(data => {
+      this.subEmpresa = this.empresaService.getEmpresa(empresaid).subscribe(data => {
         this.message = "";
         if (!data){
           this.messageClass = 'alert alert-danger';
@@ -88,9 +85,10 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   }
 
   onPesquisarPlaca() {
-    console.log('Pesquisar placa');
+    if ((this.processing) || (this.edit)) return;
     let placa = this.form.controls["placa"].value;
     if (placa) {
+      this.processing = true;
       this.subPlaca = this.oficinaService.pesquisaVeiculo(placa).subscribe(data => {
         if (!data) {
           this.messageClass = 'alert alert-danger';
@@ -102,6 +100,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         }
         this.oficinaService.setVeiculo(data.veiculo);
         this.oficinaService.setProprietario(data.usuario);
+        this.processing = false;
       });
     }
   }
@@ -111,6 +110,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     if (this.subEmpresa) this.subEmpresa.unsubscribe();
     if (this.subPlaca) this.subPlaca.unsubscribe();
     if (this.subsPesquisa) this.subsPesquisa.unsubscribe();
+    if (this.subsPesquisaAtendimento) this.subsPesquisaAtendimento.unsubscribe();
   }
   preencheFormulario(){
     let veiculo = this.oficinaService.getVeiculo();
@@ -124,7 +124,11 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["anomodelo"].setValue(veiculo.anomodelo);
     this.form.controls["cpf"].setValue(proprietario.cpf);
     this.form.controls["nome"].setValue(proprietario.nome);
+    if (proprietario.email) {
+      this.form.controls["email"].disable();
+    }
     this.form.controls["email"].setValue(proprietario.email);
+
     this.form.controls["dtnascimento"].setValue(proprietario.dtnascimento);
     this.form.controls["quilometragem"].setValue(veiculo.quilometragem);
   }
@@ -240,6 +244,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       } else {
         this.messageClass = 'alert alert-success';
         this.message = data.message;
+        this.router.navigate(['centroautomotivo/lista']);
         return;
       }
     });
@@ -259,5 +264,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  onVoltar(){
+    this.router.navigate(['centroautomotivo/lista']);
+  }
 }
