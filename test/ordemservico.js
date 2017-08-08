@@ -1,11 +1,10 @@
+const mongoose = require("mongoose");
+const config = require("../config/database");
+const Veiculo = require("../models/veiculo");
 
-const mongoose = require('mongoose');
-const config = require('./config/database');
-const Veiculo = require('./models/veiculo');
-
-const Usuario = require('./models/usuario');
-const Ordemservico = require('./models/ordemservico');
-const Empresa = require('./models/empresa');
+const Usuario = require("../models/usuario");
+const Ordemservico = require("../models/ordemservico");
+const Empresa = require("../models/empresa");
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.uri, (err) => {
@@ -65,6 +64,7 @@ mongoose.connect(config.uri, (err) => {
                                 usuarioid: '598369586e64a13c788bae5d',
                                 empresaid: '597c84031541c104080666e4',
                                 data:Date.now(),
+                                status:1
                             }
                             new Ordemservico(ordemservico).save();
 

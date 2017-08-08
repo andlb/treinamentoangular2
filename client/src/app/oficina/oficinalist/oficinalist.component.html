@@ -7,11 +7,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let veiculo of veiculos; let i = index" style="cursor: pointer"
-    (click)="onEditItem(veiculo._id)"  >
+    <tr *ngFor="let ordemservico of ordemservicos; let i = index" style="cursor: pointer"
+    (click)="onEditItem(ordemservico._id)"  >
       <td>{{i}}</td>
-      <td>{{veiculo.placa}}</td>
-      <td>{{veiculo.usuarioid?.nome}}</td>
+      <td>{{ordemservico.veiculoid.placa}}</td>
+      <td>{{ordemservico.usuarioid.nome}}</td>
     </tr>
   </tbody>
 </table>

@@ -172,7 +172,7 @@ module.exports = router => {
         //TODO: Pesquisa por periodo veiculo e status para saber se esta em aberto.
         //pesquisas os atendimentos em aberto.
         Ordemservico.find({ empresaid: req.params.empresaid, status:1 })
-          .populate("veiculoid usuarioid empresaid", "placa email nomefantasia")
+          .populate("veiculoid usuarioid empresaid", "placa email nome nomefantasia")
           .exec((err, ordens) => {
             if (err) {
               retorno.message = "Ordem de serviço não encontrada";
@@ -222,8 +222,8 @@ module.exports = router => {
       for (var c=0;c < oJson.length;c++){
         new Resposta(oJson[c]).save();
       }
-      ordemservico.status = 2;
-      ordemservico.save();
+      oOrdemservico.status = 2;
+      oOrdemservico.save();
       retorno.success = true;
       retorno.message = ""
       return res.json(retorno);      

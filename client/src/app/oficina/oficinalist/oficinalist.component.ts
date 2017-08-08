@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class OficinalistComponent implements OnInit {
   private httpSubs: Subscription;
 
-  veiculos = [];
+  ordemservicos = [];
   constructor(
     private oficinaService: OficinaService,
     private router: Router,
@@ -23,16 +23,17 @@ export class OficinalistComponent implements OnInit {
       if (!data.success) {
         //console.log('Erro:'+data.message);
       }
-      this.veiculos = data.veiculos
+      console.log(data.ordensservico);
+      this.ordemservicos = data.ordensservico;
     });
   }
 
   ngOnDestroy(): void {
     if (this.httpSubs) this.httpSubs.unsubscribe();
   }
-  onEditItem(empresaid) {
+  onEditItem(ordemservicoid) {
     //TODO: Fazer uma chamada para carregar a empresa com o id.
-    this.router.navigate(['centroautomotivo/cadastro',empresaid]);
+    this.router.navigate(['centroautomotivo/cadastro',ordemservicoid]);
   }
 
 }

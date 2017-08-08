@@ -93,25 +93,26 @@ export class OficinaService {
         email:this.cadastroProprietario.proprietario.email,
         dtnascimento:this.cadastroProprietario.proprietario.dtnascimento,
     }
-    return this.http.post(this.domain + 'oficina/updateOficina', oficina, this.options).map(res => res.json());
+    return this.http.post(this.domain + 'ordemservico/updateOficina', oficina, this.options).map(res => res.json());
   }
 
   //TODO:pesquisa de placa.
   pesquisaVeiculo(placa){
     this.createAuthenticationHeader();
-    return this.http.get(this.domain + 'oficina/pesquisaplaca/'+placa, this.options).map(res => res.json());
+    return this.http.get(this.domain + 'ordemservico/pesquisaplaca/'+placa, this.options).map(res => res.json());
   }
 
   getTodosVeiculos(){
     this.createAuthenticationHeader();
     console.log('empresaid ' + this.empresaid + ' usuarioid ' + this.usuarioid );
-    return this.http.get(this.domain + 'oficina/getTodosVeiculos/'+this.empresaid+"/"+this.usuarioid, this.options).map(res => res.json());
+    let path = this.domain + 'ordemservico/getAllOrdemServico/'+this.empresaid+'/'+this.usuarioid;
+    console.log(path);
+    return this.http.get(path, this.options).map(res => res.json());
 
   }
 
   getAtendimento(atendimentoid){
     this.createAuthenticationHeader();
-
   }
 
 
