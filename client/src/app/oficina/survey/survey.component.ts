@@ -41,7 +41,6 @@ export class SurveyComponent implements OnInit {
                 this.message = data.message;
               } else {
                 this.perguntas = data.perguntas;
-                console.log(this.perguntas);
               }
               this.processing = false;
             });

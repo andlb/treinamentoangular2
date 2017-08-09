@@ -18,7 +18,7 @@ export class OficinaService {
       cpf: String,
       nome: String,
       email: String,
-      dtnascimento: String
+      datanascimento: String
     },
     veiculo: {
       marca: String,
@@ -89,7 +89,7 @@ export class OficinaService {
       cpf: this.cadastroProprietario.proprietario.cpf,
       nome: this.cadastroProprietario.proprietario.nome,
       email: this.cadastroProprietario.proprietario.email,
-      dtnascimento: this.cadastroProprietario.proprietario.dtnascimento,
+      datanascimento: this.cadastroProprietario.proprietario.datanascimento,
       empresaid: this.empresaid
     };
     return this.http

@@ -14,12 +14,11 @@ module.exports = router => {
       veiculo: undefined,
       usuario: undefined
     };
-    return res.json(retorno);
     if (!req.params.placa) {
-      message: "Não foi informado a placa";
+      retorno.message = "Não foi informado a placa";
       return res.json(retorno);
     }
-    Veiculo.find(
+    Veiculo.findOne(
       {
         placa: req.params.placa
       },
@@ -28,30 +27,42 @@ module.exports = router => {
           retorno.message = err.code + " " + err.message;
           return res.json(retorno);
         }
-        usuarioid = veiculo[0].usuarioid;
-        Usuario.find(
+        if (!veiculo) {
+          retorno.success = true;
+          return res.json(retorno);
+        }
+        var usuarioid = veiculo.usuarioid;
+        Usuario.findOne(
           {
             _id: usuarioid
           },
           (errUsuario, usuario) => {
             if (errUsuario) {
-              retorno.message = err.code + " " + err.message;
+              retorno.message = errUsuario.code + " " + errUsuario.message;
               return res.json(retorno);
+            }
+            var datanascimento = usuario.datanascimento;  
+            console.log(datanascimento);
+            if (usuario.datanascimento) {
+              datanascimento = usuario.datanascimento.getUTCDate() +"/" + (usuario.datanascimento.getUTCMonth()+1)  +"/" + usuario.datanascimento.getFullYear();
             }
             retorno.success = true;
             retorno.veiculo = veiculo;
-            retorno.proprietario = usuario;
+            const oUsuario = {
+              _id: usuario._id,
+              cpf: usuario.cpf,
+              nome: usuario.nome,
+              email: usuario.email,
+              datanascimento: datanascimento
+            }
+            retorno.proprietario = oUsuario;
+            console.log(datanascimento);
+            console.log(retorno);
             return res.json(retorno);
           }
         );
       }
-    ).sort({
-      _id: 1
-    });
-    if (!req.params.placa) {
-      message: "Placa não encontrada";
-      return res.json(retorno);
-    }
+    );
   });
 
   router.get("/getOrdemservico/:id/:empresaid", (req, res) => {
@@ -83,8 +94,7 @@ module.exports = router => {
         retorno.success = true;
         retorno.ordensservico = oOrdemServico;
         retorno.veiculo = oOrdemServico.veiculoid;
-        retorno.proprietario = oOrdemServico.usuarioid;        
-        console.log("retorno "+ retorno);
+        retorno.proprietario = oOrdemServico.usuarioid;
         return res.json(retorno);
       });
   });
@@ -110,14 +120,13 @@ module.exports = router => {
         Resposta.find({
           ordemservicoid: req.params.ordemservicoid
         }).exec((err, respostas) => {
-          console.log('entrou em perguntas ' + respostas );
           if (err) {
             retorno.message = err.code + " " + err.message;
             return res.json(retorno);
           }
           retorno.success = true;
           retorno.message = "Pesquisa realizada com sucesso";
-           if ((respostas) && (respostas.length > 0)) {
+          if (respostas && respostas.length > 0) {
             retorno.perguntas = respostas;
           } else {
             retorno.perguntas = oOrdemservico.empresaid.perguntas;
@@ -171,8 +180,11 @@ module.exports = router => {
         }
         //TODO: Pesquisa por periodo veiculo e status para saber se esta em aberto.
         //pesquisas os atendimentos em aberto.
-        Ordemservico.find({ empresaid: req.params.empresaid, status:1 })
-          .populate("veiculoid usuarioid empresaid", "placa email nome nomefantasia")
+        Ordemservico.find({ empresaid: req.params.empresaid, status: 1 })
+          .populate(
+            "veiculoid usuarioid empresaid",
+            "placa email nome nomefantasia"
+          )
           .exec((err, ordens) => {
             if (err) {
               retorno.message = "Ordem de serviço não encontrada";
@@ -201,32 +213,32 @@ module.exports = router => {
       retorno.message = "Variável JSON não foi preenchido com as repostas";
       return res.json(retorno);
     }
-    var oJson =req.body.json;
+    var oJson = req.body.json;
     if (!oJson) {
       retorno.message = "Não foi possivel transformar a variavel JSON";
       return res.json(retorno);
     }
-    
+
     Ordemservico.findById(
       req.body.ordemservicoid
     ).exec((err, oOrdemservico) => {
-      if (err){
+      if (err) {
         retorno.message = err.code + " " + err.message;
         return res.json(retorno);
       }
-      
-      if (!oOrdemservico){
+
+      if (!oOrdemservico) {
         retorno.message = "Ordem de serviço não encontrado";
         return res.json(retorno);
       }
-      for (var c=0;c < oJson.length;c++){
+      for (var c = 0; c < oJson.length; c++) {
         new Resposta(oJson[c]).save();
       }
       oOrdemservico.status = 2;
       oOrdemservico.save();
       retorno.success = true;
-      retorno.message = ""
-      return res.json(retorno);      
+      retorno.message = "";
+      return res.json(retorno);
     });
   });
 
@@ -280,15 +292,25 @@ module.exports = router => {
       modelo: req.body.modelo,
       placa: req.body.placa,
       ano: req.body.ano,
-      anoModelo: req.body.anomodel,
+      anomodelo: req.body.anomodelo,
       atributos: atributos
     };
+    var dtNascimento = "";
+    if (req.body.datanascimento) {
+      var tNascimento = req.body.datanascimento.split("/");
+      if (tNascimento.length === 3) {
+        tNascimento = tNascimento[2]+'-'+tNascimento[1]+'-'+tNascimento[0]
+        dtNascimento = new Date(tNascimento);
+      }
+    }
+
     var usuario = {
       nome: req.body.nome,
       email: req.body.email,
       tipo: 1,
-      cpf: req.body.cpf
-    };
+      cpf: req.body.cpf,
+      datanascimento: dtNascimento
+    };  
     Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
       if (err) {
         retorno.message = err.code + " - " + err.message;
@@ -312,6 +334,7 @@ module.exports = router => {
         //somente troca de email se ele não ter e-mail cadastrado
         if (!oUsuario.email) oUsuario.email = usuario.email;
         oUsuario.cpf = usuario.cpf;
+        oUsuario.datanascimento = usuario.datanascimento;
         oUsuario.save(err => {
           if (err) {
             //return err message
@@ -340,7 +363,7 @@ module.exports = router => {
             oVeiculo.modelo = veiculo.modelo;
             oVeiculo.placa = veiculo.placa;
             oVeiculo.ano = veiculo.ano;
-            oVeiculo.anoModelo = veiculo.anoModelo;
+            oVeiculo.anomodelo = veiculo.anomodelo;
             oVeiculo.atributos = veiculo.atributos;
             oVeiculo.save(err => {
               if (err) {
@@ -360,6 +383,7 @@ module.exports = router => {
                 }
                 ordemservico.veiculoid = oVeiculo._id;
                 ordemservico.usuarioid = oUsuario._id;
+                ordemservico.status = 1;
                 ordemservico.empresaid = req.body.empresaid;
                 //TODO: Falta os serviços realizados.
                 ordemservico.save(err => {

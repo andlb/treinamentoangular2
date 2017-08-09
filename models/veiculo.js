@@ -12,7 +12,7 @@ const veiculoSchema = new Schema({
     modelo: { type: String },
     placa: { type: String, required: [true, "Placa não definida"], unique: true, uppercase: true  },
     ano: { type: String },
-    anoModelo: { type: String },
+    anomodelo: { type: String },
     atributos: [{
         data: { type: Date },
         quilometragem: { type: Number }
