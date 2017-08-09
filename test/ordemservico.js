@@ -17,13 +17,20 @@ mongoose.connect(config.uri, (err) => {
             perguntas=[]
             pergunta = {
                 descricao:"De 0 a 10, o quanto você indica a empresa para amigos",
-                tipo:1,
+                tipo:3,
                 status:1
             }
             perguntas.push(pergunta);
 
             pergunta = {
                 descricao:"De 0 a 5, o quanto você gostou desse atendimento",
+                tipo:2,
+                status:1
+            }
+            perguntas.push(pergunta);
+
+            pergunta = {
+                descricao:"Deixe seu comentário",
                 tipo:1,
                 status:1
             }

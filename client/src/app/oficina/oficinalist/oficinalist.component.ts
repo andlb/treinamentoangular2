@@ -40,4 +40,7 @@ export class OficinalistComponent implements OnInit {
     this.router.navigate(['centroautomotivo/survey',ordemservicoid]);
   }
 
+  onNovo(){
+    this.router.navigate(['centroautomotivo/cadastro']);
+  }
 }

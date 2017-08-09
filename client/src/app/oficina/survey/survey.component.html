@@ -1,1 +1,50 @@
 <h3 class="page-header">Pesquisa de satisfação</h3>
+<div class="row show-hide-message">
+  <div [ngClass]="messageClass">
+    {{message}}
+  </div>
+</div>
+<div class="panel panel-success" *ngFor="let pergunta of perguntas; let cont = index">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{pergunta.descricao}}</h3>
+  </div>
+  <div class="panel-body">
+    <div class="col-lg-10" *ngIf="pergunta.tipo==1">
+      <textarea class="form-control" rows="3" id="textArea" (blur)='setRespostaText($event,cont)'></textarea>
+    </div>
+    <div class="col-lg-10" *ngIf="pergunta.tipo==2">
+      <ul class="pagination">
+        <li [ngClass]="{'active' : pergunta.resposta==0}"><a (click)="setResposta(0,cont)">0</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==1}"><a (click)="setResposta(1,cont)">1</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==2}"><a (click)="setResposta(2,cont)">2</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==3}"><a (click)="setResposta(3,cont)">3</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==4}"><a (click)="setResposta(4,cont)">4</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==5}"><a (click)="setResposta(5,cont)">5</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==6}"><a (click)="setResposta(6,cont)">6</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==7}"><a (click)="setResposta(7,cont)">7</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==8}"><a (click)="setResposta(8,cont)">8</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==9}"><a (click)="setResposta(9,cont)">9</a></li>
+        <li [ngClass]="{'active' : pergunta.resposta==10}"><a (click)="setResposta(10,cont)">10</a></li>
+      </ul>
+    </div>
+    <div class="col-lg-10" *ngIf="pergunta.tipo==3">
+      <div id="reviewStars-input">
+        <input id="star-4" type="radio" name="reviewStars" (click)="setResposta(4,cont)" />
+        <label title="Excelente" for="star-4"></label>
+
+        <input id="star-3" type="radio" name="reviewStars" (click)="setResposta(3,cont)" />
+        <label title="Ótimo" for="star-3"></label>
+
+        <input id="star-2" type="radio" name="reviewStars" (click)="setResposta(2,cont)" />
+        <label title="Bom" for="star-2"></label>
+
+        <input id="star-1" type="radio" name="reviewStars" (click)="setResposta(1,cont)" />
+        <label title="precisa melhorar" for="star-1"></label>
+
+        <input id="star-0" type="radio" name="reviewStars" (click)="setResposta(0,cont)" />
+        <label title="Não gostei" for="star-0"></label>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="btn btn-success btn-lg btn-block" (click)='enviar()'>Enviar</a>

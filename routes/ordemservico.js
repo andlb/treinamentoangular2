@@ -194,18 +194,17 @@ module.exports = router => {
     let erroMsg = "";
     if (!req.body.ordemservicoid) {
       retorno.message = "Ordem de servico não foi informada";
-      return req.json(retorno);
+      return res.json(retorno);
     }
 
     if (!req.body.json) {
       retorno.message = "Variável JSON não foi preenchido com as repostas";
-      return req.json(retorno);
+      return res.json(retorno);
     }
-    
-    var oJson = JSON.parse(req.body.json);
+    var oJson =req.body.json;
     if (!oJson) {
       retorno.message = "Não foi possivel transformar a variavel JSON";
-      return req.json(retorno);
+      return res.json(retorno);
     }
     
     Ordemservico.findById(
@@ -215,6 +214,7 @@ module.exports = router => {
         retorno.message = err.code + " " + err.message;
         return res.json(retorno);
       }
+      
       if (!oOrdemservico){
         retorno.message = "Ordem de serviço não encontrado";
         return res.json(retorno);
