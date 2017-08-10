@@ -68,6 +68,7 @@ export class SurveyComponent implements OnInit {
   }
 
   enviar(){
+    this.processing = true;
     let respostas = []
     for (var c=0;c<this.perguntas.length;c++) {
       respostas[c] = {
@@ -83,7 +84,6 @@ export class SurveyComponent implements OnInit {
       ordemservicoid:this.atendimentoid,
       json:respostas
     }
-    console.log(respostas);
     this.oficinaService.enviaQuestionario(body).subscribe(data => {
       if (!data.success) {
         this.messageClass = 'alert alert-danger';

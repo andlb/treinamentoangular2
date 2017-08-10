@@ -57,7 +57,7 @@ const usuarioSchema = new Schema({
     password: { type: String, validate: passwordValidator },    
     tipo: { type: Number, required: true, validate:tipoValidator },//0 - proprietário, 1 convidado, 2 proprietário e convidado
     cpf:{type:String},
-    empresa:{type:String},
+    empresa:{type:String, ref : 'Empresa'},
     datanascimento:{type:Date},
     endereco: {
         endereco: { type: String },

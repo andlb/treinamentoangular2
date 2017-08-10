@@ -39,7 +39,9 @@ export class OficinaService {
   ) {
     this.authService.loadToken();
     let usuario = JSON.parse(this.authService.usuarioToken);
-    this.empresaid = usuario.empresa;
+    if (usuario.empresa) {
+      this.empresaid = usuario.empresa._id;
+    }
     this.usuarioid = usuario.usuarioid;
   }
 
@@ -138,9 +140,12 @@ export class OficinaService {
   }
 
   enviaQuestionario(respostas) {
-
     return this.http
-      .post(this.domain + "ordemservico/salvarAvaliacao",respostas, this.options)
+      .post(
+        this.domain + "ordemservico/salvarAvaliacao",
+        respostas,
+        this.options
+      )
       .map(res => res.json());
   }
 }

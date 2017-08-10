@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -7,12 +8,14 @@ import { environment } from './../../environments/environment';
 @Injectable()
 export class AuthService {
   private usuario;
-
+  empresaChanged = new Subject();
   domain = environment.domain;
   authToken;
   usuarioToken;
   options;
   dadosAtivo = "active";
+  empresaId;
+  empresaNome;
   constructor(
     private http: Http
   ) { }
@@ -24,8 +27,6 @@ export class AuthService {
   checkEmailUsuario(email){
     return this.http.get(this.domain+'authentication/checkEmailUsuario/'+email).map(res => res.json());
   }
-
-
 
   login(usuario){
     return this.http.post(this.domain+'authentication/login',usuario).map(res => res.json());
@@ -58,6 +59,7 @@ export class AuthService {
     this.authToken = null;
     this.usuarioToken = null;
     localStorage.clear();
+    this.empresaChanged.next('empresaalterada');
   }
 
   storeUserData(token,usuario){
@@ -65,7 +67,27 @@ export class AuthService {
     localStorage.setItem('usuario',JSON.stringify(usuario));
     this.authToken = token;
     this.usuarioToken = usuario;
+
+    if (usuario.empresa) {
+      this.empresaId = usuario.empresa._id;
+      this.empresaNome = usuario.empresa.nomefantasia;
+    }
+    this.empresaChanged.next('empresaalterada');
+
   }
+
+  getEmpresaFromStorage() {
+    var usuario = JSON.parse(localStorage.getItem('usuario'));
+    console.log(usuario);
+    if (usuario) {
+      if (usuario.empresa) {
+        this.empresaId = usuario.empresa._id;
+        this.empresaNome = usuario.empresa.nomefantasia;
+      }
+    }
+    return {empresaid:this.empresaId, empresanome:this.empresaNome};
+  }
+
 
   loggedIn(){
     return tokenNotExpired();

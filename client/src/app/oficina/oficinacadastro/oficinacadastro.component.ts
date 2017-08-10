@@ -63,6 +63,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     );
     this.createForm();
     let empresaid = this.oficinaService.empresaid;
+    console.log('empresaid '+ empresaid);
     if (!empresaid) {
       this.messageClass = "alert alert-danger";
       this.message = "Empresa não cadastrada para o usuário";

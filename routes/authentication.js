@@ -96,24 +96,33 @@ module.exports = (router) => {
       res.json(retorno);
       return;
     }
+    
     Usuario.findOne({
       email: req.body.email
-    }, (err, user) => {
+    }).populate('empresa').exec((err, user) => {      
+      console.log(user);
       if (err) {
-        retorno.message = err;
+        retorno.message = err.code + " - " + err.message;      
+        return res.json(retorno);
       } else {
         if (!user) {
           retorno.message = "Usuário não encontrado";
+          return res.json(retorno);
         } else {
           const validPassword = user.comparePassword(req.body.password);
           if (!validPassword) {
             retorno.message = "Senha incorreta";
+            return res.json(retorno);
           } else {
             const token = jwt.sign({
               userId: user._id
             }, database.secret, {
               expiresIn: '15m'
             })
+            var empresanome = '';
+            if (user.empresa) {
+              empresanome = user.empresa.nomefantasia;
+            }
             retorno.success = true;
             retorno.message = "Success";
             retorno.token = token;
@@ -122,8 +131,11 @@ module.exports = (router) => {
               email: user.email,
               tipo: user.tipo,
               empresa: user.empresa,
-              cadastrocompleto: user.cadastrocompleto
+              cadastrocompleto: user.cadastrocompleto,
+              empresanome: empresanome              
             };
+            console.log(retorno.user);
+            return res.json(retorno);
           }
         }
       }
@@ -205,7 +217,7 @@ module.exports = (router) => {
     }
     Usuario.findOne({
       _id: req.body.userid
-    }, (err, user) => {
+    }).populate('empresa').exec((err, user) => {
       if (err) {
         retorno.mensagem = err;
         res.json(retorno);
@@ -216,6 +228,12 @@ module.exports = (router) => {
         res.json(retorno);
         return;
       } 
+      var empresaid = "";
+      var empresanome = "";
+      if (user.empresa) {
+        empresaid = user.empresa;
+        empresanome = user.empresa.nomefantasia;
+      }
       retorno.usuario = {
         nome:user.nome,        
         endereco:user.endereco.endereco,
@@ -223,7 +241,9 @@ module.exports = (router) => {
         numero:user.endereco.numero,
         complemento:user.endereco.complemento,
         estado:user.endereco.estado,
-        cep:user.endereco.cep        
+        cep:user.endereco.cep,
+        empresaid:empresaid,
+        empresanome: empresanome
       }
       res.json(retorno);
     });
