@@ -19,6 +19,7 @@ import {
 })
 export class OficinacadastroComponent implements OnInit, OnDestroy {
   @ViewChild("placa") placa: ElementRef;
+  @ViewChild("quilometragem") quilometragem: ElementRef;
   form: FormGroup;
   edit: Boolean = false;
   processing: Boolean = false;
@@ -63,7 +64,6 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     );
     this.createForm();
     let empresaid = this.oficinaService.empresaid;
-    console.log('empresaid '+ empresaid);
     if (!empresaid) {
       this.messageClass = "alert alert-danger";
       this.message = "Empresa não cadastrada para o usuário";
@@ -129,7 +129,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   preencheFormulario() {
     let veiculo = this.oficinaService.getVeiculo();
     let proprietario = this.oficinaService.getProprietario();
-    let servico = this.oficinaService.getServicosRealizar();
+    let servico = this.oficinaService.getServicosRealizado();
 
     this.form.controls["placa"].setValue(veiculo.placa);
     this.form.controls["marca"].setValue(veiculo.marca);
@@ -142,9 +142,11 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       this.form.controls["email"].disable();
     }
     this.form.controls["email"].setValue(proprietario.email);
-
     this.form.controls["dtnascimento"].setValue(proprietario.datanascimento);
-    this.form.controls["quilometragem"].setValue(veiculo.quilometragem);
+    if (this.edit) {
+      this.form.controls["quilometragem"].setValue(veiculo.quilometragem);
+      this.quilometragem.nativeElement.focus();
+    }
   }
 
   desabilitaCampos() {
@@ -257,46 +259,53 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     };
     this.oficinaService.setVeiculo(veiculo);
     this.oficinaService.setProprietario(proprietario);
-    this.oficinaService.setServicosRealizar(this.servicosRealizados);
+    this.oficinaService.setServicosRealizado(this.servicosRealizados);
     this.subEnviar = this.oficinaService.atualizarDados().subscribe(data => {
-      this.processing = false;
       setTimeout(() => {
         if (!data) {
           this.messageClass = "alert alert-danger";
           this.message = "Erro ao salvar as informações";
+          this.processing = false;
           return;
         }
         if (!data.success) {
           this.messageClass = "alert alert-danger";
           this.message = data.message;
+          this.processing = false;
           return;
         } else {
           this.messageClass = "alert alert-success";
           this.message = data.message;
-          this.router.navigate(["centroautomotivo/lista"]);
+          this.router.navigate(["centroautomotivo/lista/edit"]);
           return;
         }
       }, 2000);
     });
   }
 
-  defineServico(event) {
+  defineServico(event, posicao) {
     let codigo = event.target.value;
+
     if (event.target.checked) {
+      this.servicos[posicao].checked = true;
       let oServico = this.servicos.find(servico => servico._id === codigo);
       if (oServico) {
         this.servicosRealizados.push(oServico);
       }
     } else {
+      this.servicos[posicao].checked = false;
       let indice = this.servicosRealizados.findIndex(
         servico => servico._id === codigo
       );
+
       if (indice > -1) {
         this.servicosRealizados.splice(indice, 1);
       }
     }
   }
+
+
   onVoltar() {
-    this.router.navigate(["centroautomotivo/lista"]);
+    this.router.navigate(["centroautomotivo/lista/edit"]);
   }
 }

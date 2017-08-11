@@ -48,7 +48,7 @@
       <label for="quilometragem" class="col-lg-1 control-label">KM</label>
       <div class="col-lg-2 col-lg-off-8">
         <div [ngClass]="{'has-error':form.controls.quilometragem.touched &&  (form.controls.quilometragem.errors), 'has-success': !form.controls.quilometragem.errors }">
-          <input type="text" class="form-control" id="quilometragem" name="quilometragem" formControlName="quilometragem" placeholder="*Quilometragem">
+          <input #quilometragem type="text" class="form-control" id="quilometragem" name="quilometragem" formControlName="quilometragem" placeholder="*Quilometragem">
           <ul class="help-block">
             <li *ngIf="form.controls.quilometragem.touched && form.controls.quilometragem.errors?.required ">Informe quilometragem</li>
             <li *ngIf="form.controls.quilometragem.touched && form.controls.quilometragem.errors?.pattern ">Campo numérico </li>
@@ -104,7 +104,7 @@
             <h3 class="panel-title">
               <div class="checkbox">
                 <label>
-            <input type="checkbox" value='{{servico._id}}' (click)="defineServico($event)"> {{servico.descricao}}
+            <input type="checkbox" [checked]=servico.checked value='{{servico._id}}' (click)="defineServico($event,cont)"> {{servico.descricao}}
           </label>
               </div>
               <!-- <input type="checkbox" value='{{servico._id}}' (click)="defineServico($event)"> {{servico.descricao}} -->

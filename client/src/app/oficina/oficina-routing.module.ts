@@ -11,6 +11,7 @@ import { SurveyComponent } from './survey/survey.component';
 const oficinaRoutes: Routes = [
   { path: '', component: OficinalistComponent },
   { path: 'lista', component: OficinalistComponent },
+  { path: 'lista/:edit', component: OficinalistComponent },
   { path: 'cadastro', component: OficinacadastroComponent },
   { path: 'cadastro/:id', component: OficinacadastroComponent },
   { path: 'survey/:id', component: SurveyComponent }

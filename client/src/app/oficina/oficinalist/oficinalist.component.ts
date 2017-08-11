@@ -1,7 +1,7 @@
 import { SurveyComponent } from './../survey/survey.component';
 import { OficinaService } from './../oficina.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -11,33 +11,48 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class OficinalistComponent implements OnInit {
   private httpSubs: Subscription;
+  private subsEdit: Subscription;
+  private edit=false;
   messageClass = "";
   message = "";
   ordemservicos = [];
+
   constructor(
     private oficinaService: OficinaService,
-    private router: Router,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
 
   }
 
   ngOnInit() {
+    this.subsEdit = this.route.params.subscribe(
+      (params: Params) => {
+        if (params.edit) {
+          this.edit = true;
+        }
+      }
+    );
     this.httpSubs = this.oficinaService.getTodosVeiculos().subscribe((data) => {
       if (!data.success) {
           this.messageClass = 'alert alert-danger';
           this.message = data.message;
       }
-      console.log(data.ordensservico);
       this.ordemservicos = data.ordensservico;
     });
   }
 
   ngOnDestroy(): void {
     if (this.httpSubs) this.httpSubs.unsubscribe();
+    if (this.subsEdit) this.subsEdit.unsubscribe();
   }
+
   onEditItem(ordemservicoid) {
-    //TODO: Fazer uma chamada para carregar a empresa com o id.
-    this.router.navigate(['centroautomotivo/survey',ordemservicoid]);
+    if (this.edit) {
+      this.router.navigate(['centroautomotivo/cadastro',ordemservicoid]);
+    }else{
+      this.router.navigate(['centroautomotivo/survey',ordemservicoid]);
+    }
   }
 
   onNovo(){

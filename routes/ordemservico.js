@@ -41,11 +41,7 @@ module.exports = router => {
               retorno.message = errUsuario.code + " " + errUsuario.message;
               return res.json(retorno);
             }
-            var datanascimento = usuario.datanascimento;  
-            console.log(datanascimento);
-            if (usuario.datanascimento) {
-              datanascimento = usuario.datanascimento.getUTCDate() +"/" + (usuario.datanascimento.getUTCMonth()+1)  +"/" + usuario.datanascimento.getFullYear();
-            }
+          
             retorno.success = true;
             retorno.veiculo = veiculo;
             const oUsuario = {
@@ -53,11 +49,9 @@ module.exports = router => {
               cpf: usuario.cpf,
               nome: usuario.nome,
               email: usuario.email,
-              datanascimento: datanascimento
+              datanascimento: usuario.datanascimento
             }
             retorno.proprietario = oUsuario;
-            console.log(datanascimento);
-            console.log(retorno);
             return res.json(retorno);
           }
         );
@@ -84,17 +78,26 @@ module.exports = router => {
       _id: req.params.id,
       empresaid: req.params.empresaid
     })
-      .populate("usuarioid", "nome email cpf")
+      .populate("usuarioid", "nome email cpf datanascimento")
       .populate("veiculoid")
       .exec((err, oOrdemServico) => {
         if (err) {
           retorno.message = "Ordem de serviço não encontrada";
           return res.json(retorno);
         }
+        var usuario = oOrdemServico.usuarioid;
+        console.log(usuario);
+        const oUsuario = {
+          _id: usuario._id,
+          cpf: usuario.cpf,
+          nome: usuario.nome,
+          email: usuario.email,
+          datanascimento: usuario.datanascimento
+        }
         retorno.success = true;
         retorno.ordensservico = oOrdemServico;
         retorno.veiculo = oOrdemServico.veiculoid;
-        retorno.proprietario = oOrdemServico.usuarioid;
+        retorno.proprietario = oUsuario;
         return res.json(retorno);
       });
   });

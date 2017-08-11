@@ -15,18 +15,18 @@ export class OficinaService {
   usuarioid;
   cadastroProprietario = {
     proprietario: {
-      cpf: String,
-      nome: String,
-      email: String,
-      datanascimento: String
+      cpf: '',
+      nome: '',
+      email: '',
+      datanascimento: ''
     },
     veiculo: {
-      marca: String,
-      modelo: String,
-      placa: String,
-      ano: String,
-      anomodelo: String,
-      quilometragem: String
+      marca: '',
+      modelo: '',
+      placa: '',
+      ano: '',
+      anomodelo:'',
+      quilometragem: ''
     },
     servicosRealizar: [{}],
     servicosRealizado: [{}]
@@ -56,15 +56,39 @@ export class OficinaService {
   }
 
   setProprietario(proprietario) {
-    this.cadastroProprietario.proprietario = proprietario;
+    var datanascimento = '';
+    if (proprietario.datanascimento) {
+      console.log(proprietario.datanascimento);
+      var tdatanascimento = proprietario.datanascimento.split('T');
+      tdatanascimento = tdatanascimento[0].split('-');
+      datanascimento = tdatanascimento[2]+'/'+tdatanascimento[1]+'/'+tdatanascimento[0];
+    }
+    this.cadastroProprietario.proprietario = {
+      cpf: proprietario.cpf,
+      nome: proprietario.nome,
+      email: proprietario.email,
+      datanascimento: datanascimento
+    };
   }
 
   setVeiculo(veiculo) {
-    this.cadastroProprietario.veiculo = veiculo;
+    var quilometragem = '';
+    if (veiculo.atributos.length>0){
+      quilometragem = veiculo.atributos[veiculo.atributos.length - 1].quilometragem;
+    }
+
+    this.cadastroProprietario.veiculo = {
+      marca: veiculo.marca,
+      modelo: veiculo.modelo,
+      placa:veiculo.placa,
+      ano: veiculo.ano,
+      anomodelo:veiculo.anomodelo,
+      quilometragem: quilometragem
+    }
   }
 
-  setServicosRealizar(servicosRealiar) {
-    this.cadastroProprietario.servicosRealizar = servicosRealiar;
+  setServicosRealizado(servicosRealizado) {
+    this.cadastroProprietario.servicosRealizado = servicosRealizado;
   }
 
   getProprietario() {
@@ -75,8 +99,8 @@ export class OficinaService {
     return this.cadastroProprietario.veiculo;
   }
 
-  getServicosRealizar() {
-    return this.cadastroProprietario.servicosRealizar;
+  getServicosRealizado() {
+    return this.cadastroProprietario.servicosRealizado;
   }
 
   atualizarDados() {
