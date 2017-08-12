@@ -5,11 +5,12 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
-const veiculoSchema = new Schema({
-    veiculoid: { type: String, required: [true, "Veiculo não definido"] },
+const servicorealizadoSchema = new Schema({
+    veiculoid: { type: String, ref: 'Veiculo', required: [true, "Veiculo não definido"] },
     servicoid: { type: String, required: [true, 'Serviço não definido'] },
-    empresa: { type: String, required: [true, "Empresa não definida"] },
+    empresaid: { type: String, required: [true, "Empresa não definida"] },
+    ordemservicoid: {type:String,required: [true,'Ordem de serviço não informada']},
     timestamp: { type: Timestamp }
 
 });
-module.exports = mongoose.model('Veiculo', veiculoSchema);
+module.exports = mongoose.model('Servicorealizado', servicorealizadoSchema);

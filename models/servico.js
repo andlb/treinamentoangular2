@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 const servicoSchema = new Schema({
-    empresaid: { type: String },
+    empresaid: { type: String, ref:'Empresa' },
     descricao: { type: String },
-    tipo: { type: Number },
-    resposta: { type: String }
-});
+    tempo: { type: Number },
+    quilometragem: { type: Number },
 
+});
 module.exports = mongoose.model('Servico', servicoSchema);

@@ -9,9 +9,6 @@ const ordemservicoSchema = new Schema({
     empresaid: { type: String, ref : 'Empresa', required: [true, "Empresa não informada"] },
     data:{type:Date, default:Date.now()},
     status: {type:String},
-    servicoRealizado:[{
-      servicoid: { type: String},
-    }]
 });
 
 module.exports = mongoose.model('Ordemservico', ordemservicoSchema);
