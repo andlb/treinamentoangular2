@@ -31,20 +31,29 @@ module.exports = router => {
       message: "Não foi fornecido o ID da empresa";
       res.json(retorno);
     }
-    Empresa.find({ _id: req.params.id }, (err, empresa) => {
+    Empresa.findOne({ _id: req.params.id }, (err, empresa) => {
       if (err) {
         retorno.message = err;
         res.json(retorno);
         return;
       }
-      if (!empresa[0]) {
+      if (!empresa) {
         retorno.message = "Empresas não encontrada";
         res.json(retorno);
         return;
       }
-      retorno.success = true;
-      retorno.empresa = empresa[0];
-      res.json(retorno);
+      Servico.find({empresaid:empresa._id},(err,servicos) => {
+        if (err) {
+          retorno.message = err.code + ' - '+ err.message;
+          return res.json(retorno);    
+        }
+        retorno.success = true;
+        retorno.empresa = empresa;
+        retorno.servicos = servicos;
+        return res.json(retorno);
+
+      });
+      
     });
   });
 

@@ -85,7 +85,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
           }
           if (data.success) {
             this.empresa = data.empresa;
-            this.servicos = data.empresa.servicos;
+            this.servicos = data.servicos;
             this.servicosRealizados = [];
           }
         });
