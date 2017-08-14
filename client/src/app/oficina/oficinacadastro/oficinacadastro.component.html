@@ -94,24 +94,28 @@
         </div>
       </div>
     </div>
+
+
     <div class="bs-example" data-example-id="table-within-panel">
       <div class="panel panel-success">
         <div class="panel-heading">Serviços</div>
       </div>
-      <div class="panel-body">
-        <div class="panel panel-success" *ngFor="let servico of servicos; let cont = index">
+      <div class="panel-body" formArrayName="servicosForm">
+        <div class="panel panel-success"
+        *ngFor="let control of form.controls['servicosForm'].controls; let i = index"
+        [formGroupName]="i"
+        >
           <div class="panel-heading">
             <h3 class="panel-title">
               <div class="checkbox">
                 <label>
-            <input type="checkbox" [checked]=servico.checked value='{{servico._id}}' (click)="defineServico($event,cont)"> {{servico.descricao}}
-          </label>
+                  <input type="checkbox" formControlName="selecionado" > {{control.controls.descricao.value}}
+                </label>
               </div>
-              <!-- <input type="checkbox" value='{{servico._id}}' (click)="defineServico($event)"> {{servico.descricao}} -->
             </h3>
           </div>
           <div class="panel-body">
-            <input class="form-control" id="focusedInput" type="text" value="" placeholder="Observação sobre {{servico.descricao}}">
+            <input class="form-control" id="observacao" name="observacao" formControlName="observacao" type="text" value="" placeholder="Observação sobre {{control.controls.descricao.value}}" >
           </div>
         </div>
       </div>

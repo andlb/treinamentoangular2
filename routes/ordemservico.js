@@ -4,6 +4,7 @@ const Ordemservico = require("../models/ordemservico");
 const Empresa = require("../models/empresa");
 const Resposta = require("../models/resposta");
 const Servicorealizado = require('../models/servicorealizado');
+const Servico = require("../models/servico");
 
 module.exports = router => {
   "use strict";
@@ -83,23 +84,40 @@ module.exports = router => {
       .populate("veiculoid")
       .exec((err, oOrdemServico) => {
         if (err) {
-          retorno.message = "Ordem de serviço não encontrada";
+          retorno.message = err.code + ' - '+ err.message;
           return res.json(retorno);
         }
+        if (!oOrdemServico) {
+          retorno.message = "Ordem de serviço não encontrada";
+          return res.json(retorno);          
+        }
         var usuario = oOrdemServico.usuarioid;
-        console.log(usuario);
         const oUsuario = {
           _id: usuario._id,
           cpf: usuario.cpf,
           nome: usuario.nome,
           email: usuario.email,
           datanascimento: usuario.datanascimento
-        }
-        retorno.success = true;
-        retorno.ordensservico = oOrdemServico;
-        retorno.veiculo = oOrdemServico.veiculoid;
-        retorno.proprietario = oUsuario;
-        return res.json(retorno);
+        }        
+        Servico.find({empresaid:req.params.empresaid},(err,servicos) => {
+          if (err) {
+            retorno.message = err.code + ' - '+ err.message;
+            return res.json(retorno);    
+          }
+          Servicorealizado.find({ordemservicoid:req.params.id},(err,servicorealizado)=>{
+            if (err) {
+              retorno.message = err.code + ' - '+ err.message;
+              return res.json(retorno);
+            }
+            retorno.ordensservico = oOrdemServico;
+            retorno.veiculo = oOrdemServico.veiculoid;
+            retorno.proprietario = oUsuario;            
+            retorno.success = true;
+            retorno.servicos = servicos;
+            retorno.servicorealizado = servicorealizado;
+            return res.json(retorno);
+          });          
+        });             
       });
   });
 
@@ -322,9 +340,6 @@ module.exports = router => {
       cpf: req.body.cpf,
       datanascimento: dtNascimento
     };  
-    servicosrealizados = [];
-    
-
 
     Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
       if (err) {
@@ -400,19 +415,33 @@ module.exports = router => {
                 ordemservico.usuarioid = oUsuario._id;
                 ordemservico.status = 1;
                 ordemservico.empresaid = req.body.empresaid;
-                //TODO: Falta os serviços realizados.
                 ordemservico.save((err,ordemservico) => {
                   if (err) {
                     retorno.message = err.code + " " + err.message;
                     return res.json(retorno);
                   }
-                  Servicorealizado.remove({ordemservicoid:ordemservico}, err =>{
-                    
-                    retorno.success = true;                    
-                    retorno.message = "Ordem de serviço cadastrada com sucesso";
-                    res.json(retorno);
-
-                  })
+                  Servicorealizado.remove({ordemservicoid:ordemservico._id}, err =>{                    
+                    if (err) {
+                      retorno.message = err.code + " " + err.message;
+                      return res.json(retorno);                      
+                    }
+                    var servicosrealizados = [];
+                    for (let servicorealizado of req.body.servicorealizado){
+                      servicorealizado.veiculoid = oVeiculo._id;
+                      servicorealizado.empresaid = oEmpresa._id;
+                      servicorealizado.ordemservicoid = ordemservico._id;
+                      servicosrealizados.push(servicorealizado);
+                    }
+                    Servicorealizado.insertMany(servicosrealizados,(err,docs)=>{
+                      if (err) {
+                        retorno.message = err.code +' - ' + err.message;
+                        return res.json(retorno);                        
+                      }
+                      retorno.success = true;                    
+                      retorno.message = "Ordem de serviço cadastrada com sucesso";
+                      return res.json(retorno);
+                    });
+                  });
                 });
               });
             });
@@ -421,6 +450,5 @@ module.exports = router => {
       });
     });
   });
-
   return router;
 };

@@ -56,12 +56,17 @@ export class OficinaService {
   }
 
   setProprietario(proprietario) {
+    if (!proprietario) return;
     var datanascimento = '';
+    console.log('datanascimento ' + proprietario.datanascimento);
     if (proprietario.datanascimento) {
-      console.log(proprietario.datanascimento);
       var tdatanascimento = proprietario.datanascimento.split('T');
-      tdatanascimento = tdatanascimento[0].split('-');
-      datanascimento = tdatanascimento[2]+'/'+tdatanascimento[1]+'/'+tdatanascimento[0];
+      if (tdatanascimento.length > 1){
+        tdatanascimento = tdatanascimento[0].split('-');
+        datanascimento = tdatanascimento[2]+'/'+tdatanascimento[1]+'/'+tdatanascimento[0];
+      }else {
+        proprietario.datanascimento = proprietario.datanascimento;
+      }
     }
     this.cadastroProprietario.proprietario = {
       cpf: proprietario.cpf,
@@ -72,11 +77,17 @@ export class OficinaService {
   }
 
   setVeiculo(veiculo) {
-    var quilometragem = '';
-    if (veiculo.atributos.length>0){
-      quilometragem = veiculo.atributos[veiculo.atributos.length - 1].quilometragem;
-    }
+    if (!veiculo) return;
 
+    var quilometragem = '';
+    if (veiculo.quilometragem) {
+      quilometragem = veiculo.quilometragem;
+    }
+    if (veiculo.atributos) {
+      if (veiculo.atributos.length>0){
+        quilometragem = veiculo.atributos[veiculo.atributos.length - 1].quilometragem;
+      }
+    }
     this.cadastroProprietario.veiculo = {
       marca: veiculo.marca,
       modelo: veiculo.modelo,
@@ -119,6 +130,8 @@ export class OficinaService {
       empresaid: this.empresaid,
       servicorealizado: this.cadastroProprietario.servicosRealizado
     };
+    console.log(oficina);
+
     return this.http
       .post(this.domain + "ordemservico/cadastra", oficina, this.options)
       .map(res => res.json());

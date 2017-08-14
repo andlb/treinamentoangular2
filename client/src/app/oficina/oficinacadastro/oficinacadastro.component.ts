@@ -3,7 +3,7 @@ import { Subscription } from "rxjs/Subscription";
 import { Subject } from "rxjs/Subject";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { OficinaService } from "./../oficina.service";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import {
   Component,
   OnInit,
@@ -56,46 +56,49 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
               this.edit = true;
               this.oficinaService.setVeiculo(data.veiculo);
               this.oficinaService.setProprietario(data.proprietario);
+              this.servicos = data.servicos;
+              console.log(this.servicos );
+              this.servicosRealizados = data.servicorealizado;
               this.preencheFormulario();
+              this.adicionarServicoForm();
               this.processing = false;
+            });
+        }else {
+          let empresaid = this.oficinaService.empresaid;
+          if (!empresaid) {
+            this.messageClass = "alert alert-danger";
+            this.message = "Empresa não cadastrada para o usuário";
+          }
+          this.processing = true;
+          this.subEmpresa = this.empresaService
+            .getEmpresa(empresaid)
+            .subscribe(data => {
+              this.message = "";
+              if (!data) {
+                this.messageClass = "alert alert-danger";
+                this.message = "Empresa não encontrada";
+              }
+              if (!data.success) {
+                this.messageClass = "alert alert-danger";
+                this.message = "Empresa não encontrada";
+              }
+              if (data.success) {
+                this.empresa = data.empresa;
+                this.servicos = data.servicos;
+                this.servicosRealizados = [];
+                this.adicionarServicoForm();
+                this.processing = false;
+              }
             });
         }
       }
     );
     this.createForm();
-    let empresaid = this.oficinaService.empresaid;
-    if (!empresaid) {
-      this.messageClass = "alert alert-danger";
-      this.message = "Empresa não cadastrada para o usuário";
-    } else {
-      this.subEmpresa = this.empresaService
-        .getEmpresa(empresaid)
-        .subscribe(data => {
-          this.message = "";
-          if (!data) {
-            this.messageClass = "alert alert-danger";
-            this.message = "Empresa não encontrada";
-          }
-          if (!data.success) {
-            this.messageClass = "alert alert-danger";
-            this.message = "Empresa não encontrada";
-          }
-          if (this.message) {
-            //TODO: Mover para outra pagina.
-          }
-          if (data.success) {
-            this.empresa = data.empresa;
-            this.servicos = data.servicos;
-            this.servicosRealizados = [];
-          }
-        });
-    }
   }
-
+  //TODO: Verificar o problema da PLACA.
   onPesquisarPlaca() {
     if (this.processing || this.edit) return;
     let placa = this.form.controls["placa"].value;
-
     if (placa) {
       this.processing = true;
       this.subPlaca = this.oficinaService
@@ -178,6 +181,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   }
 
   createForm() {
+    let servicosForm = new FormArray([]);
+
     this.form = this.formBuilder.group({
       placa: [
         "",
@@ -216,7 +221,11 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
           )
         ]
       ],
-      quilometragem: ["", [Validators.required, Validators.pattern(/^[0-9]*$/)]]
+      quilometragem: [
+        "",
+        [Validators.required, Validators.pattern(/^[0-9]*$/)]
+      ],
+      servicosForm: servicosForm
     });
   }
 
@@ -242,7 +251,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   }
 
   enviaDados() {
-    this.processing = true;
+    //this.processing = true;
     let veiculo = {
       placa: this.form.controls["placa"].value,
       marca: this.form.controls["marca"].value,
@@ -257,9 +266,21 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       email: this.form.controls["email"].value,
       datanascimento: this.form.controls["dtnascimento"].value
     };
+    this.servicosRealizados = [];
+    for (let control of (<FormArray>this.form.get('servicosForm')).controls){
+      if (control.value.selecionado) {
+        let servicoRealizado = {
+          servicoid: control.value._id,
+          observacao:control.value.observacao
+        }
+        this.servicosRealizados.push(servicoRealizado);
+      }
+    }
+
     this.oficinaService.setVeiculo(veiculo);
     this.oficinaService.setProprietario(proprietario);
     this.oficinaService.setServicosRealizado(this.servicosRealizados);
+
     this.subEnviar = this.oficinaService.atualizarDados().subscribe(data => {
       setTimeout(() => {
         if (!data) {
@@ -281,6 +302,10 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         }
       }, 2000);
     });
+
+  }
+  defineObservacao(event, posicao) {
+    this.servicos[posicao].obseracao = event.target.value;
   }
 
   defineServico(event, posicao) {
@@ -288,6 +313,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
 
     if (event.target.checked) {
       this.servicos[posicao].checked = true;
+
       let oServico = this.servicos.find(servico => servico._id === codigo);
       if (oServico) {
         this.servicosRealizados.push(oServico);
@@ -303,9 +329,27 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-
   onVoltar() {
     this.router.navigate(["centroautomotivo/lista/edit"]);
+  }
+
+  adicionarServicoForm() {
+    for (let tServico of this.servicos) {
+      let oServico = this.servicosRealizados.find(servicorealizado => servicorealizado.servicoid === tServico._id);
+      let selecionado = false;
+      let observacao = '';
+      if (oServico) {
+        selecionado = true;
+        observacao = oServico.observacao;
+      }
+      (<FormArray>this.form.get("servicosForm")).push(
+        this.formBuilder.group({
+          _id:tServico._id,
+          descricao:tServico.descricao,
+          selecionado:selecionado,
+          observacao: observacao
+        })
+      );
+    }
   }
 }
