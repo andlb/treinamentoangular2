@@ -116,7 +116,8 @@ export class OficinaService {
       nome: this.cadastroProprietario.proprietario.nome,
       email: this.cadastroProprietario.proprietario.email,
       datanascimento: this.cadastroProprietario.proprietario.datanascimento,
-      empresaid: this.empresaid
+      empresaid: this.empresaid,
+      servicorealizado: this.cadastroProprietario.servicosRealizado
     };
     return this.http
       .post(this.domain + "ordemservico/cadastra", oficina, this.options)

@@ -3,6 +3,7 @@ const Usuario = require("../models/usuario");
 const Ordemservico = require("../models/ordemservico");
 const Empresa = require("../models/empresa");
 const Resposta = require("../models/resposta");
+const Servicorealizado = require('../models/servicorealizado');
 
 module.exports = router => {
   "use strict";
@@ -314,7 +315,6 @@ module.exports = router => {
         dtNascimento = new Date(tNascimento);
       }
     }
-
     var usuario = {
       nome: req.body.nome,
       email: req.body.email,
@@ -322,6 +322,10 @@ module.exports = router => {
       cpf: req.body.cpf,
       datanascimento: dtNascimento
     };  
+    servicosrealizados = [];
+    
+
+
     Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
       if (err) {
         retorno.message = err.code + " - " + err.message;
@@ -397,14 +401,18 @@ module.exports = router => {
                 ordemservico.status = 1;
                 ordemservico.empresaid = req.body.empresaid;
                 //TODO: Falta os serviços realizados.
-                ordemservico.save(err => {
+                ordemservico.save((err,ordemservico) => {
                   if (err) {
                     retorno.message = err.code + " " + err.message;
                     return res.json(retorno);
                   }
-                  retorno.success = true;
-                  retorno.message = "Ordem de serviço cadastrada com sucesso";
-                  res.json(retorno);
+                  Servicorealizado.remove({ordemservicoid:ordemservico}, err =>{
+                    
+                    retorno.success = true;                    
+                    retorno.message = "Ordem de serviço cadastrada com sucesso";
+                    res.json(retorno);
+
+                  })
                 });
               });
             });

@@ -51,9 +51,7 @@ module.exports = router => {
         retorno.empresa = empresa;
         retorno.servicos = servicos;
         return res.json(retorno);
-
-      });
-      
+      });      
     });
   });
 
@@ -114,7 +112,6 @@ module.exports = router => {
         empresa.nomeresponsavel = req.body.nomeresponsavel;
         empresa.nomefantasia = req.body.nomefantasia;
         empresa.razaosocial = req.body.razaosocial;
-        console.log("req.body.email " + req.body.email);
         empresa.email = req.body.email;
         empresa.telefone = req.body.telefone;
         empresa.celular = req.body.celular;
