@@ -82,6 +82,7 @@ usuarioSchema.pre('save', function(next) {
     });
 });
 
+
 //return true or false
 usuarioSchema.methods.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);

@@ -17,6 +17,7 @@ mongoose.connect(config.uri, err => {
         console.log(err.code + " - " + err.message);
         process.exit(0);
       }
+      var veiculos = []
       Usuario.find({ tipo: 0 }, (err, usuarios) => {
         usuarios.forEach(usuario => {
           for (c = 0; c < 2; c++) {
@@ -29,11 +30,19 @@ mongoose.connect(config.uri, err => {
               usuarioid: usuario._id,
               placa: placa
             };
-            new Veiculo(veiculo).save((err, veiculo) => {
-              if (err) console.log(err.code + " - " + err.message);
-            });
+            veiculos.push(veiculo);
+
           }
         });
+        Veiculo.insertMany(veiculos, (err, docs) => {
+          if (err) {
+            console.log(err.code + " - " + err.message);
+            process.exit(0);
+          }else {
+            console.log('veiculos cadastrado com sucesso');
+            process.exit(0);
+          }
+        });        
       });
     });
   }

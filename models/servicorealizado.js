@@ -10,7 +10,6 @@ const servicorealizadoSchema = new Schema({
     servicoid: { type: String, required: [true, 'Serviço não definido'] },
     empresaid: { type: String, required: [true, "Empresa não definida"] },
     ordemservicoid: {type:String,required: [true,'Ordem de serviço não informada']},
-    timestamp: { type: Timestamp }
-
+    timestamp: { type: Date, default: Date.now() }
 });
 module.exports = mongoose.model('Servicorealizado', servicorealizadoSchema);

@@ -181,15 +181,21 @@ module.exports = router => {
           retorno.message = "Sem acesso para acessar essa empresa ";
           return res.json(retorno);
         }
-        //TODO: Pesquisa por periodo veiculo e status para saber se esta em aberto.
         //pesquisas os atendimentos em aberto.
-        Ordemservico.find({ empresaid: req.params.empresaid, status: 1 })
+        console.log(req.params.empresaid);
+        //{ empresaid: req.params.empresaid, status: '1' }
+        Ordemservico.find({ empresaid: req.params.empresaid,status: '1'})
           .populate(
             "veiculoid usuarioid empresaid",
             "placa email nome nomefantasia"
           )
           .exec((err, ordens) => {
             if (err) {
+              retorno.message = err.code + ' - ' +err.message;
+              return res.json(retorno);
+            }
+            console.log(ordens);
+            if (ordens.length===0) {
               retorno.message = "Ordem de serviço não encontrada";
               return res.json(retorno);
             }
@@ -229,19 +235,21 @@ module.exports = router => {
         retorno.message = err.code + " " + err.message;
         return res.json(retorno);
       }
-
       if (!oOrdemservico) {
         retorno.message = "Ordem de serviço não encontrado";
         return res.json(retorno);
       }
-      for (var c = 0; c < oJson.length; c++) {
-        new Resposta(oJson[c]).save();
-      }
-      oOrdemservico.status = 2;
-      oOrdemservico.save();
-      retorno.success = true;
-      retorno.message = "";
-      return res.json(retorno);
+      Resposta.insertMany(oJson,(err,docs)=>{
+        if (err) {
+          retorno.message = err.code + " " + err.message;
+          return res.json(retorno);
+        }
+        oOrdemservico.status = 2;
+        oOrdemservico.save();
+        retorno.success = true;
+        retorno.message = "";
+        return res.json(retorno);
+      });
     });
   });
 
