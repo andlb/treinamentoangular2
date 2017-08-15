@@ -5,6 +5,7 @@ const Veiculo = require("../models/veiculo");
 const Usuario = require("../models/usuario");
 const Ordemservico = require("../models/ordemservico");
 const Empresa = require("../models/empresa");
+const Servico = require("../models/servico");
 const Servicorealizado = require("../models/servicorealizado");
 
 mongoose.Promise = global.Promise;
@@ -38,27 +39,40 @@ mongoose.connect(config.uri, err => {
                 };
                 ordensServico.push(ordemservico);
               });
-              Ordemservico.insertMany(ordensServico, (err, docs) => {
+              console.log(ordensServico);
+              Ordemservico.insertMany(ordensServico, (err, ordemservicos) => {
                 if (err) {
                   console.log(err.code + " - " + err.message);
                   process.exit(0);
                 }
-                var servicos = [];
-                for (var cDoc = 1; c < docs.lengh; c++) {
-                  for (var c = 1; c < empresa.servicos.lengh; c++) {
-                    servico = empresa.servicos[c];
-                    servico.ordemservicoid = docs[cDoc]._id;
-                    servicos.push(servico);
-                  }
-                }
-                Servicorealizado.insertMany(servicos, (err, docs) => {
+                console.log(empresa._id);
+                Servico.find({ empresaid: empresa._id }, (err, servicos) => {
                   if (err) {
                     console.log(err.code + " - " + err.message);
-                    process.exit(0);
-                  }else{
-                    console.log('terminado com sucesso');
-                    process.exit(0);
+                    return;
                   }
+                  tServicos = [];
+                  tServico = {};
+                  for (var cDoc = 0; cDoc < ordemservicos.length; cDoc++) {
+                    for (var c = 0; c < servicos.length; c++) {
+                      servico = servicos[c];
+                      tServico.ordemservicoid = ordemservicos[cDoc]._id;
+                      tServico.empresaid = ordemservicos[cDoc].empresaid;
+                      tServico.veiculoid = ordemservicos[cDoc].veiculoid;
+                      tServico.servicoid = servico._id;
+                      tServicos.push(tServico);
+                    }
+                  }
+                  console.log(servicos);
+                  Servicorealizado.insertMany(tServicos, (err, docs) => {
+                    if (err) {
+                      console.log(err.code + " - " + err.message);
+                      process.exit(0);
+                    } else {
+                      console.log("terminado com sucesso");
+                      //process.exit(0);
+                    }
+                  });
                 });
               });
             });

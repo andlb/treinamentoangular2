@@ -1,14 +1,14 @@
+"use strict";
 const Veiculo = require("../models/veiculo");
 const Usuario = require("../models/usuario");
 const Ordemservico = require("../models/ordemservico");
 const Empresa = require("../models/empresa");
 const Resposta = require("../models/resposta");
-const Servicorealizado = require('../models/servicorealizado');
+const Servicorealizado = require("../models/servicorealizado");
 const Servico = require("../models/servico");
 
 module.exports = router => {
-  "use strict";
-
+  
   router.get("/placa/:placa", (req, res) => {
     let retorno = {
       success: false,
@@ -43,7 +43,7 @@ module.exports = router => {
               retorno.message = errUsuario.code + " " + errUsuario.message;
               return res.json(retorno);
             }
-          
+
             retorno.success = true;
             retorno.veiculo = veiculo;
             const oUsuario = {
@@ -52,7 +52,7 @@ module.exports = router => {
               nome: usuario.nome,
               email: usuario.email,
               datanascimento: usuario.datanascimento
-            }
+            };
             retorno.proprietario = oUsuario;
             return res.json(retorno);
           }
@@ -84,12 +84,12 @@ module.exports = router => {
       .populate("veiculoid")
       .exec((err, oOrdemServico) => {
         if (err) {
-          retorno.message = err.code + ' - '+ err.message;
+          retorno.message = err.code + " - " + err.message;
           return res.json(retorno);
         }
         if (!oOrdemServico) {
           retorno.message = "Ordem de serviço não encontrada";
-          return res.json(retorno);          
+          return res.json(retorno);
         }
         var usuario = oOrdemServico.usuarioid;
         const oUsuario = {
@@ -98,26 +98,29 @@ module.exports = router => {
           nome: usuario.nome,
           email: usuario.email,
           datanascimento: usuario.datanascimento
-        }        
-        Servico.find({empresaid:req.params.empresaid},(err,servicos) => {
+        };
+        Servico.find({ empresaid: req.params.empresaid }, (err, servicos) => {
           if (err) {
-            retorno.message = err.code + ' - '+ err.message;
-            return res.json(retorno);    
+            retorno.message = err.code + " - " + err.message;
+            return res.json(retorno);
           }
-          Servicorealizado.find({ordemservicoid:req.params.id},(err,servicorealizado)=>{
-            if (err) {
-              retorno.message = err.code + ' - '+ err.message;
+          Servicorealizado.find(
+            { ordemservicoid: req.params.id },
+            (err, servicorealizado) => {
+              if (err) {
+                retorno.message = err.code + " - " + err.message;
+                return res.json(retorno);
+              }
+              retorno.ordensservico = oOrdemServico;
+              retorno.veiculo = oOrdemServico.veiculoid;
+              retorno.proprietario = oUsuario;
+              retorno.success = true;
+              retorno.servicos = servicos;
+              retorno.servicorealizado = servicorealizado;
               return res.json(retorno);
             }
-            retorno.ordensservico = oOrdemServico;
-            retorno.veiculo = oOrdemServico.veiculoid;
-            retorno.proprietario = oUsuario;            
-            retorno.success = true;
-            retorno.servicos = servicos;
-            retorno.servicorealizado = servicorealizado;
-            return res.json(retorno);
-          });          
-        });             
+          );
+        });
       });
   });
 
@@ -201,20 +204,17 @@ module.exports = router => {
           return res.json(retorno);
         }
         //pesquisas os atendimentos em aberto.
-        console.log(req.params.empresaid);
-        //{ empresaid: req.params.empresaid, status: '1' }
-        Ordemservico.find({ empresaid: req.params.empresaid,status: '1'})
+        Ordemservico.find({ empresaid: req.params.empresaid, status: "1" })
           .populate(
             "veiculoid usuarioid empresaid",
             "placa email nome nomefantasia"
           )
           .exec((err, ordens) => {
             if (err) {
-              retorno.message = err.code + ' - ' +err.message;
+              retorno.message = err.code + " - " + err.message;
               return res.json(retorno);
             }
-            console.log(ordens);
-            if (ordens.length===0) {
+            if (ordens.length === 0) {
               retorno.message = "Ordem de serviço não encontrada";
               return res.json(retorno);
             }
@@ -258,7 +258,7 @@ module.exports = router => {
         retorno.message = "Ordem de serviço não encontrado";
         return res.json(retorno);
       }
-      Resposta.insertMany(oJson,(err,docs)=>{
+      Resposta.insertMany(oJson, (err, docs) => {
         if (err) {
           retorno.message = err.code + " " + err.message;
           return res.json(retorno);
@@ -268,6 +268,65 @@ module.exports = router => {
         retorno.success = true;
         retorno.message = "";
         return res.json(retorno);
+      });
+    });
+  });
+
+  router.post("/deletar", (req, res) => {
+    let retorno = {
+      success: false,
+      message: ""
+    };
+    if (!req.body.empresaid ) {
+      message = ' empresa não informada ';
+      res.json(retorno);
+    }
+    if (!req.body.cpf) {
+      message = ' cpf não informada ';
+      res.json(retorno);      
+    }
+    if (!req.body.ordemservicoid) {
+      message = ' ordem de serviço não informada ';
+      res.json(retorno);
+    }
+    Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
+      if (err) {
+        retorno.message = err.code + " - " + err.message;
+        return res.json(retorno);
+      }
+      if (!oEmpresa) {
+        retorno.message = "Empresa não encontrada";
+        return res.json(retorno);
+      }
+      Usuario.findOne({ cpf: req.body.cpf }).exec((err, oUsuario) => {
+        if (err) {
+          retorno.message = err.code + " - " + err.message;
+          return res.json(retorno);
+        }       
+        var ordemservicoid = req.body.ordemservicoid;
+        Ordemservico.findById(
+          ordemservicoid
+        ).exec((err, ordemservico) => {
+          if (err) {
+            retorno.message = err.code + " " + err.message;
+            return res.json(retorno);
+          }
+          if (!ordemservico) {
+            retorno.message = 'Ordem de serviço não encontrada';
+            return res.json(retorno);            
+          }
+          ordemservico.status = 0;
+          ordemservico.save((err, ordemservico) => {
+            if (err) {
+              retorno.message = err.code + " " + err.message;
+              return res.json(retorno);
+            }else{
+              retorno.success = true;
+              retorno.message = "Ordem de serviço inativada";
+              return res.json(retorno);
+            }
+          });
+        });
       });
     });
   });
@@ -308,14 +367,12 @@ module.exports = router => {
       res.json(retorno);
       return retorno;
     }
-
-    let atributos = [];
+    var atributo = {};
     if (req.body.quilometragem) {
-      let atributo = {
+      atributo = {
         quilometragem: req.body.quilometragem,
         data: Date.now()
-      };
-      atributos.push(atributo);
+      };    
     }
     var veiculo = {
       marca: req.body.marca,
@@ -323,13 +380,13 @@ module.exports = router => {
       placa: req.body.placa,
       ano: req.body.ano,
       anomodelo: req.body.anomodelo,
-      atributos: atributos
     };
     var dtNascimento = "";
     if (req.body.datanascimento) {
       var tNascimento = req.body.datanascimento.split("/");
       if (tNascimento.length === 3) {
-        tNascimento = tNascimento[2]+'-'+tNascimento[1]+'-'+tNascimento[0]
+        tNascimento =
+          tNascimento[2] + "-" + tNascimento[1] + "-" + tNascimento[0];
         dtNascimento = new Date(tNascimento);
       }
     }
@@ -339,7 +396,7 @@ module.exports = router => {
       tipo: 1,
       cpf: req.body.cpf,
       datanascimento: dtNascimento
-    };  
+    };
 
     Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
       if (err) {
@@ -394,7 +451,7 @@ module.exports = router => {
             oVeiculo.placa = veiculo.placa;
             oVeiculo.ano = veiculo.ano;
             oVeiculo.anomodelo = veiculo.anomodelo;
-            oVeiculo.atributos = veiculo.atributos;
+            oVeiculo.atributos.push(atributo);
             oVeiculo.save(err => {
               if (err) {
                 retorno.message = err.code + " " + err.message;
@@ -415,33 +472,40 @@ module.exports = router => {
                 ordemservico.usuarioid = oUsuario._id;
                 ordemservico.status = 1;
                 ordemservico.empresaid = req.body.empresaid;
-                ordemservico.save((err,ordemservico) => {
+                ordemservico.save((err, ordemservico) => {
                   if (err) {
                     retorno.message = err.code + " " + err.message;
                     return res.json(retorno);
                   }
-                  Servicorealizado.remove({ordemservicoid:ordemservico._id}, err =>{                    
-                    if (err) {
-                      retorno.message = err.code + " " + err.message;
-                      return res.json(retorno);                      
-                    }
-                    var servicosrealizados = [];
-                    for (let servicorealizado of req.body.servicorealizado){
-                      servicorealizado.veiculoid = oVeiculo._id;
-                      servicorealizado.empresaid = oEmpresa._id;
-                      servicorealizado.ordemservicoid = ordemservico._id;
-                      servicosrealizados.push(servicorealizado);
-                    }
-                    Servicorealizado.insertMany(servicosrealizados,(err,docs)=>{
+                  Servicorealizado.remove(
+                    { ordemservicoid: ordemservico._id },
+                    err => {
                       if (err) {
-                        retorno.message = err.code +' - ' + err.message;
-                        return res.json(retorno);                        
+                        retorno.message = err.code + " " + err.message;
+                        return res.json(retorno);
                       }
-                      retorno.success = true;                    
-                      retorno.message = "Ordem de serviço cadastrada com sucesso";
-                      return res.json(retorno);
-                    });
-                  });
+                      var servicosrealizados = [];
+                      for (let servicorealizado of req.body.servicorealizado) {
+                        servicorealizado.veiculoid = oVeiculo._id;
+                        servicorealizado.empresaid = oEmpresa._id;
+                        servicorealizado.ordemservicoid = ordemservico._id;
+                        servicosrealizados.push(servicorealizado);
+                      }
+                      Servicorealizado.insertMany(
+                        servicosrealizados,
+                        (err, docs) => {
+                          if (err) {
+                            retorno.message = err.code + " - " + err.message;
+                            return res.json(retorno);
+                          }
+                          retorno.success = true;
+                          retorno.message =
+                            "Ordem de serviço cadastrada com sucesso";
+                          return res.json(retorno);
+                        }
+                      );
+                    }
+                  );
                 });
               });
             });

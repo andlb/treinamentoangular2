@@ -12,6 +12,7 @@ export class OficinaService {
   domain = environment.domain;
 
   empresaid;
+  ordemservicoid;
   usuarioid;
   cadastroProprietario = {
     proprietario: {
@@ -58,14 +59,13 @@ export class OficinaService {
   setProprietario(proprietario) {
     if (!proprietario) return;
     var datanascimento = '';
-    console.log('datanascimento ' + proprietario.datanascimento);
     if (proprietario.datanascimento) {
       var tdatanascimento = proprietario.datanascimento.split('T');
       if (tdatanascimento.length > 1){
         tdatanascimento = tdatanascimento[0].split('-');
         datanascimento = tdatanascimento[2]+'/'+tdatanascimento[1]+'/'+tdatanascimento[0];
       }else {
-        proprietario.datanascimento = proprietario.datanascimento;
+        datanascimento = proprietario.datanascimento;
       }
     }
     this.cadastroProprietario.proprietario = {
@@ -74,6 +74,7 @@ export class OficinaService {
       email: proprietario.email,
       datanascimento: datanascimento
     };
+
   }
 
   setVeiculo(veiculo) {
@@ -97,6 +98,9 @@ export class OficinaService {
       quilometragem: quilometragem
     }
   }
+  setOrdemservicoid(ordemservicoid) {
+    this.ordemservicoid = ordemservicoid;
+  }
 
   setServicosRealizado(servicosRealizado) {
     this.cadastroProprietario.servicosRealizado = servicosRealizado;
@@ -114,9 +118,21 @@ export class OficinaService {
     return this.cadastroProprietario.servicosRealizado;
   }
 
+  inativaOrdemServico(){
+    this.createAuthenticationHeader();
+    let oficina = {
+      ordemservicoid:this.ordemservicoid,
+      cpf: this.cadastroProprietario.proprietario.cpf,
+      empresaid: this.empresaid,
+    };
+    return this.http
+      .post(this.domain + "ordemservico/deletar", oficina, this.options)
+      .map(res => res.json());
+  }
   atualizarDados() {
     this.createAuthenticationHeader();
     let oficina = {
+      ordemservicoid:this.ordemservicoid,
       marca: this.cadastroProprietario.veiculo.marca,
       modelo: this.cadastroProprietario.veiculo.modelo,
       placa: this.cadastroProprietario.veiculo.placa,
@@ -130,8 +146,6 @@ export class OficinaService {
       empresaid: this.empresaid,
       servicorealizado: this.cadastroProprietario.servicosRealizado
     };
-    console.log(oficina);
-
     return this.http
       .post(this.domain + "ordemservico/cadastra", oficina, this.options)
       .map(res => res.json());

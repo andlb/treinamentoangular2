@@ -17,6 +17,7 @@ import {
   templateUrl: "./oficinacadastro.component.html",
   styleUrls: ["./oficinacadastro.component.css"]
 })
+
 export class OficinacadastroComponent implements OnInit, OnDestroy {
   @ViewChild("placa") placa: ElementRef;
   @ViewChild("quilometragem") quilometragem: ElementRef;
@@ -54,16 +55,17 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
             .getAtendimento(this.atendimentoid)
             .subscribe(data => {
               this.edit = true;
+              this.oficinaService.setOrdemservicoid(this.atendimentoid);
               this.oficinaService.setVeiculo(data.veiculo);
               this.oficinaService.setProprietario(data.proprietario);
               this.servicos = data.servicos;
-              console.log(this.servicos );
               this.servicosRealizados = data.servicorealizado;
               this.preencheFormulario();
               this.adicionarServicoForm();
+              this.desabilitaPlaca();
               this.processing = false;
             });
-        }else {
+        } else {
           let empresaid = this.oficinaService.empresaid;
           if (!empresaid) {
             this.messageClass = "alert alert-danger";
@@ -87,6 +89,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
                 this.servicos = data.servicos;
                 this.servicosRealizados = [];
                 this.adicionarServicoForm();
+                this.placa.nativeElement.focus();
                 this.processing = false;
               }
             });
@@ -99,12 +102,12 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   onPesquisarPlaca() {
     if (this.processing || this.edit) return;
     let placa = this.form.controls["placa"].value;
+    placa = placa.toUpperCase();
     if (placa) {
       this.processing = true;
       this.subPlaca = this.oficinaService
         .pesquisaVeiculo(placa)
         .subscribe(data => {
-          console.log(data);
           if (!data) {
             this.messageClass = "alert alert-danger";
             this.message = "Erro desconhecido ao tentar realizar a pesquisa";
@@ -117,6 +120,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
           this.oficinaService.setProprietario(data.proprietario);
           this.preencheFormulario();
           this.processing = false;
+          this.quilometragem.nativeElement.focus();
         });
     }
   }
@@ -151,10 +155,15 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       this.quilometragem.nativeElement.focus();
     }
   }
+  desabilitaPlaca() {
+    this.form.controls["placa"].disable();
+  }
+  habilitaPlaca() {
+    this.form.controls["placa"].enable();
+  }
 
   desabilitaCampos() {
     this.processing = true;
-    this.form.controls["placa"].disable();
     this.form.controls["marca"].disable();
     this.form.controls["modelo"].disable();
     this.form.controls["ano"].disable();
@@ -164,11 +173,16 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["nome"].disable();
     this.form.controls["email"].disable();
     this.form.controls["dtnascimento"].disable();
+    for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
+      (<FormGroup>control).controls["observacao"].disable();
+    }
   }
 
   habilitaCampo() {
     this.processing = false;
-    this.form.controls["placa"].enable();
+    if (!this.edit) {
+      this.habilitaPlaca();
+    }
     this.form.controls["marca"].enable();
     this.form.controls["modelo"].enable();
     this.form.controls["ano"].enable();
@@ -178,6 +192,9 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["nome"].enable();
     this.form.controls["email"].enable();
     this.form.controls["dtnascimento"].enable();
+    for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
+      (<FormGroup>control).controls["observacao"].enable();
+    }
   }
 
   createForm() {
@@ -250,8 +267,55 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.edit = true;
   }
 
+  onDeletar() {
+    this.processing = true;
+    this.desabilitaCampos();
+    let veiculo = {
+      placa: this.form.controls["placa"].value,
+      marca: this.form.controls["marca"].value,
+      modelo: this.form.controls["modelo"].value,
+      ano: this.form.controls["ano"].value,
+      anomodelo: this.form.controls["anomodelo"].value,
+      quilometragem: this.form.controls["quilometragem"].value
+    };
+    let proprietario = {
+      cpf: this.form.controls["cpf"].value,
+      nome: this.form.controls["nome"].value,
+      email: this.form.controls["email"].value,
+      datanascimento: this.form.controls["dtnascimento"].value
+    };
+    this.oficinaService.setVeiculo(veiculo);
+    this.oficinaService.setProprietario(proprietario);
+    this.subEnviar = this.oficinaService
+      .inativaOrdemServico()
+      .subscribe(data => {
+        if (!data) {
+          this.messageClass = "alert alert-danger";
+          this.message = "Erro ao salvar as informações";
+          this.processing = false;
+          this.habilitaCampo();
+          return;
+        }
+        if (!data.success) {
+          this.messageClass = "alert alert-danger";
+          this.message = data.message;
+          this.processing = false;
+          this.habilitaCampo();
+          return;
+        } else {
+          this.messageClass = "alert alert-success";
+          this.message = data.message;
+          setTimeout(() => {
+            this.router.navigate(["centroautomotivo/lista/edit"]);
+            return;
+          }, 2000);
+        }
+      });
+  }
+
   enviaDados() {
-    //this.processing = true;
+    this.processing = true;
+    this.desabilitaCampos();
     let veiculo = {
       placa: this.form.controls["placa"].value,
       marca: this.form.controls["marca"].value,
@@ -267,12 +331,12 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       datanascimento: this.form.controls["dtnascimento"].value
     };
     this.servicosRealizados = [];
-    for (let control of (<FormArray>this.form.get('servicosForm')).controls){
+    for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
       if (control.value.selecionado) {
         let servicoRealizado = {
           servicoid: control.value._id,
-          observacao:control.value.observacao
-        }
+          observacao: control.value.observacao
+        };
         this.servicosRealizados.push(servicoRealizado);
       }
     }
@@ -282,27 +346,28 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.oficinaService.setServicosRealizado(this.servicosRealizados);
 
     this.subEnviar = this.oficinaService.atualizarDados().subscribe(data => {
-      setTimeout(() => {
-        if (!data) {
-          this.messageClass = "alert alert-danger";
-          this.message = "Erro ao salvar as informações";
-          this.processing = false;
-          return;
-        }
-        if (!data.success) {
-          this.messageClass = "alert alert-danger";
-          this.message = data.message;
-          this.processing = false;
-          return;
-        } else {
-          this.messageClass = "alert alert-success";
-          this.message = data.message;
+      if (!data) {
+        this.messageClass = "alert alert-danger";
+        this.message = "Erro ao salvar as informações";
+        this.processing = false;
+        this.habilitaCampo();
+        return;
+      }
+      if (!data.success) {
+        this.messageClass = "alert alert-danger";
+        this.message = data.message;
+        this.processing = false;
+        this.habilitaCampo();
+        return;
+      } else {
+        this.messageClass = "alert alert-success";
+        this.message = data.message;
+        setTimeout(() => {
           this.router.navigate(["centroautomotivo/lista/edit"]);
-          return;
-        }
-      }, 2000);
+        }, 2000);
+        return;
+      }
     });
-
   }
   defineObservacao(event, posicao) {
     this.servicos[posicao].obseracao = event.target.value;
@@ -335,18 +400,20 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
 
   adicionarServicoForm() {
     for (let tServico of this.servicos) {
-      let oServico = this.servicosRealizados.find(servicorealizado => servicorealizado.servicoid === tServico._id);
+      let oServico = this.servicosRealizados.find(
+        servicorealizado => servicorealizado.servicoid === tServico._id
+      );
       let selecionado = false;
-      let observacao = '';
+      let observacao = "";
       if (oServico) {
         selecionado = true;
         observacao = oServico.observacao;
       }
       (<FormArray>this.form.get("servicosForm")).push(
         this.formBuilder.group({
-          _id:tServico._id,
-          descricao:tServico.descricao,
-          selecionado:selecionado,
+          _id: tServico._id,
+          descricao: tServico.descricao,
+          selecionado: selecionado,
           observacao: observacao
         })
       );
