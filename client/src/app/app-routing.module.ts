@@ -14,6 +14,7 @@ const appRoutes: Routes = [
 
   { path: 'empresa', loadChildren: './cadastro/empresa/empresa.module#EmpresaModule'},
   { path: 'centroautomotivo', loadChildren: './oficina/oficina.module#OficinaModule'},
+  { path: 'areaproprietario', loadChildren: './proprietario/proprietario.module#ProprietarioModule'},
   { path: 'login', component:LoginComponent,canActivate: [NoAuthGuard]},
   { path: 'login/:acessode', component:LoginComponent,canActivate: [NoAuthGuard]},
   { path: 'register',component:RegisterComponent, canActivate:[NoAuthGuard] },
