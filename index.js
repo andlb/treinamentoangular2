@@ -6,6 +6,7 @@ const path = require('path');
 const authentication = require('./routes/authentication')(router);
 const empresas = require('./routes/empresas')(router);
 const ordemservico = require('./routes/ordemservico')(router);
+const proprietario = require('./routes/proprietario')(router);
 
 const app = express();
 const bodyParser = require('body-parser')
@@ -35,6 +36,7 @@ app.use(function (req, res, next) {
 app.use("/authentication", authentication);
 app.use("/empresa", empresas);
 app.use("/ordemservico", ordemservico);
+app.use("/proprietario", proprietario);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/client/dist/index.html'));

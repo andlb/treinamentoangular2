@@ -1,3 +1,4 @@
+"use strict";
 const mongoose = require("mongoose");
 const config = require("../config/database");
 const Veiculo = require("../models/veiculo");
@@ -27,7 +28,7 @@ mongoose.connect(config.uri, err => {
         Empresa.find({}, (err, empresas) => {
           empresas.forEach(empresa => {
             Veiculo.find({}, (err, veiculos) => {
-              ordensServico = [];
+              var ordensServico = [];
               veiculos.forEach(veiculo => {
                 var ordemservico = {
                   veiculoid: veiculo._id,
@@ -51,23 +52,24 @@ mongoose.connect(config.uri, err => {
                     console.log(err.code + " - " + err.message);
                     return;
                   }
-                  tServicos = [];
-                  tServico = {};
+                  var tServicos = [];                  
                   for (var cDoc = 0; cDoc < ordemservicos.length; cDoc++) {
                     for (var c = 0; c < servicos.length; c++) {
-                      servico = servicos[c];
+                      var servico = servicos[c];
+                      var tServico = {};
                       tServico.ordemservicoid = ordemservicos[cDoc]._id;
                       tServico.empresaid = ordemservicos[cDoc].empresaid;
                       tServico.veiculoid = ordemservicos[cDoc].veiculoid;
                       tServico.servicoid = servico._id;
+                      console.log(servico._id + " - " + servico.descricao);
                       tServicos.push(tServico);
                     }
                   }
-                  console.log(servicos);
+                  ///console.log(servicos);
                   Servicorealizado.insertMany(tServicos, (err, docs) => {
                     if (err) {
                       console.log(err.code + " - " + err.message);
-                      process.exit(0);
+                      //process.exit(0);
                     } else {
                       console.log("terminado com sucesso");
                       //process.exit(0);
