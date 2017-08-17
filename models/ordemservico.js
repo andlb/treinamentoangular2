@@ -9,6 +9,7 @@ const ordemservicoSchema = new Schema({
     empresaid: { type: String, ref : 'Empresa', required: [true, "Empresa não informada"] },
     data:{type:Date, default:Date.now()},
     status: {type:String},
+    quilometragem:{ type: String,  required: [true, "Quilometragem não informada"] },
 });
 
 module.exports = mongoose.model('Ordemservico', ordemservicoSchema);

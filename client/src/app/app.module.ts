@@ -16,7 +16,7 @@ import { FlashMessagesModule } from "angular2-flash-messages";
 import { ProfileComponent } from "./cadastro/profile/profile.component";
 import { EmpresaService } from "./cadastro/empresa/empresa.service";
 import { OficinaService } from "./oficina/oficina.service";
-import { PropriedadeService } from "./proprietario/proprietario.service";
+import { ProprietarioService } from "./proprietario/proprietario.service";
 
 @NgModule({
   declarations: [
@@ -38,7 +38,7 @@ import { PropriedadeService } from "./proprietario/proprietario.service";
     AuthService,
     EmpresaService,
     OficinaService,
-    PropriedadeService,
+    ProprietarioService,
     AuthGuard,
     NoAuthGuard
   ],

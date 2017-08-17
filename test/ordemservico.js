@@ -14,6 +14,7 @@ mongoose.connect(config.uri, err => {
   if (err) {
     console.log("could not connect to database", err);
   } else {
+    var quilometragem = 0;
     //cadastrar veiculo, usuario e empresa.
     Servicorealizado.remove(err => {
       if (err) {
@@ -35,7 +36,8 @@ mongoose.connect(config.uri, err => {
                   usuarioid: veiculo.usuarioid,
                   empresaid: empresa._id,
                   data: Date.now(),
-                  status: 1
+                  status: 1,
+                  quilometragem: (quilometragem+1500)
                   //servicoRealizado:empresa.servicos
                 };
                 ordensServico.push(ordemservico);

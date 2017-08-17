@@ -29,6 +29,15 @@ module.exports = router => {
         retorno.message = "Usuário não encontrado";
         return res.json(retorno);
       }
+      retorno.proprietario = {
+        nome: oUsuario.nome,
+        endereco: oUsuario.endereco.endereco,
+        bairro: oUsuario.endereco.bairro,
+        numero: oUsuario.endereco.numero,
+        complemento: oUsuario.endereco.complemento,
+        estado: oUsuario.endereco.estado,
+        cep: oUsuario.endereco.cep
+      };
       Veiculo.find(
         {
           usuarioid: req.params.proprietarioid
@@ -47,7 +56,7 @@ module.exports = router => {
           Servicorealizado.find({
             veiculoid: { $in: veiculosid }
           })
-            .populate("ordemservicoid veiculoid servicoid")
+            .populate("ordemservicoid veiculoid servicoid empresaid")
             .sort({
               veiculoid: 1,
               ordemservicoid: 1
@@ -58,79 +67,34 @@ module.exports = router => {
                 return res.json(retorno);
               }
               var tServicosrealizados = [];
-              /*
-          var tServicosrealizados = [{
-            veiculoid:{
-              veiculoid:'',
-              veiculo:'',
-              ordensservico:[{
-                ordenservicoid:'',
-                ordemservico:'',
-                servicos:[{
-                  servicoid:'',
-                  servico:''
-                }]
-              }]
-
-            }
-          }]*/
-
               for (let servicorealizado of servicorealizados) {
                 var veiculoid = servicorealizado.veiculoid._id;
                 let indice = tServicosrealizados.findIndex(
                   fVeiculo => fVeiculo.veiculoid === veiculoid
                 );
+                //quando não existe veiculo
                 if (indice === -1) {
-                  tServicosrealizados.push({
-                    veiculoid: veiculoid,
-                    veiculo: servicorealizado.veiculoid,
-                    ordensservico: [
-                      {
-                        ordenservicoid: servicorealizado.ordemservicoid._id,
-                        ordenservico: servicorealizado.ordemservicoid,
-                        servicos: [
-                          {
-                            servicoid: servicorealizado.servicoid._id,
-                            servico: servicorealizado.servicoid
-                          }
-                        ]
-                      }
-                    ]
-                  });
+                  tServicosrealizados.push(insereVeiculo(servicorealizado));
                 } else {
                   let indiceOrdemServico = tServicosrealizados[
                     indice
                   ].ordensservico.findIndex(
                     fOrdemservico =>
-                      fOrdemservico.ordenservicoid ===
-                      servicorealizado.ordemservicoid._id
+                      fOrdemservico._id === servicorealizado.ordemservicoid._id
                   );
                   if (indiceOrdemServico === -1) {
-                    tServicosrealizados[indice].ordensservico.push({
-                      ordenservicoid: servicorealizado.ordemservicoid._id,
-                      ordenservico: {
-                        _id: servicorealizado.ordemservicoid._id,
-                        status: servicorealizado.ordemservicoid.status,
-                        data: servicorealizado.ordemservicoid.data
-                      },
-                      servicos: [
-                        {
-                          servicoid: servicorealizado.servicoid._id,
-                          servico: servicorealizado.servicoid
-                        }
-                      ]
-                    });
+                    tServicosrealizados[indice].ordensservico.push(
+                      insereOrdemServico(servicorealizado)
+                    );
                   } else {
                     tServicosrealizados[indice].ordensservico[
                       indiceOrdemServico
-                    ].servicos.push({
-                      servicoid: servicorealizado.servicoid._id,
-                      servico: servicorealizado.servicoid
-                    });
+                    ].servicos.push(servicorealizado.servicoid);
                   }
                 }
               }
               retorno.success = true;
+              //retorno.teste = servicorealizados;
               retorno.servicorealizados = tServicosrealizados;
               return res.json(retorno);
             });
@@ -191,6 +155,36 @@ module.exports = router => {
   return router;
 };
 
+function insereVeiculo(servicorealizado) {
+  return {
+    veiculoid: servicorealizado.veiculoid._id,
+    veiculo: servicorealizado.veiculoid,
+    ordensservico: [
+      {
+        _id: servicorealizado.ordemservicoid._id,
+        status: servicorealizado.ordemservicoid.status,
+        data: odbcToDisplay(servicorealizado.ordemservicoid.data),
+        empresanome: servicorealizado.empresaid.nomefantasia,
+        empresacelular: servicorealizado.empresaid.celular,
+        quilometragem: servicorealizado.ordemservicoid.quilometragem,
+        servicos: [servicorealizado.servicoid]
+      }
+    ]
+  };
+}
+
+function insereOrdemServico(servicorealizado) {
+  return {
+    _id: servicorealizado.ordemservicoid._id,
+    status: servicorealizado.ordemservicoid.status,
+    data: odbcToDisplay(servicorealizado.ordemservicoid.data),
+    empresanome: servicorealizado.empresaid.nomefantasia,
+    empresacelular: servicorealizado.empresaid.celular,
+    quilometragem: servicorealizado.ordemservicoid.quilometragem,
+    servicos: [servicorealizado.servicoid]
+  };
+}
+
 function validaEntradaProprietario(req) {
   var message = "";
   if (!req.params.proprietarioid) {
@@ -213,4 +207,13 @@ function validaEntradaProfile(req) {
     message = " Os seguintes campos são obrigatórios: " + message;
   }
   return message;
+}
+
+function odbcToDisplay(data) {
+  var arrayData = data.toISOString().split("T");
+  if (arrayData.length > 1) {
+    var tarrayData = arrayData[0].split("-");
+    return tarrayData[2] + "/" + tarrayData[1] + "/" + tarrayData[0];
+  }
+  return;
 }

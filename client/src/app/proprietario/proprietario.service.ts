@@ -1,14 +1,19 @@
-import { EmpresaService } from "./../cadastro/empresa/empresa.service";
+
 import { Http, Headers, RequestOptions } from "@angular/http";
-import { AuthService } from "./../autenticar/auth.service";
 import { Injectable, OnDestroy } from "@angular/core";
-import { environment } from "./../../environments/environment";
 import { Subject } from "rxjs/Subject";
+import { AuthService } from "./../autenticar/auth.service";
 import { ErroMessage } from "./../share/erro.model";
+import { EmpresaService } from "./../cadastro/empresa/empresa.service";
+import { environment } from "./../../environments/environment";
+
 
 @Injectable()
-export class PropriedadeService {
-
+export class ProprietarioService {
+  options;
+  domain = environment.domain;
+  proprietarioid;
+  usuarioid;
 
   constructor(
     private authService: AuthService,
@@ -17,5 +22,22 @@ export class PropriedadeService {
   ) {
   }
 
+  ////servicos/:proprietarioid
+  createAuthenticationHeader() {
+    this.authService.loadToken();
+    this.options = new RequestOptions({
+      headers: new Headers({
+        "Content-Type": "application/json",
+        authorization: this.authService.authToken
+      })
+    });
+  }
+
+  getDadosProprietario(proprietarioid) {
+    this.createAuthenticationHeader();
+    return this.http
+      .get(this.domain + "proprietario/servicos/" + proprietarioid, this.options)
+      .map(res => res.json());
+  }
 
 }

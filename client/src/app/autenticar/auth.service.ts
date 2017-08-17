@@ -14,6 +14,7 @@ export class AuthService {
   usuarioToken;
   options;
   dadosAtivo = "active";
+  usuarioId;
   empresaId;
   empresaNome;
   constructor(
@@ -67,18 +68,24 @@ export class AuthService {
     localStorage.setItem('usuario',JSON.stringify(usuario));
     this.authToken = token;
     this.usuarioToken = usuario;
-
+    this.usuarioId = usuario._id;
     if (usuario.empresa) {
       this.empresaId = usuario.empresa._id;
       this.empresaNome = usuario.empresa.nomefantasia;
     }
     this.empresaChanged.next('empresaalterada');
+  }
 
+  getUsuarioIdFromStorage(){
+    var usuario = JSON.parse(localStorage.getItem('usuario'));
+    if (usuario) {
+      return usuario.usuarioid;
+    }
+    return null;
   }
 
   getEmpresaFromStorage() {
     var usuario = JSON.parse(localStorage.getItem('usuario'));
-    console.log(usuario);
     if (usuario) {
       if (usuario.empresa) {
         this.empresaId = usuario.empresa._id;

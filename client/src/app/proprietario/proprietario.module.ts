@@ -14,4 +14,4 @@ import { PropriedadeRoutingModule } from './propriedade-routing.module';
     PropriedadeRoutingModule
   ]
 })
-export class OficinaModule { }
+export class ProprietarioModule { }
