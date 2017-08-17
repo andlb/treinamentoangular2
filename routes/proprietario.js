@@ -6,6 +6,7 @@ const Empresa = require("../models/empresa");
 const Resposta = require("../models/resposta");
 const Servicorealizado = require("../models/servicorealizado");
 const Servico = require("../models/servico");
+const moment = require('moment');
 
 module.exports = router => {
   //TODO: trazer os dados do veiculo e os dados do proprietário.
@@ -36,7 +37,8 @@ module.exports = router => {
         numero: oUsuario.endereco.numero,
         complemento: oUsuario.endereco.complemento,
         estado: oUsuario.endereco.estado,
-        cep: oUsuario.endereco.cep
+        cep: oUsuario.endereco.cep,
+        cidade: oUsuario.endereco.cidade
       };
       Veiculo.find(
         {
@@ -89,7 +91,7 @@ module.exports = router => {
                   } else {
                     tServicosrealizados[indice].ordensservico[
                       indiceOrdemServico
-                    ].servicos.push(servicorealizado.servicoid);
+                    ].servicos.push(insereServico(servicorealizado));
                   }
                 }
               }
@@ -167,13 +169,14 @@ function insereVeiculo(servicorealizado) {
         empresanome: servicorealizado.empresaid.nomefantasia,
         empresacelular: servicorealizado.empresaid.celular,
         quilometragem: servicorealizado.ordemservicoid.quilometragem,
-        servicos: [servicorealizado.servicoid]
+        servicos: [insereServico(servicorealizado)]
       }
     ]
   };
 }
 
 function insereOrdemServico(servicorealizado) {
+  console.log("entrada" + servicorealizado.servicoid);
   return {
     _id: servicorealizado.ordemservicoid._id,
     status: servicorealizado.ordemservicoid.status,
@@ -181,9 +184,26 @@ function insereOrdemServico(servicorealizado) {
     empresanome: servicorealizado.empresaid.nomefantasia,
     empresacelular: servicorealizado.empresaid.celular,
     quilometragem: servicorealizado.ordemservicoid.quilometragem,
-    servicos: [servicorealizado.servicoid]
+    servicos: [insereServico(servicorealizado)]
   };
 }
+
+
+function insereServico(servicorealizado){
+  var proximaDataTroca = moment(servicorealizado.ordemservicoid.data,moment.ISO_8601).add(servicorealizado.servicoid.tempo,'month');
+  var proximaTroca = parseFloat(servicorealizado.ordemservicoid.quilometragem) + parseFloat(servicorealizado.servicoid.quilometragem);
+  servicorealizado.servicoid.proximaTroca = proximaTroca;  
+  return {
+    _id:servicorealizado.servicoid._id,
+    descricao:servicorealizado.servicoid.descricao,
+    tempo:servicorealizado.servicoid.tempo,
+    quilometragem:servicorealizado.servicoid.quilometragem,
+    proximatroca:proximaTroca,
+    proximatrocadata: moment(proximaDataTroca).format('DD/MM/YYYY')
+
+  }
+}
+
 
 function validaEntradaProprietario(req) {
   var message = "";

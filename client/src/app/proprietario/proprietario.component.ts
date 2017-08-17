@@ -4,6 +4,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FormBuilder } from "@angular/forms";
 import { ProprietarioService } from "./proprietario.service";
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: "app-proprietario",

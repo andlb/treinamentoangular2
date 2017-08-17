@@ -1,24 +1,50 @@
-<h2>Emphasis classes</h2>
+<h2>{{proprietario?.nome | uppercase}}</h2>
 <div class="container">
-<p class="text-muted">Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.</p>
-<p class="text-primary">Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-<p class="text-warning">Etiam porta sem malesuada magna mollis euismod.</p>
-<p class="text-danger">Donec ullamcorper nulla non metus auctor fringilla.</p>
-<p class="text-success">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-<p class="text-info">Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+  <p class="text-warning">{{proprietario?.endereco}} {{proprietario?.numero}} {{proprietario?.bairro}}</p>
+  <p class="text-warning">{{proprietario?.cidade}} {{proprietario?.estado}} {{proprietario?.cep}}</p>
 </div>
 <div class="container">
   <div *ngFor="let servicorealizado of servicosrealizado;">
-  <div class="alert alert-dismissible alert-success">
-    Veiculo placa: <strong>{{servicorealizado.veiculo.placa}}</strong>
-  </div>
+    <div class="alert alert-dismissible alert-success">
+      Veiculo:
+      <strong>
+      {{servicorealizado.veiculo.marca}}
+      {{servicorealizado.veiculo.modelo}}
+  </strong> PLACA:
+      <strong>
+    {{servicorealizado.veiculo.placa}}
+    </strong>
+    </div>
     <div class="list-group" *ngFor="let ordemservico of servicorealizado.ordensservico;">
       <a class="list-group-item active">
-        {{ordemservico.empresanome}} {{ordemservico.data}} Quilometragem: {{ordemservico.quilometragem}} Telefone: {{ordemservico.empresacelular}}
+        <div class='container'>
+          <div class='col-sm-3'>
+            {{ordemservico.empresanome}}
+          </div>
+          <div class='col-sm-2'>
+            {{ordemservico.data}}
+          </div>
+          <div class='col-sm-2'>
+            Km: {{ordemservico.quilometragem}}
+          </div>
+          <div class='col-sm-2'>
+            Cel.: {{ordemservico.empresacelular}}
+          </div>
+        </div>
       </a>
       <a class="list-group-item" *ngFor="let servico of ordemservico.servicos">
-        {{servico.descricao}}
-  </a>
-
+        <div class='container'>
+          <div class='col-sm-3'>
+            {{servico.descricao}}
+          </div>
+          <div class='col-sm-4'>
+          Dt próx. troca {{servico.proximatrocadata}}
+          </div>
+          <div class='col-sm-3'>
+           Km próx. troca {{servico.proximatroca}}
+          </div>
+        </div>
+      </a>
     </div>
   </div>
+</div>

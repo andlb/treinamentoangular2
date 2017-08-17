@@ -4,12 +4,12 @@
   "description": "projeto yucar para mecanicas e centros automotivos",
   "main": "index.js",
   "engines": {
-    "node":"7.9.0",
-    "npm":"3.10.10"
+    "node": "7.9.0",
+    "npm": "3.10.10"
   },
   "scripts": {
     "start": "node index.js",
-    "dev":"nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -31,10 +31,11 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
-    "cors": "^2.8.4",    
+    "cors": "^2.8.4",
     "express": "^4.15.3",
     "jsonwebtoken": "^7.4.1",
-    "mongoose": "^4.11.4"    
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.4"
   },
   "devDependencies": {}
 }
