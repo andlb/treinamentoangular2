@@ -7,17 +7,14 @@
   </div>
   <form class="form-horizontal" [formGroup]="form" (submit)="enviaDados()">
     <div class="form-group">
-      <div class="col-lg-11 col-lg-offset-1">
-        <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">{{(!edit) ? 'Incluir' : 'Salvar' }}</button>
-        <button *ngIf="(edit)" type="button" class="btn btn-danger" (click)="onDeletar()">Deletar</button>
-        <button *ngIf="(!edit)" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button>
-        <button type="button" class="btn btn-info" (click)="onVoltar()">Voltar</button>
+      <div class="col-sm-11 col-sm-offset-1">
+        <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">Salvar</button>
+        <button [disabled]="processing" type="button" class="btn btn-info" (click)="onVoltar()">Voltar</button>
       </div>
     </div>
-
     <div class="form-group">
-      <label for="placa" class="col-lg-1 control-label">Placa</label>
-      <div class="col-lg-2">
+      <label for="placa" class="col-sm-1 control-label">Placa</label>
+      <div class="col-sm-2">
         <div [ngClass]="{'has-error':((form.controls.placa.touched) &&  (form.controls.placa.errors)), 'has-success': !form.controls.placa.errors }">
           <input type="text" class="form-control" autofocus #placa id="placa" name="placa" formControlName="placa" placeholder="*Placa do veículo">
           <ul class="help-block">
@@ -26,36 +23,28 @@
           </ul>
         </div>
       </div>
-      <label for="marca" class="col-lg-2 control-label">Marca</label>
-      <div class="col-lg-2">
+      <label for="marca" class="col-sm-2 control-label">Marca</label>
+      <div class="col-sm-2">
         <input type="text" class="form-control" id="marca" name="marca" formControlName="marca" placeholder="*Marca do veículo">
       </div>
-      <label for="modelo" class="col-lg-1 control-label">Modelo</label>
-      <div class="col-lg-2">
+      <label for="modelo" class="col-sm-1 control-label">Modelo</label>
+      <div class="col-sm-2">
         <input type="text" class="form-control" id="modelo" name="modelo" formControlName="modelo" placeholder="*Modelo do veiculo">
       </div>
     </div>
     <div class="form-group">
-      <label for="ano" class="col-lg-1 control-label">Ano</label>
-      <div class="col-lg-2">
+      <label for="ano" class="col-sm-1 control-label">Ano</label>
+      <div class="col-sm-2">
         <input type="text" class="form-control" id="ano" name="ano" formControlName="ano" placeholder="*ano do veiculo">
       </div>
-      <label for="anomodelo" class="col-lg-2 control-label">Ano modelo</label>
-      <div class="col-lg-2 col-lg-off-8">
+      <label for="anomodelo" class="col-sm-2 control-label">Ano modelo</label>
+      <div class="col-sm-2 col-sm-off-8">
         <input
           type="text"
           class="form-control"
           id="anomodelo"
           name="anomodelo"
           formControlName="anomodelo" placeholder="*Ano modelo">
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-lg-11 col-lg-offset-1">
-        <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">{{(!edit) ? 'Incluir' : 'Editar' }}</button>
-        <button *ngIf="(edit)" type="button" class="btn btn-danger" (click)="onDeletar()">Deletar</button>
-        <button *ngIf="(!edit)" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button>
-        <button type="button" class="btn btn-info" (click)="onVoltar()">Voltar</button>
       </div>
     </div>
   </form>

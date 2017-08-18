@@ -1,4 +1,4 @@
-import { ErroMessage } from "./../../share/erro.model";
+  import { ErroMessage } from "./../../share/erro.model";
 import { SurveyComponent } from "./../../oficina/survey/survey.component";
 
 import { EmpresaService } from "./../../cadastro/empresa/empresa.service";
@@ -28,6 +28,7 @@ export class VeiculoComponent implements OnInit {
   message;
   subPesquisa: Subscription;
   subsPesquisaAtendimento: Subscription;
+  subSalvar: Subscription;
   veiculoid;
   veiculo;
 
@@ -39,21 +40,21 @@ export class VeiculoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.createForm();
+    this.processing = true;
     this.subsPesquisaAtendimento = this.route.params.subscribe(
       (params: Params) => {
         this.veiculoid = params.id;
         //console.log(this.veiculoid);
         if (this.veiculoid) {
+          this.desabilitaCampos()
           this.subPesquisa = this.proprietarioServ
             .getDadosVeiculo(this.veiculoid)
             .subscribe(data => {
-
               if (!data.success) {
-                this.message = data.message;
-                this.messageClass = "alert alert-danger";
+                this.messageErro(data.message);
+                return;
               }
-              console.log('dados do veiculo');
-              console.log(data.veiculo);
               this.veiculo = {
                 placa: data.veiculo.placa,
                 marca: data.veiculo.marca,
@@ -61,13 +62,22 @@ export class VeiculoComponent implements OnInit {
                 ano: data.veiculo.ano,
                 anomodelo: data.veiculo.anomodelo
               };
-              console.log(this.veiculo);
               this.preencheFormulario();
+              this.processing = false;
+              this.habilitaCampo();
             });
         }
       }
     );
-    this.createForm();
+  }
+
+messageErro(message){
+  this.message = message;
+  this.messageClass = "alert alert-danger";
+  }
+messageSuccess(message){
+  this.message = message;
+  this.messageClass = "alert alert-success";
   }
 
   preencheFormulario() {
@@ -131,6 +141,22 @@ export class VeiculoComponent implements OnInit {
       ano: this.form.controls["ano"].value,
       anomodelo: this.form.controls["anomodelo"].value
     };
+    this.subSalvar = this.proprietarioServ.enviarDadosVeiculo(veiculo).subscribe((data) => {
+      if (!data.success) {
+        this.processing = false;
+        this.messageErro(data.message);
+        this.habilitaCampo();
+      }
+      this.messageSuccess('Dados alterado com sucesso');
+      setTimeout(() =>{
+        this.onVoltar();
+      },2000)
+      return;
+    });
+  }
+
+  onVoltar(){
+    this.router.navigate(['/areaproprietario']);
   }
 
   ngOnDestroy() {
@@ -139,6 +165,9 @@ export class VeiculoComponent implements OnInit {
     }
     if (this.subPesquisa) {
       this.subPesquisa.unsubscribe();
+    }
+    if (this.subSalvar) {
+      this.subSalvar.unsubscribe();
     }
   }
 }
