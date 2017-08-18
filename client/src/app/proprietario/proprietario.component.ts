@@ -53,7 +53,7 @@ export class ProprietarioComponent implements OnInit {
   irProfile(){
     this.router.navigate(['/profile']);
   }
-  irVeiculo(){
-    this.router.navigate(['/veiculo']);
+  irVeiculo(veiculoid){
+    this.router.navigate(['/areaproprietario/veiculo',veiculoid]);
   }
 }

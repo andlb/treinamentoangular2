@@ -14,7 +14,7 @@
       <strong>
     {{servicorealizado.veiculo.placa}}
     </strong>
-    <i style='cursor:pointer' class="fa fa-pencil fa-fw" (click)='irProfile()'></i>
+    <i style='cursor:pointer' class="fa fa-pencil fa-fw" (click)='irVeiculo(servicorealizado.veiculo._id)'></i>
     </div>
     <div class="list-group" *ngFor="let ordemservico of servicorealizado.ordensservico;">
       <a class="list-group-item active">

@@ -9,7 +9,7 @@ import { VeiculoComponent } from './veiculo/veiculo.component';
 const propriedadeRoutes: Routes = [
   { path: '', component: ProprietarioComponent },
   { path: 'proprietario', component: ProprietarioComponent },
-  { path: 'veiculo', component: VeiculoComponent }
+  { path: 'veiculo/:id', component: VeiculoComponent }
 ];
 
 @NgModule({

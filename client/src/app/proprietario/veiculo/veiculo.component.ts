@@ -39,29 +39,35 @@ export class VeiculoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.createForm();
     this.subsPesquisaAtendimento = this.route.params.subscribe(
       (params: Params) => {
         this.veiculoid = params.id;
+        //console.log(this.veiculoid);
         if (this.veiculoid) {
           this.subPesquisa = this.proprietarioServ
             .getDadosVeiculo(this.veiculoid)
             .subscribe(data => {
+
               if (!data.success) {
                 this.message = data.message;
                 this.messageClass = "alert alert-danger";
               }
+              console.log('dados do veiculo');
+              console.log(data.veiculo);
               this.veiculo = {
-                placa: data.placa,
-                marca: data.marca,
-                modelo: data.modelo,
-                ano: data.ano
+                placa: data.veiculo.placa,
+                marca: data.veiculo.marca,
+                modelo: data.veiculo.modelo,
+                ano: data.veiculo.ano,
+                anomodelo: data.veiculo.anomodelo
               };
+              console.log(this.veiculo);
               this.preencheFormulario();
             });
         }
       }
     );
+    this.createForm();
   }
 
   preencheFormulario() {
