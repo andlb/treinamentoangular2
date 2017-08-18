@@ -1,14 +1,15 @@
-
 import { NoAuthGuard } from './../autenticar/guards/notAuth.guard';
 import { AuthGuard } from './../autenticar/guards/auth.guard';
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProprietarioComponent } from './proprietario.component';
+import { VeiculoComponent } from './veiculo/veiculo.component';
 
 const propriedadeRoutes: Routes = [
   { path: '', component: ProprietarioComponent },
   { path: 'proprietario', component: ProprietarioComponent },
+  { path: 'veiculo', component: VeiculoComponent }
 ];
 
 @NgModule({

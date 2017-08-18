@@ -40,4 +40,18 @@ export class ProprietarioService {
       .map(res => res.json());
   }
 
+  getDadosVeiculo(veiculoid) {
+    this.createAuthenticationHeader();
+    return this.http
+      .get(this.domain + "proprietario/getveiculo/" + veiculoid, this.options)
+      .map(res => res.json());
+  }
+
+  enviarDadosVeiculo(veiculo){
+    this.createAuthenticationHeader();
+    return this.http
+      .post(this.domain + "proprietario/salvarVeiculo", veiculo, this.options)
+      .map(res => res.json());
+  }
+
 }

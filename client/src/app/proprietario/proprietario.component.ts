@@ -50,18 +50,10 @@ export class ProprietarioComponent implements OnInit {
     if (this.subsPesqParamPropr) this.subsPesqParamPropr.unsubscribe();
     if (this.subsPesq) this.subsPesq.unsubscribe();
   }
-  preencheFormulario() {}
-
-  desabilitaCampos() {}
-
-  habilitaCampo() {}
-
-  createForm() {}
-
-  onLimpar() {}
-
-  //coloca o formulario em estado de edição.
-  onEditItem() {}
-
-  enviaDados() {}
+  irProfile(){
+    this.router.navigate(['/profile']);
+  }
+  irVeiculo(){
+    this.router.navigate(['/veiculo']);
+  }
 }

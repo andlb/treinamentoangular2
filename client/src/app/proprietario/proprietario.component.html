@@ -1,4 +1,4 @@
-<h2>{{proprietario?.nome | uppercase}}</h2>
+<h2> {{proprietario?.nome | uppercase}}<i class="fa fa-pencil fa-fw"(click)='irProfile()'></i> </h2>
 <div class="container">
   <p class="text-warning">{{proprietario?.endereco}} {{proprietario?.numero}} {{proprietario?.bairro}}</p>
   <p class="text-warning">{{proprietario?.cidade}} {{proprietario?.estado}} {{proprietario?.cep}}</p>
@@ -14,6 +14,7 @@
       <strong>
     {{servicorealizado.veiculo.placa}}
     </strong>
+    <i style='cursor:pointer' class="fa fa-pencil fa-fw" (click)='irProfile()'></i>
     </div>
     <div class="list-group" *ngFor="let ordemservico of servicorealizado.ordensservico;">
       <a class="list-group-item active">
