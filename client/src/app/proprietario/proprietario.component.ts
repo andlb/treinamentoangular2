@@ -33,6 +33,7 @@ export class ProprietarioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.processing=true;
     this.proprietarioId = this.authService.getUsuarioIdFromStorage();
     console.log(this.proprietarioId);
     this.subsPesq = this.proprietarioServ
@@ -40,8 +41,6 @@ export class ProprietarioComponent implements OnInit {
       .subscribe(data => {
         this.proprietario     = data.proprietario;
         this.servicosrealizado = data.servicorealizados;
-        //console.log(this.servicosrealizado);
-        console.log(this.proprietario);
         this.processing = false;
       });
   }

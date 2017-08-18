@@ -1,12 +1,11 @@
-  import { ErroMessage } from "./../../share/erro.model";
-import { SurveyComponent } from "./../../oficina/survey/survey.component";
-
 import { EmpresaService } from "./../../cadastro/empresa/empresa.service";
 import { Subscription } from "rxjs/Subscription";
 import { Subject } from "rxjs/Subject";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { ProprietarioService } from "./../proprietario.service";
+import { ErroMessage } from "./../../share/erro.model";
+
 import {
   Component,
   OnInit,
@@ -45,7 +44,6 @@ export class VeiculoComponent implements OnInit {
     this.subsPesquisaAtendimento = this.route.params.subscribe(
       (params: Params) => {
         this.veiculoid = params.id;
-        //console.log(this.veiculoid);
         if (this.veiculoid) {
           this.desabilitaCampos()
           this.subPesquisa = this.proprietarioServ
@@ -135,6 +133,7 @@ messageSuccess(message){
     this.processing = true;
     this.desabilitaCampos();
     let veiculo = {
+      veiculoid:this.veiculoid,
       placa: this.form.controls["placa"].value,
       marca: this.form.controls["marca"].value,
       modelo: this.form.controls["modelo"].value,
@@ -146,6 +145,7 @@ messageSuccess(message){
         this.processing = false;
         this.messageErro(data.message);
         this.habilitaCampo();
+        return;
       }
       this.messageSuccess('Dados alterado com sucesso');
       setTimeout(() =>{

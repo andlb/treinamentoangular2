@@ -15,10 +15,11 @@ module.exports = router => {
       message: "",
       servicorealizado: undefined
     };
+    
     retorno.message = validaEntradaProprietario(req);
     if (retorno.message) {
       return res.json(retorno);
-    }
+    }    
     Usuario.findById(req.params.proprietarioid, (err, oUsuario) => {
       if (err) {
         retorno.message = err.code + " - " + err.message;
@@ -52,7 +53,6 @@ module.exports = router => {
           for (var veiculo of veiculos) {
             veiculosid.push(veiculo._id);
           }
-          console.log(veiculosid);
           Servicorealizado.find({
             veiculoid: { $in: veiculosid }
           })
@@ -133,6 +133,7 @@ module.exports = router => {
       success: false,
       message: ""
     };
+    console.log('passou ak1');
     if (!req.body.veiculoid) {
       retorno.message = "Veiculoid não informado";
       return res.json(retorno);
@@ -141,8 +142,6 @@ module.exports = router => {
       retorno.message = "Placa não informada";
       return res.json(retorno);
     }
-
-    //TODO: Ter um log com todas as alterações realizadas naquele veiculo.
     Veiculo.findOneAndUpdate(
       { _id: req.body.veiculoid, placa: req.body.placa },
       {
@@ -150,7 +149,7 @@ module.exports = router => {
           marca: req.body.marca,
           modelo: req.body.modelo,
           ano: req.body.ano,
-          anomodelo: req.body.anomodelo
+          anomodelo: req.body.anomodelo  
         }
       },
       (err, veiculo) => {
@@ -196,7 +195,6 @@ function insereVeiculo(servicorealizado) {
 }
 
 function insereOrdemServico(servicorealizado) {
-  console.log("entrada" + servicorealizado.servicoid);
   return {
     _id: servicorealizado.ordemservicoid._id,
     status: servicorealizado.ordemservicoid.status,
