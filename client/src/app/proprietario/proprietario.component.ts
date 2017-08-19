@@ -18,7 +18,6 @@ export class ProprietarioComponent implements OnInit {
   proprietarioId;
   messageClass;
   message;
-  propriedadeid = "";
   proprietario: any;
   servicosrealizado:any;
   processing = false;
@@ -50,7 +49,7 @@ export class ProprietarioComponent implements OnInit {
     if (this.subsPesq) this.subsPesq.unsubscribe();
   }
   irProfile(){
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/profile', this.proprietarioId]);
   }
   irVeiculo(veiculoid){
     this.router.navigate(['/areaproprietario/veiculo',veiculoid]);

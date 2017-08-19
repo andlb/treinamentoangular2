@@ -2,6 +2,7 @@ const Usuario = require('../models/usuario');
 const Empresa = require('../models/empresa');
 const jwt = require('jsonwebtoken');
 const database = require('../config/database');
+const moment = require("moment");
 
 module.exports = (router) => {
   router.post('/register', (req, res) => {
@@ -64,7 +65,6 @@ module.exports = (router) => {
               return;
             }
           }
-          console.log("Erro> UserJs:" + err);
         } else {
           res.json({
             success: true,
@@ -100,7 +100,6 @@ module.exports = (router) => {
     Usuario.findOne({
       email: req.body.email
     }).populate('empresa').exec((err, user) => {      
-      console.log(user);
       if (err) {
         retorno.message = err.code + " - " + err.message;      
         return res.json(retorno);
@@ -134,7 +133,6 @@ module.exports = (router) => {
               cadastrocompleto: user.cadastrocompleto,
               empresanome: empresanome              
             };
-            console.log(retorno.user);
             return res.json(retorno);
           }
         }
@@ -204,7 +202,8 @@ module.exports = (router) => {
   */
   
 
-  router.get('/getUsuario', (req, res) => {
+  router.get('/getUsuario/:usuarioid', (req, res) => {
+
     const retorno = {
       success: false,
       message: '',
@@ -212,40 +211,40 @@ module.exports = (router) => {
     };
     if(!req.params.usuarioid){
       retorno.message = "Código do usuário não definido";
-      res.json(retorno);
-      return;
+      return res.json(retorno);      
     }
     Usuario.findOne({
-      _id: req.body.userid
-    }).populate('empresa').exec((err, user) => {
+      _id: req.params.usuarioid
+    }).populate('empresa').exec((err, user) => {      
       if (err) {
         retorno.mensagem = err;
-        res.json(retorno);
-        return;
+        return res.json(retorno);
       }
       if (!user) {
         retorno.mensagem = "Usuario não encontrado"
-        res.json(retorno);
-        return;
+        return res.json(retorno);
       } 
       var empresaid = "";
       var empresanome = "";
       if (user.empresa) {
         empresaid = user.empresa;
         empresanome = user.empresa.nomefantasia;
-      }
+      }     
       retorno.usuario = {
+        usuarioid:req.params.usuarioid,        
         nome:user.nome,        
-        endereco:user.endereco.endereco,
+        sexo:user.sexo,
+        cpf:user.cpf,
+        dtnascimento:moment(user.datanascimento).format('DD/MM/YYYY'),
+        email:user.email,
         bairro:user.endereco.bairro,
-        numero:user.endereco.numero,
-        complemento:user.endereco.complemento,
         estado:user.endereco.estado,
+        cidade:user.endereco.cidade,
         cep:user.endereco.cep,
         empresaid:empresaid,
         empresanome: empresanome
       }
-      res.json(retorno);
+      return res.json(retorno);
     });
   });
 
@@ -254,45 +253,47 @@ module.exports = (router) => {
       success: false,
       message: ''
     };
-    if (!req.body.userid) {
-      retorno.message = 'Código do usuário não definido';
-      res.json(retorno);
-      return;
+    if (!req.body.usuarioid) {
+      retorno.message = 'Código do usuário não informado';
+      return res.json(retorno);      
     }
     if (!req.body.nome) {
-      retorno.message = 'Nome não definido ';
-      res.json(retorno);
-      return;
+      retorno.message = 'Nome não informado ';
+      return res.json(retorno);      
+    }
+    if (!req.body.cpf) {
+      retorno.message = 'CPF não informado ';
+      return res.json(retorno);
     }
     Usuario.findOne({
-      _id: req.body.userid
+      _id: req.body.usuarioid
     }, (err, user) => {
       if (err) {
         retorno.mensagem = err;
-        res.json(retorno);
-        return;
+        return res.json(retorno);
       }
       if (!user) {
         retorno.mensagem = "Usuario não encontrado"
-        res.json(retorno);
-        return;
+        return res.json(retorno);
       }
       user.nome = req.body.nome;
+      user.cpf = req.body.cpf;
+      user.sexo = req.body.sexo;
       user.tipo = 0
+      user.datanascimento = moment(req.body.dtnascimento,'DD/MM/YYYY')
       user.cadastrocomplemento = 1
       user.endereco = {
-        endereco: req.body.endereco,
         bairro: req.body.bairro,
-        numero: req.body.numero,
-        complemento: req.body.complemento,
         estado: req.body.estado,
+        cidade:req.body.cidade,
         cep: req.body.cep
       }
+
       user.save((err)=>{
         if (err) {
           res.json({ success: false, message: err }); // Return error message
         } else {
-          res.json({ success: true, message: 'Dados cadastrados com sucesso' }); // Return success message
+          res.json({ success: true, message: 'Dados salvo com sucesso' }); // Return success message
         }        
       });
 

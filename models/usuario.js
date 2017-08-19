@@ -52,20 +52,21 @@ const tipoValidator = [{
 }]
 
 const usuarioSchema = new Schema({
-    nome: { type: String },
+    nome: { type: String,uppercase:true },
     email: { type: String, required: true, unique: true, lowercase: true, validate: emailValidators },
     password: { type: String, validate: passwordValidator },    
     tipo: { type: Number, required: true, validate:tipoValidator },//0 - proprietário, 1 convidado, 2 proprietário e convidado
     cpf:{type:String},
+    sexo:{type:String},
     empresa:{type:String, ref : 'Empresa'},
     datanascimento:{type:Date},
     endereco: {
         endereco: { type: String },
-        bairro: { type: String },
+        bairro: { type: String,uppercase:true },
         numero: { type: String },
         complemento: { type: String },
-        cidade: { type: String },
-        estado: { type: String },
+        cidade: { type: String,uppercase:true },
+        estado: { type: String,uppercase:true },
         cep: { type: String },
     },
     cadastrocompleto: { type: Boolean, default: false }

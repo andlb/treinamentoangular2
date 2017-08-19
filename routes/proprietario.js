@@ -48,7 +48,6 @@ module.exports = router => {
             retorno.message = err.code + " - " + err.message;
             return res.json(retorno);
           }
-
           var veiculosid = [];
           for (var veiculo of veiculos) {
             veiculosid.push(veiculo._id);

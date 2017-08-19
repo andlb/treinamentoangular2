@@ -19,7 +19,7 @@ const appRoutes: Routes = [
   { path: 'login/:acessode', component:LoginComponent,canActivate: [NoAuthGuard]},
   { path: 'register',component:RegisterComponent, canActivate:[NoAuthGuard] },
   { path: 'register/:acessode',component:RegisterComponent, canActivate:[NoAuthGuard] },
-  { path: 'profile', component:ProfileComponent,canActivate: [AuthGuard]},
+  { path: 'profile/:id', component:ProfileComponent,canActivate: [AuthGuard]},
   { path: '**', component:HomeComponent}
 ];
 

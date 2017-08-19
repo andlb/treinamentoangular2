@@ -1,91 +1,118 @@
 <h1 class="page-header">Minhas informações</h1>
 <div class="row show-hide-message">
-    <div [ngClass]="messageClass">
-        {{message}}
-    </div>
+  <div [ngClass]="messageClass">
+    {{message}}
+  </div>
 </div>
-
-<form [formGroup]="form"  (submit)="updateProfile()">
+<div class='containter'>
+  <form [formGroup]="form" (submit)="updateProfile()">
     <div class="form-group">
+        <div class="col-sm-12">
+          <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">Salvar</button>
+          <button [disabled]="processing" type="button" class="btn btn-info" (click)="onVoltar()">Voltar</button>
+        </div>
+      </div>
+    <div class="form-group">
+      <div class="col-sm-12">
         <label for="Nome">Nome</label>
         <div [ngClass]="{'has-success': form.controls.nome.valid, 'has-error': form.controls.nome.dirty && form.controls.nome.errors}">
-            <!-- nome Input -->
-            <input type="text" [disabled]="processing" name="nome" class="form-control" placeholder="*Nome" autocomplete="off" formControlName="nome" />
-            <!-- Validation -->
-            <ul class="help-block">
-            </ul>
+          <!-- nome Input -->
+          <input type="text" name="nome" class="form-control" placeholder="*Nome" autocomplete="off" formControlName="nome" />
+          <!-- Validation -->
+          <ul class="help-block">
+          </ul>
         </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
+        <label for="cpf">CPF</label>
+        <input type="text" class="form-control" id="cpf" name="cpf" formControlName="cpf" placeholder="*CPF do proprietário">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
+        <label for="sexo">Sexo</label>
+        <select class="form-control" formControlName="sexo" id="sexo" name="sexo">
+            <option></option>
+          <option value="M">Masculino</option>
+          <option value="F">Feminino</option>
+        </select>
+      </div>
     </div>
 
     <div class="form-group">
-        <label for="endereco">Endereço</label>
-        <div>
-            <!--endereco Input -->
-            <input type="text" [disabled]="processing" name="endereco" class="form-control" placeholder="Endereço" autocomplete="off" formControlName="endereco" />
-            <!-- Validation -->
-            <ul class="help-block ">
-            </ul>
+      <div class="col-sm-6">
+        <label for="dtnascimento">Dt. Nasc.</label>
+        <div [ngClass]="{'has-error':form.controls.dtnascimento.touched &&  (form.controls.dtnascimento.errors), 'has-success': !form.controls.dtnascimento.errors }">
+          <input type="text" class="form-control" id="dtnascimento" name="dtnascimento" formControlName="dtnascimento" placeholder="*Data nasc. do proprietário">
+          <ul class="help-block">
+            <li *ngIf="form.controls.dtnascimento.touched && form.controls.dtnascimento.errors?.required ">Informe a data de nascimento</li>
+            <li *ngIf="((form.controls.dtnascimento.touched) && ((form.controls.dtnascimento.errors?.pattern) || (form.controls.dtnascimento.errors?.maxlength || form.controls.dtnascimento.errors?.minlength)))">Data inválida</li>
+          </ul>
         </div>
+      </div>
     </div>
     <div class="form-group">
+      <div class="col-sm-6">
+        <label for="email">E-mail</label>
+        <div>
+          <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
+            <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail do proprietário">
+            <ul class="help-block">
+              <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
+              <li *ngIf="((form.controls.email.touched) && (form.controls.email.errors?.maxlength || form.controls.email.errors?.minlength))">Caracters mínimo: 3, máximo: 15</li>
+              <li *ngIf="form.controls.email.touched && form.controls.email.errors?.pattern">Este e-mail deve ser válido</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
         <label for="bairro">Bairro</label>
         <div>
-            <!--bairro Input -->
-            <input type="text" [disabled]="processing" name="bairro" class="form-control" placeholder="Bairro" autocomplete="off" formControlName="bairro" />
-            <!-- Validation -->
-            <ul class="help-block ">
-            </ul>
+          <!--bairro Input -->
+          <input type="text" name="bairro" class="form-control" placeholder="*Bairro" autocomplete="off" formControlName="bairro" />
+          <!-- Validation -->
+          <ul class="help-block ">
+          </ul>
         </div>
+      </div>
     </div>
     <div class="form-group">
-        <label for="numero">Numero</label>
+      <div class="col-sm-6">
+        <label for="cidade">Cidade</label>
         <div>
-            <!--bairro Input -->
-            <input type="text" [disabled]="processing" name="numero" class="form-control" placeholder="Numero" autocomplete="off" formControlName="numero" />
-            <!-- Validation -->
-            <ul class="help-block ">
-            </ul>
+          <input type="text" name="cidade" class="form-control" placeholder="*Cidade" autocomplete="off" formControlName="cidade" />
+          <ul class="help-block ">
+          </ul>
         </div>
+      </div>
     </div>
     <div class="form-group">
-        <label for="complemento">Complemento</label>
-        <div>
-            <!--complemento Input -->
-            <input type="text" [disabled]="processing" name="complemento" class="form-control" placeholder="Complemento" autocomplete="off" formControlName="complemento" />
-            <!-- Validation -->
-            <ul class="help-block ">
-            </ul>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="cidade">cidade</label>
-        <div>
-            <!--cidade Input -->
-            <input type="text" [disabled]="processing" name="cidade" class="form-control" placeholder="cidade" autocomplete="off" formControlName="cidade" />
-            <!-- Validation -->
-            <ul class="help-block ">
-            </ul>
-        </div>
-    </div>
-    <div class="form-group">
+      <div class="col-sm-6">
         <label for="estado">Estado</label>
         <div>
-            <!--estado Input -->
-            <input type="text" [disabled]="processing" name="estado" class="form-control" placeholder="Estado" autocomplete="off" formControlName="estado" />
-            <!-- Validation -->
-            <ul class="help-block ">
-            </ul>
+          <!--estado Input -->
+          <input type="text" name="estado" class="form-control" placeholder="*Estado" autocomplete="off" formControlName="estado" />
+          <!-- Validation -->
+          <ul class="help-block ">
+          </ul>
         </div>
+      </div>
     </div>
     <div class="form-group">
+      <div class="col-sm-6">
         <label for="CEP">CEP</label>
         <div>
-            <!--CEP Input -->
-            <input type="text" [disabled]="processing" name="CEP" class="form-control" placeholder="CEP" autocomplete="off" formControlName="CEP" />
-            <!-- Validation -->
-            <ul class="help-block ">
-            </ul>
+          <!--CEP Input -->
+          <input type="text" name="cep" class="form-control" placeholder="*CEP" autocomplete="off" formControlName="cep" />
+          <!-- Validation -->
+          <ul class="help-block ">
+          </ul>
         </div>
+      </div>
     </div>
-    <input [disabled]="!form.valid || processing" type="submit" class="btn btn-primary" value="Submit" />
-</form>
+  </form>
+</div>

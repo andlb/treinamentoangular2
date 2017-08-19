@@ -35,7 +35,8 @@ export class AuthService {
 
   getMeuUsuario() {
     this.createAuthenticationHeader();
-    let usuarioid = JSON.parse(localStorage.getItem('usuario'));
+    let usuario = JSON.parse(localStorage.getItem('usuario'));
+    var usuarioid = usuario.usuarioid;
     return this.http.get(this.domain+'authentication/getUsuario/'+usuarioid, this.options).map(res => res.json());
   }
 
