@@ -116,7 +116,7 @@ module.exports = (router) => {
             const token = jwt.sign({
               userId: user._id
             }, database.secret, {
-              expiresIn: '15m'
+              expiresIn: '15h'
             })
             var empresanome = '';
             if (user.empresa) {
@@ -141,6 +141,7 @@ module.exports = (router) => {
       return;
     });
   });
+  
 
   router.get('/checkEmailUsuario/:email', (req, res) => {
     const retorno = {
@@ -171,10 +172,11 @@ module.exports = (router) => {
   });
 
 
-  /********************************************
+ 
+ /********************************************
   middleware: usado para pegar o token do cabeçalho
   ********************************************/
-  /*router.use((req, res, next) => {
+  router.use((req, res, next) => {    
     const token = req.headers['authorization'];
     if (!token) {
       res.json({
@@ -183,6 +185,7 @@ module.exports = (router) => {
       });
     } else {
       //verifica se o token é valido
+      console.log(database.secret);
       jwt.verify(token, database.secret, (err, decoded) => {
         if (err) {
           res.json({
@@ -190,16 +193,17 @@ module.exports = (router) => {
             message: 'Token inválido'
           });
         } else {
+          console.log(decoded);
+          
           //cria uma variavel global para ser utilizada em todas as proximas requisições.
           req.decoded = decoded;
           next()
         }
 
       });
-
     }
   });
-  */
+  
   
 
   router.get('/getUsuario/:usuarioid', (req, res) => {

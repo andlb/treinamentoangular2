@@ -61,43 +61,43 @@ mongoose.connect(config.uri, err => {
           servico = {
             empresaid: oEmpresa._id,
             descricao: "Alinhamento",
-            tempo: 6,
-            quilometragem: 10000
+            tempo: 7,
+            quilometragem: 6000
           };
           servicos.push(servico);
           servico = {
             empresaid: oEmpresa._id,
             descricao: "Balanceamento",
-            tempo: 6,
-            quilometragem: 10000
+            tempo: 4,
+            quilometragem: 5000
           };
           servicos.push(servico);
           servico = {
             empresaid: oEmpresa._id,
             descricao: "Rodizio",
-            tempo: 6,
-            quilometragem: 10000
+            tempo: 5,
+            quilometragem: 6000
           };
           servicos.push(servico);
           servico = {
             empresaid: oEmpresa._id,
             descricao: "Freio",
             tempo: 6,
-            quilometragem: 10000
+            quilometragem: 40000
           };
           servicos.push(servico);
           servico = {
             empresaid: oEmpresa._id,
             descricao: "Amortocedores",
             tempo: 12,
-            quilometragem: 10000
+            quilometragem: 90000
           };
           servicos.push(servico);
           servico = {
             empresaid: oEmpresa._id,
             descricao: "Troca de óleo",
-            tempo: 12,
-            quilometragem: 10000
+            tempo: 4,
+            quilometragem: 7000
           };
           servicos.push(servico);
           servico = {

@@ -69,7 +69,9 @@ const usuarioSchema = new Schema({
         estado: { type: String,uppercase:true },
         cep: { type: String },
     },
-    cadastrocompleto: { type: Boolean, default: false }
+    cadastrocompleto: { type: Boolean, default: false },
+    cadastrado: { type: Boolean, default: false },
+    datacadastro:{type:Date},
 });
 
 usuarioSchema.pre('save', function(next) {
