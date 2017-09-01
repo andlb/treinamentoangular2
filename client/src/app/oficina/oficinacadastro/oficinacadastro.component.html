@@ -9,9 +9,9 @@
     <div class="form-group">
       <div class="col-lg-11 col-lg-offset-1">
         <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">{{(!edit) ? 'Incluir' : 'Salvar' }}</button>
-        <button *ngIf="(edit)" type="button" class="btn btn-danger" (click)="onDeletar()">Deletar</button>
-        <button *ngIf="(!edit)" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button>
-        <button type="button" class="btn btn-info" (click)="onVoltar()">Voltar</button>
+        <button *ngIf="(edit)" [disabled]="processing"  type="button" class="btn btn-danger" (click)="onDeletar()">Inativar</button>
+        <button *ngIf="(!edit)" [disabled]="processing" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button>
+        <button type="button" [disabled]="processing" class="btn btn-info" (click)="onVoltar()">Voltar</button>
       </div>
     </div>
     <div class="form-group">
@@ -93,8 +93,6 @@
         </div>
       </div>
     </div>
-
-
     <div class="bs-example" data-example-id="table-within-panel">
       <div class="panel panel-success">
         <div class="panel-heading">Serviços</div>
@@ -122,9 +120,9 @@
     <div class="form-group">
       <div class="col-lg-11 col-lg-offset-1">
         <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">{{(!edit) ? 'Incluir' : 'Editar' }}</button>
-        <button *ngIf="(edit)" type="button" class="btn btn-danger" (click)="onDeletar()">Deletar</button>
-        <button *ngIf="(!edit)" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button>
-        <button type="button" class="btn btn-info" (click)="onVoltar()">Voltar</button>
+        <button *ngIf="(edit)" [disabled]="processing"  type="button" class="btn btn-danger" (click)="onDeletar()">Inativar</button>
+        <button *ngIf="(!edit)" [disabled]="processing" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button>
+        <button type="button"  [disabled]="processing" class="btn btn-info" (click)="onVoltar()">Voltar</button>
       </div>
     </div>
   </form>

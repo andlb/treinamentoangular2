@@ -69,12 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/areaproprietario']);
               }
             } else {
-              if ((data.user.tipo === 1) && (!data.user.cadastrocompleto)) {
-                this.router.navigate(['/empresa']);
-              } else {
-                ///TODO: depende do tipo do usuário.
-                this.router.navigate(['/home']);
-              }
+              this.router.navigate(['/centroautomotivo/lista/edit']);
             }
           }
         }, 2000);
