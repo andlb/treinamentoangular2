@@ -99,7 +99,6 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.createForm();
   }
 
-
   onPesquisarPlaca() {
     if (this.processing || this.edit) return;
     let placa = this.form.controls["placa"].value;
@@ -173,13 +172,20 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["placa"].enable();
   }
 
-  mudarCpf(event){
+  mudarCpf(event) {
     if (!this.edit) {
       if (this.oficinaService.getProprietario().cpf !== event.target.value) {
         this.form.controls["email"].enable();
+        this.form.controls["nome"].setValue("");
+        this.form.controls["email"].setValue("");
+        this.form.controls["dtnascimento"].setValue("");
+      }else{
+        this.form.controls["nome"].setValue(this.oficinaService.getProprietario().nome);
+        this.form.controls["email"].setValue(this.oficinaService.getProprietario().email);
+        this.form.controls["dtnascimento"].setValue(this.oficinaService.getProprietario().datanascimento);
+
       }
     }
-
   }
 
   desabilitaCampos() {
@@ -274,11 +280,12 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["modelo"].setValue("");
     this.form.controls["ano"].setValue("");
     this.form.controls["anomodelo"].setValue("");
+    this.form.controls["quilometragem"].setValue("");
     this.form.controls["cpf"].setValue("");
     this.form.controls["nome"].setValue("");
     this.form.controls["email"].setValue("");
     this.form.controls["dtnascimento"].setValue("");
-    this.form.controls["quilometragem"].setValue("");
+
     this.servicosRealizados = [];
   }
 

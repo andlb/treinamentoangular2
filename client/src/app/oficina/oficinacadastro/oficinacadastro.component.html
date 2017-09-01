@@ -58,7 +58,7 @@
     <div class="form-group">
       <label for="cpf" class="col-lg-1 control-label">CPF</label>
       <div class="col-lg-2">
-        <input type="text" class="form-control" id="cpf" name="cpf" formControlName="cpf" placeholder="*CPF do proprietário">
+        <input type="text" class="form-control" id="cpf" name="cpf" formControlName="cpf" placeholder="*CPF do proprietário" (blur)="mudarCpf($event)">
       </div>
       <label for="nome" class="col-lg-2 control-label">Nome</label>
       <div class="col-lg-6">
