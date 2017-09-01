@@ -19,6 +19,8 @@ export class ProfileComponent implements OnInit {
   message;
   processing = false;
   subPesquisa: Subscription;
+  subParams: Subscription;
+  mostrarbotaovoltar = true;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -28,14 +30,18 @@ export class ProfileComponent implements OnInit {
 
   }
   ngOnInit() {
-    console.log('ngoninti');
     this.processing = true;
     this.subPesquisa = this.authService.getMeuUsuario().subscribe(data => {
       this.usuario = data.usuario;
       this.preencheCampos()
       this.processing = false;
     });
-
+    this.subParams = this.route.params.subscribe((params) => {
+      console.log(params);
+      if (params.local === 'login') {
+        this.mostrarbotaovoltar=false;
+      }
+    });
     this.createForm();
   }
 
@@ -49,8 +55,8 @@ export class ProfileComponent implements OnInit {
     this.form.controls["cidade"].enable();
     this.form.controls["estado"].enable();
     this.form.controls["cep"].enable();
-
   }
+
   habilitaCampos(){
     this.form.controls["nome"].disable();
     this.form.controls["cpf"].disable();
@@ -141,6 +147,7 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+
   onVoltar(){
     this.router.navigate(['/areaproprietario']);
   }

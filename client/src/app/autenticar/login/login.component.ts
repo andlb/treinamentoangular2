@@ -58,18 +58,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       } else {
         this.messageClass = 'alert alert-success';
         this.authService.storeUserData(data.token, data.user);
-        console.log(data)
         setTimeout(() => {
           if (this.priviousUrl) {
             this.router.navigate([this.priviousUrl]);
           } else {
             if (data.user.tipo === 0)  {
               if (!data.user.cadastrocompleto){
-                this.router.navigate(['/profile',data.user.usuarioid]);
+                this.router.navigate(['/profile',data.user.usuarioid,'login']);
               }else{
                 this.router.navigate(['/areaproprietario']);
               }
-
             } else {
               if ((data.user.tipo === 1) && (!data.user.cadastrocompleto)) {
                 this.router.navigate(['/empresa']);

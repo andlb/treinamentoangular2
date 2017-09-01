@@ -48,7 +48,6 @@ export class ProprietarioService {
   }
 
   enviarDadosVeiculo(veiculo){
-    console.log(veiculo);
     this.createAuthenticationHeader();
     return this.http
       .post(this.domain + "proprietario/salvarVeiculo", veiculo, this.options)

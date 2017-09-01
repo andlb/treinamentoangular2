@@ -337,6 +337,7 @@ module.exports = router => {
       message: ""
     };
     let erroMsg = "";
+    let usuarioNovo = false;
     if (!req.body.placa) {
       if (erroMsg !== "") erroMsg += ",";
       erroMsg += " a placa ";
@@ -416,6 +417,7 @@ module.exports = router => {
         if (!oUsuario) {
           //cadastra
           oUsuario = new Usuario(usuario);
+          usuarioNovo = true;
         }
         oUsuario.nome = usuario.nome;
         //somente troca de email se ele não ter e-mail cadastrado
@@ -477,6 +479,7 @@ module.exports = router => {
                     retorno.message = err.code + " " + err.message;
                     return res.json(retorno);
                   }
+                  //cadastrando os serviços
                   Servicorealizado.remove(
                     { ordemservicoid: ordemservico._id },
                     err => {
@@ -498,6 +501,13 @@ module.exports = router => {
                             retorno.message = err.code + " - " + err.message;
                             return res.json(retorno);
                           }
+                          if (usuarioNovo) {
+                            new Usuarioconvidar({
+                              usuarioid:oUsuario._id,
+                              empresaid:req.body.empresaid
+                            }).save();
+                          }
+
                           retorno.success = true;
                           retorno.message =
                             "Ordem de serviço cadastrada com sucesso";

@@ -37,8 +37,7 @@ exports.enviarVarios = () => {
           }
           usuarioconvidar.dataultimoenvio = Date.now();
           usuarioconvidar.dataproximoenvio = dataProximoEnvio;
-          usuarioconvidar.save();
-
+          usuarioconvidar.save();          
           this.envioEmail(usuarioconvidar.empresaid, usuarioconvidar.usuarioid);
         }
       });
@@ -49,7 +48,7 @@ exports.envioEmail = (empresa, usuario) => {
   let token = jwt.sign(
     {
       userId: usuario._id,
-      useremail: usuario.email
+      email: usuario.email
     },
     database.segredoemail,
     {
@@ -57,7 +56,7 @@ exports.envioEmail = (empresa, usuario) => {
     }
   );
 
-  let acessopagina = database.acesso + "/register?tk=" + token+'&mail='+usuario.email;
+  let acessopagina = database.acesso + "/register?tk=" + token+'&email='+usuario.email;
   let transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -83,6 +82,13 @@ exports.envioEmail = (empresa, usuario) => {
     subject: subject,
     text: text,
     html: html
+  },(err,info) =>{
+    if (err) {
+      console.log(err);
+    }
+    if (info) {
+      console.log(info);
+    }
   });
 };
 

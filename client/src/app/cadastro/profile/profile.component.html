@@ -9,7 +9,7 @@
     <div class="form-group">
         <div class="col-sm-12">
           <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">Salvar</button>
-          <button [disabled]="processing" type="button" class="btn btn-info" (click)="onVoltar()">Voltar</button>
+          <button *ngIf="mostrarbotaovoltar" [disabled]="processing" type="button" class="btn btn-info" (click)="onVoltar()">Voltar</button>
         </div>
       </div>
     <div class="form-group">

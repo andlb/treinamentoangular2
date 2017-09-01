@@ -34,7 +34,6 @@ export class ProprietarioComponent implements OnInit {
   ngOnInit() {
     this.processing=true;
     this.proprietarioId = this.authService.getUsuarioIdFromStorage();
-    console.log(this.proprietarioId);
     this.subsPesq = this.proprietarioServ
       .getDadosProprietario(this.proprietarioId)
       .subscribe(data => {
@@ -49,7 +48,7 @@ export class ProprietarioComponent implements OnInit {
     if (this.subsPesq) this.subsPesq.unsubscribe();
   }
   irProfile(){
-    this.router.navigate(['/profile', this.proprietarioId]);
+    this.router.navigate(['/profile', this.proprietarioId,'areaproprietario']);
   }
   irVeiculo(veiculoid){
     this.router.navigate(['/areaproprietario/veiculo',veiculoid]);

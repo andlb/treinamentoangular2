@@ -132,7 +132,6 @@ module.exports = router => {
       success: false,
       message: ""
     };
-    console.log('passou ak1');
     if (!req.body.veiculoid) {
       retorno.message = "Veiculoid não informado";
       return res.json(retorno);

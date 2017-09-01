@@ -9,7 +9,7 @@
   <div class="control-group">
     <label class="control-label" for="email">E-mail</label>
     <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors || !emailValid), 'has-success': !form.controls.email.errors }">
-      <input type="text" class="form-control"  id="email" name="email" formControlName="email" placeholder="" (blur)="checkEmail()">
+      <input type="text" #email class="form-control"  id="email" name="email" formControlName="email" placeholder="" (blur)="checkEmail()">
       <ul class="help-block">
         <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
         <li *ngIf="((form.controls.email.touched) && (form.controls.email.errors?.maxlength || form.controls.email.errors?.minlength))">Caracters mínimo: 3, máximo: 15</li>
@@ -22,7 +22,7 @@
     <!-- Password-->
     <label class="control-label" for="password">Senha</label>
     <div [ngClass]="{'has-error': form.controls.password.touched && form.controls.password.errors, 'has-success': !form.controls.password.errors }">
-      <input type="password" class="form-control"  id="password" name="password"  formControlName="password" placeholder="" >
+      <input type="password" #password class="form-control"  id="password" name="password"  formControlName="password" placeholder="" >
       <ul class="help-block">
         <li *ngIf="form.controls.password.touched && form.controls.password.errors?.minlength">Senha deve ter ao menos 5 caracteres</li>
       </ul>
@@ -42,6 +42,7 @@
     <!-- Button -->
     <div class="controls">
       <button [disabled]="!form.valid || processing || !emailValid" class="btn btn-success">Cadastrar</button>
+
     </div>
   </div>
 </form>
