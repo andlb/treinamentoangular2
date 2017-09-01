@@ -72,14 +72,12 @@ export class OficinaService {
       cpf: proprietario.cpf,
       nome: proprietario.nome,
       email: proprietario.email,
-      datanascimento: datanascimento
+      datanascimento: datanascimento,
     };
-
   }
 
   setVeiculo(veiculo) {
     if (!veiculo) return;
-
     var quilometragem = '';
     if (veiculo.quilometragem) {
       quilometragem = veiculo.quilometragem;
@@ -129,6 +127,7 @@ export class OficinaService {
       .post(this.domain + "ordemservico/deletar", oficina, this.options)
       .map(res => res.json());
   }
+
   atualizarDados() {
     this.createAuthenticationHeader();
     let oficina = {

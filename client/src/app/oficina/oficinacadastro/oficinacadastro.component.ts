@@ -17,7 +17,6 @@ import {
   templateUrl: "./oficinacadastro.component.html",
   styleUrls: ["./oficinacadastro.component.css"]
 })
-
 export class OficinacadastroComponent implements OnInit, OnDestroy {
   @ViewChild("placa") placa: ElementRef;
   @ViewChild("quilometragem") quilometragem: ElementRef;
@@ -30,6 +29,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   servicos = [];
   servicosRealizados = [];
   atendimentoid;
+  cadastrado: false;
 
   subEnviar: Subscription;
   subEmpresa: Subscription;
@@ -98,7 +98,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     );
     this.createForm();
   }
-  //TODO: Verificar o problema da PLACA.
+
+
   onPesquisarPlaca() {
     if (this.processing || this.edit) return;
     let placa = this.form.controls["placa"].value;
@@ -118,14 +119,16 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
             this.message = data.message;
             return;
           }
-          if ((data.veiculo) && (data.proprietario)) {
+          if (data.veiculo && data.proprietario) {
             this.oficinaService.setVeiculo(data.veiculo);
             this.oficinaService.setProprietario(data.proprietario);
+            if (data.proprietario.cadastrado) {
+              this.cadastrado = data.proprietario.cadastrado;
+            }
             this.preencheFormulario();
             this.quilometragem.nativeElement.focus();
           }
           this.processing = false;
-
         });
     }
   }
@@ -150,21 +153,33 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["anomodelo"].setValue(veiculo.anomodelo);
     this.form.controls["cpf"].setValue(proprietario.cpf);
     this.form.controls["nome"].setValue(proprietario.nome);
-    if (proprietario.email) {
-      this.form.controls["email"].disable();
-    }
     this.form.controls["email"].setValue(proprietario.email);
     this.form.controls["dtnascimento"].setValue(proprietario.datanascimento);
     if (this.edit) {
+      this.form.controls["email"].disable();
+      this.form.controls["cpf"].disable();
       this.form.controls["quilometragem"].setValue(veiculo.quilometragem);
       this.quilometragem.nativeElement.focus();
     }
+    if (this.cadastrado) {
+      this.form.controls["email"].disable();
+    }
   }
+
   desabilitaPlaca() {
     this.form.controls["placa"].disable();
   }
   habilitaPlaca() {
     this.form.controls["placa"].enable();
+  }
+
+  mudarCpf(event){
+    if (!this.edit) {
+      if (this.oficinaService.getProprietario().cpf !== event.target.value) {
+        this.form.controls["email"].enable();
+      }
+    }
+
   }
 
   desabilitaCampos() {
@@ -287,7 +302,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       cpf: this.form.controls["cpf"].value,
       nome: this.form.controls["nome"].value,
       email: this.form.controls["email"].value,
-      datanascimento: this.form.controls["dtnascimento"].value
+      datanascimento: this.form.controls["dtnascimento"].value,
+      cadastrado: false
     };
     this.oficinaService.setVeiculo(veiculo);
     this.oficinaService.setProprietario(proprietario);
@@ -404,24 +420,26 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   }
 
   adicionarServicoForm() {
-    for (let tServico of this.servicos) {
-      let oServico = this.servicosRealizados.find(
-        servicorealizado => servicorealizado.servicoid === tServico._id
-      );
-      let selecionado = false;
-      let observacao = "";
-      if (oServico) {
-        selecionado = true;
-        observacao = oServico.observacao;
+    if (this.servicos) {
+      for (let tServico of this.servicos) {
+        let oServico = this.servicosRealizados.find(
+          servicorealizado => servicorealizado.servicoid === tServico._id
+        );
+        let selecionado = false;
+        let observacao = "";
+        if (oServico) {
+          selecionado = true;
+          observacao = oServico.observacao;
+        }
+        (<FormArray>this.form.get("servicosForm")).push(
+          this.formBuilder.group({
+            _id: tServico._id,
+            descricao: tServico.descricao,
+            selecionado: selecionado,
+            observacao: observacao
+          })
+        );
       }
-      (<FormArray>this.form.get("servicosForm")).push(
-        this.formBuilder.group({
-          _id: tServico._id,
-          descricao: tServico.descricao,
-          selecionado: selecionado,
-          observacao: observacao
-        })
-      );
     }
   }
 }

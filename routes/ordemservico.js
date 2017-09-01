@@ -5,6 +5,8 @@ const Ordemservico = require("../models/ordemservico");
 const Empresa = require("../models/empresa");
 const Resposta = require("../models/resposta");
 const Servicorealizado = require("../models/servicorealizado");
+const Usuarioconvidar = require("../models/usuarioconvidar");
+
 const Servico = require("../models/servico");
 
 module.exports = router => {
@@ -43,7 +45,6 @@ module.exports = router => {
               retorno.message = errUsuario.code + " " + errUsuario.message;
               return res.json(retorno);
             }
-
             retorno.success = true;
             retorno.veiculo = veiculo;
             const oUsuario = {
@@ -51,7 +52,8 @@ module.exports = router => {
               cpf: usuario.cpf,
               nome: usuario.nome,
               email: usuario.email,
-              datanascimento: usuario.datanascimento
+              datanascimento: usuario.datanascimento,
+              cadastrado: usuario.cadastrado
             };
             retorno.proprietario = oUsuario;
             return res.json(retorno);
@@ -420,8 +422,14 @@ module.exports = router => {
           usuarioNovo = true;
         }
         oUsuario.nome = usuario.nome;
-        //somente troca de email se ele não ter e-mail cadastrado
-        if (!oUsuario.email) oUsuario.email = usuario.email;
+        //se o usuário é novo ou ainda não se cadastrou no sistema, então será permitido alterar o e-mail.
+        if (usuarioNovo) {
+          oUsuario.email = usuario.email;
+        }else {
+          if (!oUsuario.cadastrado) {
+            oUsuario.email = usuario.email;
+          }
+        }
         oUsuario.cpf = usuario.cpf;
         oUsuario.datanascimento = usuario.datanascimento;
         oUsuario.save(err => {
@@ -474,6 +482,7 @@ module.exports = router => {
                 ordemservico.usuarioid = oUsuario._id;
                 ordemservico.status = 1;
                 ordemservico.empresaid = req.body.empresaid;
+                ordemservico.quilometragem = req.body.quilometragem;
                 ordemservico.save((err, ordemservico) => {
                   if (err) {
                     retorno.message = err.code + " " + err.message;
