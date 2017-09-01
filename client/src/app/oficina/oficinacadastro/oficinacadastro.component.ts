@@ -111,16 +111,21 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
           if (!data) {
             this.messageClass = "alert alert-danger";
             this.message = "Erro desconhecido ao tentar realizar a pesquisa";
+            return;
           }
           if (!data.success) {
             this.messageClass = "alert alert-danger";
             this.message = data.message;
+            return;
           }
-          this.oficinaService.setVeiculo(data.veiculo);
-          this.oficinaService.setProprietario(data.proprietario);
-          this.preencheFormulario();
+          if ((data.veiculo) && (data.proprietario)) {
+            this.oficinaService.setVeiculo(data.veiculo);
+            this.oficinaService.setProprietario(data.proprietario);
+            this.preencheFormulario();
+            this.quilometragem.nativeElement.focus();
+          }
           this.processing = false;
-          this.quilometragem.nativeElement.focus();
+
         });
     }
   }
