@@ -37,6 +37,7 @@ export class ProprietarioComponent implements OnInit {
     this.subsPesq = this.proprietarioServ
       .getDadosProprietario(this.proprietarioId)
       .subscribe(data => {
+
         if (!this.authService.verTokenValido(data.tokeninvalido) ){
           this.message = 'Usuário desconectado. Por favor, logue novamente.';
           this.messageClass = "alert alert-danger";

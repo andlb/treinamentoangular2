@@ -32,12 +32,19 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.processing = true;
     this.subPesquisa = this.authService.getMeuUsuario().subscribe(data => {
+      if (!this.authService.verTokenValido(data.tokeninvalido) ){
+        this.message = 'Usuário desconectado. Por favor, logue novamente.';
+        this.messageClass = "alert alert-danger";
+        setTimeout(() => {
+          this.router.navigate(["/login"]);
+        }, 2000);
+        return;
+      }
       this.usuario = data.usuario;
       this.preencheCampos()
       this.processing = false;
     });
     this.subParams = this.route.params.subscribe((params) => {
-      console.log(params);
       if (params.local === 'login') {
         this.mostrarbotaovoltar=false;
       }
