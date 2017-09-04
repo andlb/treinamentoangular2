@@ -8,23 +8,22 @@ import {
 }                           from '@angular/router';
 
 @Injectable()
-export class NoAuthGuard implements CanActivate{  
+export class NoAuthGuard implements CanActivate{
   redirectUrl;
   constructor(
-      private authService: AuthService, 
+      private authService: AuthService,
       private router: Router) {}
-
-  
   canActivate(
-            route: ActivatedRouteSnapshot, 
+            route: ActivatedRouteSnapshot,
             state: RouterStateSnapshot): boolean {
-    
-    if (this.authService.loggedIn()){      
+
+
+    if (this.authService.loggedIn()){
       this.router.navigate(['/']);
-      return false;      
+      return false;
     }else{
       return true;
     }
-    
+
   }
 }

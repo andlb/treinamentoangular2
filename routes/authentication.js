@@ -248,6 +248,7 @@ module.exports = router => {
         if (err) {
           res.json({
             success: false,
+            tokeninvalido:true,
             message: "Token inválido"
           });
         } else {

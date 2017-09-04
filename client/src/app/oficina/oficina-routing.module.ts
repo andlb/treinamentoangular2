@@ -1,3 +1,4 @@
+import { LoginComponent } from './../autenticar/login/login.component';
 import { NoAuthGuard } from './../autenticar/guards/notAuth.guard';
 import { AuthGuard } from './../autenticar/guards/auth.guard';
 
@@ -9,12 +10,12 @@ import { OficinalistComponent } from './oficinalist/oficinalist.component';
 import { SurveyComponent } from './survey/survey.component';
 
 const oficinaRoutes: Routes = [
-  { path: ''  , component: OficinalistComponent },
-  { path: 'lista', component: OficinalistComponent },
-  { path: 'lista/:edit', component: OficinalistComponent },
-  { path: 'cadastro', component: OficinacadastroComponent },
-  { path: 'cadastro/:id', component: OficinacadastroComponent },
-  { path: 'survey/:id', component: SurveyComponent }
+  { path: ''  , component: OficinalistComponent,canActivate: [AuthGuard] },
+  { path: 'lista', component: OficinalistComponent,canActivate: [AuthGuard] },
+  { path: 'lista/:edit', component: OficinalistComponent,canActivate: [AuthGuard] },
+  { path: 'cadastro', component: OficinacadastroComponent,canActivate: [AuthGuard] },
+  { path: 'cadastro/:id', component: OficinacadastroComponent ,canActivate: [AuthGuard]},
+  { path: 'survey/:id', component: SurveyComponent,canActivate: [AuthGuard] }
 ];
 
 @NgModule({

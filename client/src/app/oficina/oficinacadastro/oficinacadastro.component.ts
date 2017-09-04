@@ -183,7 +183,6 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         this.form.controls["nome"].setValue(this.oficinaService.getProprietario().nome);
         this.form.controls["email"].setValue(this.oficinaService.getProprietario().email);
         this.form.controls["dtnascimento"].setValue(this.oficinaService.getProprietario().datanascimento);
-
       }
     }
   }

@@ -40,8 +40,6 @@ export class AuthService {
     return this.http.get(this.domain+'authentication/getUsuario/'+usuarioid, this.options).map(res => res.json());
   }
 
-
-
   createAuthenticationHeader(){
     this.loadToken();
     this.options = new RequestOptions({
@@ -63,7 +61,14 @@ export class AuthService {
     localStorage.clear();
     this.empresaChanged.next('empresaalterada');
   }
-
+  //verifica se o toke é invalido
+  verTokenValido(token){
+    if (token) {
+      this.logout();
+      return false;
+    }
+    return true;
+  }
   storeUserData(token,usuario){
     localStorage.setItem('token',token);
     localStorage.setItem('usuario',JSON.stringify(usuario));

@@ -15,13 +15,13 @@ import { EmpresaperguntaComponent } from './empresapergunta/empresapergunta.comp
 
 const empresaRoutes: Routes = [
   { path: '', component: EmpresaComponent, children: [
-    { path: '', component: EmpresalistaComponent },
-    { path: 'lista', component: EmpresalistaComponent},
-    { path: 'cadastro', component: EmpresacadastroComponent},
-    { path: 'funcionario', component: EmpresafuncionarioComponent },
-    { path: 'servico', component: EmpresaservicoComponent},
-    { path: 'pergunta', component: EmpresaperguntaComponent},
-    { path: 'cadastro/:id', component: EmpresacadastroComponent},
+    { path: '', component: EmpresalistaComponent,canActivate: [AuthGuard] },
+    { path: 'lista', component: EmpresalistaComponent,canActivate: [AuthGuard]},
+    { path: 'cadastro', component: EmpresacadastroComponent,canActivate: [AuthGuard]},
+    { path: 'funcionario', component: EmpresafuncionarioComponent,canActivate: [AuthGuard] },
+    { path: 'servico', component: EmpresaservicoComponent,canActivate: [AuthGuard]},
+    { path: 'pergunta', component: EmpresaperguntaComponent,canActivate: [AuthGuard]},
+    { path: 'cadastro/:id', component: EmpresacadastroComponent,canActivate: [AuthGuard]},
   ] },
 ];
 

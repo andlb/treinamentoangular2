@@ -21,8 +21,11 @@ export class EmpresalistaComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
+    console.log('entrou ak');
     this.httpSubs = this.empresaService.getTodasEmpresas().subscribe(
-      data => {
+      (data) => {
+        console.log(data);
         this.empresas = data.empresas;
       });
     this.subscription = this.empresaService.empresaChanged.subscribe(

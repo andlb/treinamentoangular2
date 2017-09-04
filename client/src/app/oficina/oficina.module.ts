@@ -11,8 +11,7 @@ import { OficinaRoutingModule } from './oficina-routing.module';
   declarations: [
     OficinacadastroComponent,
     OficinalistComponent,
-    SurveyComponent,
-
+    SurveyComponent
   ],
   imports: [
     CommonModule,

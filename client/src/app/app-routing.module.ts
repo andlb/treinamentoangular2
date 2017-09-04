@@ -10,7 +10,6 @@ import { ProfileComponent } from './cadastro/profile/profile.component';
 
 
 const appRoutes: Routes = [
-  { path: '', component:HomeComponent},
 
   { path: 'empresa', loadChildren: './cadastro/empresa/empresa.module#EmpresaModule'},
   { path: 'centroautomotivo', loadChildren: './oficina/oficina.module#OficinaModule'},
@@ -20,12 +19,14 @@ const appRoutes: Routes = [
   { path: 'register',component:RegisterComponent, canActivate:[NoAuthGuard] },
   { path: 'register/:acessode',component:RegisterComponent, canActivate:[NoAuthGuard] },
   { path: 'profile/:id/:local', component:ProfileComponent,canActivate: [AuthGuard]},
+  { path: '', component:HomeComponent, pathMatch: 'full'},
   { path: '**', component:HomeComponent}
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes, {preloadingStrategy: PreloadAllModules})
+    RouterModule.forRoot(appRoutes,
+      {preloadingStrategy: PreloadAllModules})
   ],
   exports: [
     RouterModule

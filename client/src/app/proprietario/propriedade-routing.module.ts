@@ -7,9 +7,9 @@ import { ProprietarioComponent } from './proprietario.component';
 import { VeiculoComponent } from './veiculo/veiculo.component';
 
 const propriedadeRoutes: Routes = [
-  { path: '', component: ProprietarioComponent },
-  { path: 'proprietario', component: ProprietarioComponent },
-  { path: 'veiculo/:id', component: VeiculoComponent }
+  { path: '', component: ProprietarioComponent,canActivate: [AuthGuard] },
+  { path: 'proprietario', component: ProprietarioComponent,canActivate: [AuthGuard] },
+  { path: 'veiculo/:id', component: VeiculoComponent,canActivate: [AuthGuard] }
 ];
 
 @NgModule({

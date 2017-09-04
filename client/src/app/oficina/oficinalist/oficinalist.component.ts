@@ -1,7 +1,9 @@
+
 import { SurveyComponent } from './../survey/survey.component';
 import { OficinaService } from './../oficina.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { AuthService } from './../../autenticar/auth.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -19,6 +21,7 @@ export class OficinalistComponent implements OnInit {
 
   constructor(
     private oficinaService: OficinaService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -34,9 +37,13 @@ export class OficinalistComponent implements OnInit {
       }
     );
     this.httpSubs = this.oficinaService.getTodosVeiculos().subscribe((data) => {
-      if (!data.success) {
-          this.messageClass = 'alert alert-danger';
-          this.message = data.message;
+      if (!this.authService.verTokenValido(data.tokeninvalido) ){
+        this.message = 'Usuário desconectado. Por favor, logue novamente.';
+        this.messageClass = "alert alert-danger";
+        setTimeout(() => {
+          this.router.navigate(["/login"]);
+        }, 2000);
+        return;
       }
       this.ordemservicos = data.ordensservico;
     });
