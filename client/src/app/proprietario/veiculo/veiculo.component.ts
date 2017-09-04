@@ -1,3 +1,4 @@
+import { AuthService } from './../../autenticar/auth.service';
 import { EmpresaService } from "./../../cadastro/empresa/empresa.service";
 import { Subscription } from "rxjs/Subscription";
 import { Subject } from "rxjs/Subject";
@@ -35,7 +36,8 @@ export class VeiculoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private proprietarioServ: ProprietarioService
+    private proprietarioServ: ProprietarioService,
+    private authService:AuthService
   ) {}
 
   ngOnInit() {
@@ -49,6 +51,14 @@ export class VeiculoComponent implements OnInit {
           this.subPesquisa = this.proprietarioServ
             .getDadosVeiculo(this.veiculoid)
             .subscribe(data => {
+              if (!this.authService.verTokenValido(data.tokeninvalido) ){
+                this.message = 'Usuário desconectado. Por favor, logue novamente.';
+                this.messageClass = "alert alert-danger";
+                setTimeout(() => {
+                  this.router.navigate(["/login"]);
+                }, 2000);
+                return;
+              }
               if (!data.success) {
                 this.messageErro(data.message);
                 return;

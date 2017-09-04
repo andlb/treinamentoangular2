@@ -1,3 +1,4 @@
+
 import { Subscription } from "rxjs/Subscription";
 import { EmpresaRoutingModule } from "./../cadastro/empresa/empresa-routing.module";
 import { FlashMessagesService } from "angular2-flash-messages";
@@ -5,6 +6,7 @@ import { FlashMessagesService } from "angular2-flash-messages";
 import { Component, OnInit,OnDestroy } from "@angular/core";
 import { AuthService } from "../autenticar/auth.service";
 import { Router } from "@angular/router";
+import { Acesso } from './../share/acesso.model';
 
 @Component({
   selector: "app-header",
@@ -12,7 +14,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./header.component.css"]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
+  acesso:Acesso;
   empresaid;
   empresanome;
   subscription: Subscription;
@@ -34,7 +36,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.authService.loggedIn();
   }
 
+  gestaoAcesso(url) {
+    let retorno = false;
+    if (!this.authService.loggedIn()) {
+      return retorno;
+    }
+    return this.acesso.getAcesso(url);
+  }
+
+
   ngOnInit() {
+    this.acesso = new Acesso();
     var oEmpresa = this.authService.getEmpresaFromStorage();
     if (oEmpresa) {
       this.empresaid = oEmpresa.empresaid;

@@ -1,3 +1,4 @@
+import { AuthService } from './../../autenticar/auth.service';
 import { EmpresaService } from "./../../cadastro/empresa/empresa.service";
 import { Subscription } from "rxjs/Subscription";
 import { Subject } from "rxjs/Subject";
@@ -42,7 +43,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     private oficinaService: OficinaService,
     private empresaService: EmpresaService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService:AuthService
   ) {}
 
   ngOnInit() {
@@ -54,6 +56,14 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
           this.subsPesquisa = this.oficinaService
             .getAtendimento(this.atendimentoid)
             .subscribe(data => {
+              if (!this.authService.verTokenValido(data.tokeninvalido) ){
+                this.message = 'Usuário desconectado. Por favor, logue novamente.';
+                this.messageClass = "alert alert-danger";
+                setTimeout(() => {
+                  this.router.navigate(["/login"]);
+                }, 2000);
+                return;
+              }
               this.edit = true;
               this.oficinaService.setOrdemservicoid(this.atendimentoid);
               this.oficinaService.setVeiculo(data.veiculo);
@@ -108,6 +118,14 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       this.subPlaca = this.oficinaService
         .pesquisaVeiculo(placa)
         .subscribe(data => {
+          if (!this.authService.verTokenValido(data.tokeninvalido) ){
+            this.message = 'Usuário desconectado. Por favor, logue novamente.';
+            this.messageClass = "alert alert-danger";
+            setTimeout(() => {
+              this.router.navigate(["/login"]);
+            }, 2000);
+            return;
+          }
           if (!data) {
             this.messageClass = "alert alert-danger";
             this.message = "Erro desconhecido ao tentar realizar a pesquisa";

@@ -64,8 +64,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           } else {
             if (data.user.tipo === 0)  {
               if (!data.user.cadastrocompleto){
-                this.router.navigate(['/profile',data.user.usuarioid,'login']);
-              }else{
+                console.log('entro profile');
                 this.router.navigate(['/areaproprietario']);
               }
             } else {
