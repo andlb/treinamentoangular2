@@ -242,8 +242,7 @@ module.exports = router => {
         message: "Token não fornecido"
       });
     } else {
-      //verifica se o token é valido
-      console.log(database.secret);
+      //verifica se o token é valido      
       jwt.verify(token, database.secret, (err, decoded) => {
         if (err) {
           res.json({

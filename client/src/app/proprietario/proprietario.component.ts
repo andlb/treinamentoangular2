@@ -46,7 +46,6 @@ export class ProprietarioComponent implements OnInit {
           }, 2000);
           return;
         }
-
         this.proprietario     = data.proprietario;
         this.servicosrealizado = data.servicorealizados;
         this.processing = false;
