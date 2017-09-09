@@ -6,15 +6,15 @@
 </div>
 
 <form [formGroup]="form" (submit)="onLoginSubmi()" >
-  <div class="control-group">  
+  <div class="control-group">
     <label class="control-label" for="email">E-mail</label>
     <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
-      <input type="text" class="form-control"  id="email" name="email" formControlName="email" placeholder="" >
+      <input #email type="text" class="form-control"  id="email" name="email" formControlName="email" placeholder="" >
       <ul class="help-block">
         <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
       </ul>
-    </div>    
-  </div> 
+    </div>
+  </div>
   <div class="control-group">
     <!-- Password-->
     <label class="control-label" for="password">Senha</label>
@@ -22,7 +22,7 @@
       <input type="password" class="form-control"  id="password" name="password"  formControlName="password" placeholder="" >
       <ul class="help-block">
         <li *ngIf="form.controls.password.touched && form.controls.password.errors?.required">Informe a senha</li>
-      </ul>         
+      </ul>
     </div>
   </div>
   <div class="control-group">

@@ -15,6 +15,7 @@ export class AuthService {
   options;
   dadosAtivo = "active";
   usuarioId;
+  usuarioNome;
   empresaId;
   empresaNome;
   constructor(
@@ -101,6 +102,14 @@ export class AuthService {
     return {empresaid:this.empresaId, empresanome:this.empresaNome};
   }
 
+  getUsuarioNome(){
+    var usuario = JSON.parse(localStorage.getItem('usuario'));
+    if (usuario) {
+      this.usuarioNome = usuario.usuarionome;
+      return this.usuarioNome;
+    }
+    return null;
+  }
 
   loggedIn(){
     return tokenNotExpired();

@@ -1,5 +1,5 @@
 import { AuthGuard } from './../guards/auth.guard';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AuthService } from './../auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,6 +10,8 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  @ViewChild('email') email;
+
   private subparams: any;
   form: FormGroup;
   processing = false;
@@ -88,6 +90,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.acessode = params['acessode'];
       }
     );
+    this.email.nativeElement.focus();
   }
 
   ngOnDestroy() {

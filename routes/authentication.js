@@ -184,6 +184,7 @@ module.exports = router => {
               retorno.token = token;
               retorno.user = {
                 usuarioid: user._id,
+                usuarionome:user.nome,
                 email: user.email,
                 tipo: user.tipo,
                 empresa: user.empresa,

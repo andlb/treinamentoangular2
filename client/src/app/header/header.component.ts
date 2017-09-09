@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   acesso:Acesso;
   empresaid;
   empresanome;
+  nome;
   subscription: Subscription;
   constructor(
     private authService: AuthService,
@@ -47,21 +48,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.acesso = new Acesso();
-    var oEmpresa = this.authService.getEmpresaFromStorage();
+    let oEmpresa = this.authService.getEmpresaFromStorage();
     if (oEmpresa) {
       this.empresaid = oEmpresa.empresaid;
       this.empresanome = oEmpresa.empresanome;
     }
+    this.nome = this.authService.getUsuarioNome();
     this.subscription = this.authService.empresaChanged.subscribe(
       (acao: any) => {
         var oEmpresa = this.authService.getEmpresaFromStorage();
         if (oEmpresa) {
           this.empresaid = oEmpresa.empresaid;
           this.empresanome = oEmpresa.empresanome;
+          this.nome = this.authService.getUsuarioNome();
         }
       }
     );
   }
+
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
   }

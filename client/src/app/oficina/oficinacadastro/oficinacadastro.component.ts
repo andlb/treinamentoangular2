@@ -144,6 +144,10 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
             }
             this.preencheFormulario();
             this.quilometragem.nativeElement.focus();
+          } else {
+            //quando a placa não é encontrada.
+            this.onLimpar();
+            this.form.controls["placa"].setValue(placa);
           }
           this.processing = false;
         });
@@ -290,7 +294,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   }
 
   onLimpar() {
-    this.placa.nativeElement.focus();
+    //this.placa.nativeElement.focus();
     this.edit = false;
     this.form.controls["placa"].setValue("");
     this.form.controls["marca"].setValue("");

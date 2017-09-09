@@ -12,6 +12,33 @@ const Usuarioconvidar = require("../../models/usuarioconvidar");
 const email = require("../../config/email");
 const database = require("../../config/database");
 
+exports.enviarConvite = (usuarioconvidarid) => {
+  Usuarioconvidar.findById({ _id: usuarioconvidarid })
+  .populate("usuarioid empresaid")
+  .exec((err, usuarioconvidar) => {
+    
+    if (err) {
+      console.log(err.code + ' - ' + err.message);
+      return;
+    }
+    if (!usuarioconvidar) {
+      console.log('Usuário não encontrado');
+      return;
+    }
+    let cont = 0;    
+    let oUsuario = usuarioconvidar.usuarioid;
+    cont++;
+    if (cont > 3) {
+      return;
+    }
+    let dataProximoEnvio = moment(Date.now()).add(7, "days");
+    usuarioconvidar.dataultimoenvio = Date.now();
+    usuarioconvidar.dataproximoenvio = dataProximoEnvio;
+    usuarioconvidar.save();          
+    this.envioEmail(usuarioconvidar.empresaid, usuarioconvidar.usuarioid);    
+  });
+}
+
 exports.enviarVarios = () => {
   let dataProximoEnvio = moment(Date.now()).add(7, "days");
   mongoose.Promise = global.Promise;
@@ -43,6 +70,8 @@ exports.enviarVarios = () => {
       });
   });
 };
+
+
 
 exports.envioEmail = (empresa, usuario) => {
   let token = jwt.sign(
@@ -104,11 +133,13 @@ exports.getText = (empresa, usuario, acessopagina) => {
   let retorno =
     "Olá " +
     usuario.nome +
-    ` Gostariamos de convidá-lo a cadastrar no nosso portal. 
-Através desse cadastro, você terá acesso a todos os serivços que foram realizados no seu veículo.
-Para acessar o portal, copie e cole esse endereço no seu navegador \n ` +
-    acessopagina;
-
+    `.<br> <br>A YUCAR é uma startup que facilitará o acesso aos serviços realizados em seu carro.
+    <br><br> Em parceria com `
+    +empresa.nomefantasia+
+    `, você terá  todos os serviços realizados em seu veiculo disponíveis on-line. 
+    <br>Receberá alertas para lembrá-lo das manutenções periódicas e promoções.
+    <br>Crie sua conta em nosso portal clicando no botão abaixo.<br>
+    `
   return retorno;
 };
 
@@ -126,12 +157,8 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
         </mj-section>
         <mj-section background-color="#fafafa">
           <mj-column width="400">
-            <mj-text font-style="italic" font-size="20" font-family="Helvetica Neue" color="#626262">
-            ` + usuario.nome + `
-            </mj-text>
-            <mj-text color="#525252">
-                Crie sua conta em nosso portal e 
-                tenha acesso a todos os serviços realizados em seu carro.
+            <mj-text color="#525252" align="center">
+            ` + this.getText(empresa, usuario, acessopagina) + `
             </mj-text>
             <mj-button background-color="#F45E43" href="`+acessopagina+`">Crie sua conta</mj-button>      
           </mj-column>
@@ -141,3 +168,4 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
   </mjml>`
   return tMjml;
 };
+

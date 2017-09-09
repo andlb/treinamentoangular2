@@ -13,32 +13,7 @@ const Servicorealizado = require("../models/servicorealizado");
 const moment = require("moment");
 const email = require("../config/email");
 
-/*
-const inputMJML = `
-<mjml>
-<mj-body>
-  <mj-container>
-    <mj-section>
-      <mj-column>
-        <mj-carousel>
-          <mj-carousel-image src="https://www.mailjet.com/wp-content/uploads/2016/11/ecommerce-guide.jpg" />
-          <mj-carousel-image src="https://www.mailjet.com/wp-content/uploads/2016/09/3@1x.png" />
-          <mj-carousel-image src="https://www.mailjet.com/wp-content/uploads/2016/09/1@1x.png" />
-        </mj-carousel>
-      </mj-column>
-    </mj-section>
-    <mj-section>
-    <mj-column>
-      <mj-social
-        mode="vertical"
-        facebook-href="My facebook page"
-        google-href="My google+ page" />
-    </mj-column>
-  </mj-section>    
-  </mj-container>
-</mj-body>
-</mjml>`;
-*/
+
 try {
   mongoose.Promise = global.Promise;
   mongoose.connect(config.uri, err => {
@@ -120,8 +95,6 @@ function enviaEmail(oEmpresa) {
     }
   );
 }
-
-
 
 function getHtml(servicorealizados, empresa) {
   var tColumns = "";

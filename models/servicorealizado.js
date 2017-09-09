@@ -6,10 +6,10 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 const servicorealizadoSchema = new Schema({
-    veiculoid: { type: String, ref: 'Veiculo', required: [true, "Veiculo não definido"] },
-    servicoid: { type: String, ref:'Servico',required: [true, 'Serviço não definido'] },
+    veiculoid: { type: String, ref: 'Veiculo', index: true, required: [true, "Veiculo não definido"] },
+    servicoid: { type: String, ref:'Servico', required: [true, 'Serviço não definido'] },
     empresaid: { type: String, ref:'Empresa', required: [true, "Empresa não definida"] },
-    ordemservicoid: {type:String,ref:'Ordemservico', required: [true,'Ordem de serviço não informada']},
+    ordemservicoid: {type:String, ref:'Ordemservico', index: true, required: [true,'Ordem de serviço não informada']},
     timestamp: { type: Date, default: Date.now() },
     observacao: { type: String }
 });

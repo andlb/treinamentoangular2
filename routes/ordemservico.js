@@ -6,6 +6,8 @@ const Empresa = require("../models/empresa");
 const Resposta = require("../models/resposta");
 const Servicorealizado = require("../models/servicorealizado");
 const Usuarioconvidar = require("../models/usuarioconvidar");
+const Inscricao = require('../util/email/inscricao');
+const Agradecimento = require("../util/email/agradecimento");
 
 const Servico = require("../models/servico");
 
@@ -514,7 +516,13 @@ module.exports = router => {
                             new Usuarioconvidar({
                               usuarioid:oUsuario._id,
                               empresaid:req.body.empresaid
-                            }).save();
+                            }).save((err,oUsuarioConvidar) => {
+                              if (!err) {
+                                Agradecimento.enviaragradecimento(ordemservico._id);
+                                //Inscricao.enviarConvite(oUsuarioConvidar._id);
+                              }
+
+                            });
                           }
 
                           retorno.success = true;
