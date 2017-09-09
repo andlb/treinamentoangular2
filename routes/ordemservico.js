@@ -342,6 +342,12 @@ module.exports = router => {
     };
     let erroMsg = "";
     let usuarioNovo = false;
+    let finalizar=false;
+    let novaOrdemServico = false;
+    if (req.body.finalizar){
+      finalizar=true;
+    }
+
     if (!req.body.placa) {
       if (erroMsg !== "") erroMsg += ",";
       erroMsg += " a placa ";
@@ -477,12 +483,19 @@ module.exports = router => {
                   retorno.message = err.code + " " + err.message;
                   return res.json(retorno);
                 }
+                
                 if (!ordemservico) {
                   ordemservico = new Ordemservico();
+                  novaOrdemServico = true;
+
                 }
                 ordemservico.veiculoid = oVeiculo._id;
                 ordemservico.usuarioid = oUsuario._id;
-                ordemservico.status = 1;
+                ordemservico.status = 1;  
+                if (finalizar){
+                  ordemservico.status = 2;
+                }
+                
                 ordemservico.empresaid = req.body.empresaid;
                 ordemservico.quilometragem = req.body.quilometragem;
                 ordemservico.save((err, ordemservico) => {
@@ -524,10 +537,16 @@ module.exports = router => {
 
                             });
                           }
-
                           retorno.success = true;
-                          retorno.message =
-                            "Ordem de serviço cadastrada com sucesso";
+                          if (!finalizar) {
+                            if (novaOrdemServico) {
+                              retorno.message = "Ordem de serviço cadastrada com sucesso";
+                            }else {
+                              retorno.message = "Ordem de serviço atualizada com sucesso";
+                            }                
+                          }else{
+                            retorno.message = "Ordem de serviço finalizada com sucesso";
+                          }
                           return res.json(retorno);
                         }
                       );

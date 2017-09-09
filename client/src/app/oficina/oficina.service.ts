@@ -14,6 +14,7 @@ export class OficinaService {
   empresaid;
   ordemservicoid;
   usuarioid;
+  finalizar = false;
   cadastroProprietario = {
     proprietario: {
       cpf: '',
@@ -44,6 +45,7 @@ export class OficinaService {
       this.empresaid = usuario.empresa._id;
     }
     this.usuarioid = usuario.usuarioid;
+    this.finalizar = false;
   }
 
   createAuthenticationHeader() {
@@ -104,6 +106,10 @@ export class OficinaService {
     this.cadastroProprietario.servicosRealizado = servicosRealizado;
   }
 
+  setFinalizar(finalizar:boolean){
+    this.finalizar = finalizar;
+  }
+
   getProprietario() {
     return this.cadastroProprietario.proprietario;
   }
@@ -143,7 +149,8 @@ export class OficinaService {
       email: this.cadastroProprietario.proprietario.email,
       datanascimento: this.cadastroProprietario.proprietario.datanascimento,
       empresaid: this.empresaid,
-      servicorealizado: this.cadastroProprietario.servicosRealizado
+      servicorealizado: this.cadastroProprietario.servicosRealizado,
+      finalizar:this.finalizar
     };
     return this.http
       .post(this.domain + "ordemservico/cadastra", oficina, this.options)

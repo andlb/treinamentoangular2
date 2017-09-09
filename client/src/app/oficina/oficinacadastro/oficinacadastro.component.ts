@@ -22,15 +22,16 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   @ViewChild("placa") placa: ElementRef;
   @ViewChild("quilometragem") quilometragem: ElementRef;
   form: FormGroup;
-  edit: Boolean = false;
-  processing: Boolean = false;
-  messageClass;
-  message;
+  edit: boolean = false;
+  processing: boolean = false;
+  messageClass:string;
+  message:string;
   empresa;
   servicos = [];
   servicosRealizados = [];
-  atendimentoid;
-  cadastrado: false;
+  atendimentoid:string;
+  cadastrado:boolean=false;
+  finalizar:boolean = false;
 
   subEnviar: Subscription;
   subEmpresa: Subscription;
@@ -48,6 +49,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.finalizar = false;
     this.subsPesquisaAtendimento = this.route.params.subscribe(
       (params: Params) => {
         this.atendimentoid = params.id;
@@ -389,7 +391,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         this.servicosRealizados.push(servicoRealizado);
       }
     }
-
+    this.oficinaService.setFinalizar(this.finalizar);
     this.oficinaService.setVeiculo(veiculo);
     this.oficinaService.setProprietario(proprietario);
     this.oficinaService.setServicosRealizado(this.servicosRealizados);
@@ -417,6 +419,11 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         return;
       }
     });
+  }
+  //finalizar representa que os dados não poderão mais ser alterados.
+  onFinalizar(){
+    this.finalizar = true;
+    this.enviaDados();
   }
   defineObservacao(event, posicao) {
     this.servicos[posicao].obseracao = event.target.value;

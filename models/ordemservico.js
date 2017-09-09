@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 //terá que ter uma chave unica de placa e usuário.
-//Status:0 - deletado, 1 - a avaliar, 2 - avaliado
+//Status:0 - deletado, 1 - a avaliar, 2 - finalizado
 const ordemservicoSchema = new Schema({    
     veiculoid: { type: String, index:true, ref : 'Veiculo', required: [true, "Veiculo não informada"] },
     usuarioid: { type: String, index:true, ref : 'Usuario', required: [true, "Usuário não informada"] },
