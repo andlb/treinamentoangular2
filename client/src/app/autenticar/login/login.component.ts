@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   messageClass;
   priviousUrl;
   acessode;
+  esqueciSenha:boolean = false;
   constructor(private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
@@ -66,7 +67,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           } else {
             if (data.user.tipo === 0)  {
               if (!data.user.cadastrocompleto){
-                console.log('entro profile');
                 this.router.navigate(['/areaproprietario']);
               }
             } else {
@@ -96,6 +96,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subparams.unsubscribe();
   }
+
 
 
 

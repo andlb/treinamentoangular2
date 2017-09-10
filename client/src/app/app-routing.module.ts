@@ -1,3 +1,4 @@
+import { ReinicializarsenhaComponent } from './autenticar/login/reinicializarsenha.component';
 
 import { NgModule }             from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
@@ -15,6 +16,7 @@ const appRoutes: Routes = [
   { path: 'centroautomotivo', loadChildren: './oficina/oficina.module#OficinaModule'},
   { path: 'areaproprietario', loadChildren: './proprietario/proprietario.module#ProprietarioModule'},
   { path: 'login', component:LoginComponent,canActivate: [NoAuthGuard]},
+  { path: 'reinializarsenha', component: ReinicializarsenhaComponent,canActivate: [NoAuthGuard]},
   { path: 'login/:acessode', component:LoginComponent,canActivate: [NoAuthGuard]},
   { path: 'register',component:RegisterComponent, canActivate:[NoAuthGuard] },
   { path: 'register/:acessode',component:RegisterComponent, canActivate:[NoAuthGuard] },

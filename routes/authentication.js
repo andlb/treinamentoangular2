@@ -1,13 +1,84 @@
 const Usuario = require("../models/usuario");
-
 const Usuarioconvidar = require("../models/usuarioconvidar");
-
 const Empresa = require("../models/empresa");
 const jwt = require("jsonwebtoken");
 const database = require("../config/database");
 const moment = require("moment");
+const esquecisenha = require('../util/email/esquecisenha');
 
 module.exports = router => {
+  router.post("/esquecisenha", (req, res) => {
+    const retorno = {
+      success: false,
+      message: "",
+      codigoerro: ""
+    };
+    if (!req.body.email) {
+      retorno.message = 'E-mail não informado'
+      return res.json(retorno);
+    }
+    let email= req.body.email;
+    Usuario.findOne({email:email}).exec((err,oUsuario)=>{
+      if (err) {
+        retorno.message = err.code + " - " + err.message;        
+        retorno.codigoerro = '000';
+        return res.json(retorno);
+      }
+      if ((!oUsuario) || (!oUsuario.cadastrocompleto)) {
+        retorno.message = "Usuário não cadastrado";        
+        retorno.codigoerro = '001';
+        return res.json(retorno);        
+      }
+      esquecisenha.enviaEsqueciSenha(oUsuario);
+      retorno.success = true;
+      retorno.message = "E-mail enviado com sucesso";    
+      return res.json(retorno);
+    });
+  })
+  
+  router.post("/alterarsenha", (req, res) => {
+    const retorno = {
+      success: false,
+      message: "",
+      codigoerro: ""
+    };
+    let decode = "";
+    let userid = "";
+    if (!req.body.password) {
+      retorno.message = "Senha não informada";
+      return res.json(retorno);
+    }
+
+    try {
+      //usuário que foram cadastrado através da oficina
+      //o codigo foi enviado por email e está sendo decoficado para cadastrar o usuário
+      decode = jwt.verify(req.body.token, database.trocasenha);
+      userid = decode.userId;
+    }catch (ex) {
+      retorno.message = "Assinatura inválida";
+      return res.json({retorno});
+    }    
+    Usuario.findOne({ _id: userid }, (err, oUsuario) => {
+      if (err) {
+        retorno.message = err.code + " - " + err.message;
+        return res.json(retorno);
+      }
+      if (!oUsuario) {
+        retorno.message = "Usuário não encontrado";
+        return res.json(retorno);
+      }      
+      oUsuario.password = req.body.password;
+      oUsuario.save(err => {
+        if (err) {
+          retorno.message = err.code + ' - ' + err.message;
+          return res.json(retorno);          
+        }
+        retorno.success = true;
+        retorno.message = "Senha alterada com sucesso";
+        return res.json(retorno);
+      });
+    });    
+  });  
 
   router.post("/register", (req, res) => {
     let erroMsg = "";
@@ -82,8 +153,7 @@ module.exports = router => {
 /*
     cadastrado: { type: Boolean, default: false },
     datacadastro:{type:Date},
-*/
-        console.log(oUsuario);
+*/        
         oUsuario.save(err => {
           if (err) {
             if (err.code === 11000) {

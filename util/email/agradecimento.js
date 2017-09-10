@@ -32,7 +32,6 @@ exports.enviaragradecimento = ordemservicoid => {
           console.log(err.code + " - " + err.message);
           process.exit(0);
         }
-        console.log("antes da rotina que envia o e-mail");
         this.envioEmail(oOrdemservico, oServicosrealizados);
       });
     });
@@ -51,8 +50,12 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
       expiresIn: "15 days"
     }
   );
-  let acessopagina =
-    database.acesso + "/register?tk=" + token + "&email=" + usuario.email;
+  let acessopagina ='';
+  if (!usuario.cadastrado) {    
+    acessopagina = database.acesso + "/register?tk=" + token + "&email=" + usuario.email;
+  }else{
+    acessopagina =database.acesso + "/login"
+  }
   let transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -97,6 +100,24 @@ exports.getSubject = (empresa, usuario) => {
 exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   let empresa = ordemservico.empresaid;
   let usuario = ordemservico.usuarioid;
+  let mensagemCliente = '';
+  let textoBotao = ''
+  if (!usuario.cadastrado) {
+    mensagemCliente = `A YUCAR em parceria com ` +
+    empresa.nomefantasia +
+    ` irá disponibilizar na internet os serviços realizados em seu veículo.<br>
+    Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
+    Para ter acesso se cadastre no nosso portal através do botao abaixo.`              
+    textoBotao = 'Crie sua conta'
+  }else{
+    mensagemCliente = `A YUCAR em parceria com ` +
+    empresa.nomefantasia +
+    ` disponibiliza na internet os serviços realizados em seu veículo.<br>
+    Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
+    Acesse o nosso portal através do botão abaixo.`              
+    textoBotao = 'Acesse sua conta'
+  }
+
 
   var tColumns = "";
   for (var servicorealizado of servicorealizados) {
@@ -140,41 +161,43 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
           <mj-divider horizontal-spacing="0" vertical-spacing="0" padding-top="20" padding-bottom="0" padding-left="0" padding-right="0" border-width="1px" border-color="#f8f8f8" />
         </mj-column>
       </mj-section>
-
       <!-- Article -->
       <mj-section background-color="white">
-        <mj-column width="130">
-          <mj-image src="http://static.vix.com/pt/sites/default/files/styles/large/public/b/bebe-ouvindo-musica-112016-1400x800.jpg?itok=frDZ68PX" width="100" />
-        </mj-column>
         <mj-column width="350">
           <mj-text align="left" font-size="20" color="grey">
             Mais facilidades para você.
           </mj-text>
-          <mj-text align="left" color="grey">
-            A YUCAR em parceria com ` +
-    empresa.nomefantasia +
-    ` irá disponibilizar na internet os serviços realizados em seu veículo.<br>
-            Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
-            Para ter acesso se cadastre no nosso portal através do botao abaixo.              
-          </mj-text>
-          <mj-button background-color="#F45E43" href="` +
-          acessopagina +
-          `">Crie sua conta</mj-button>                
+          <mj-text align="left" color="grey">`
+            +
+            mensagemCliente             
+            +
+          `</mj-text>
+          <mj-button background-color="#F45E43" href="` 
+          +acessopagina +
+          `">
+          `+ textoBotao +`
+          </mj-button>                
         </mj-column>
+
       </mj-section>  
-        <mj-section>
-        <mj-column>
-          <mj-table>
-            <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
-              <th width='40%' style="text-align:left;" >Serviço</th>
-              <th width='35%' style="text-align:left;" >Data próx. troca</th>
-              <th width='25%' style="text-align:right;">KM próx. troca</th>
-            </tr>      
-            ` +
-    tColumns +
-    `
-            </mj-table>
-          </mj-column>
+      <mj-section>
+        <mj-text align="left" font-size="20" color="grey">
+          Lista dos serviços realizados
+        </mj-text>        
+      </mj-section>
+      <mj-section>
+          <mj-column>
+            <mj-table>
+              <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
+                <th width='40%' style="text-align:left;" >Serviço</th>
+                <th width='35%' style="text-align:left;" >Data próx. troca</th>
+                <th width='25%' style="text-align:right;">KM próx. troca</th>
+              </tr>      
+              ` +
+      tColumns +
+      `
+              </mj-table>
+            </mj-column>
         </mj-section>
     </mj-body>
   </mjml>

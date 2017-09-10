@@ -29,6 +29,7 @@
     <!-- Button -->
     <div class="controls">
       <button [disabled]="!form.valid || processing" class="btn btn-success">Entrar</button>
+      <button [disabled]="processing" class="btn btn-warning" type="button" (click)="onEsqueciSenha()">Esqueci minha senha</button>
     </div>
   </div>
 </form>

@@ -17,6 +17,8 @@ import { ProfileComponent } from "./cadastro/profile/profile.component";
 import { EmpresaService } from "./cadastro/empresa/empresa.service";
 import { OficinaService } from "./oficina/oficina.service";
 import { ProprietarioService } from "./proprietario/proprietario.service";
+import { EsquecisenhaComponent } from './autenticar/login/esquecisenha.component';
+import { ReinicializarsenhaComponent } from './autenticar/login/reinicializarsenha.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { ProprietarioService } from "./proprietario/proprietario.service";
     HomeComponent,
     RegisterComponent,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    EsquecisenhaComponent,
+    ReinicializarsenhaComponent
   ],
   imports: [
     BrowserModule,

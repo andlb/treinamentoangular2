@@ -118,7 +118,15 @@ export class AuthService {
   atualizaUsuario(usuario) {
     this.createAuthenticationHeader();
     return this.http.post(this.domain+'authentication/editProfile',usuario,this.options).map(res => res.json());
-
   }
+
+  enviarEmailSenha(senha){
+    return this.http.post(this.domain+'authentication/esquecisenha',senha).map(res => res.json());
+  }
+
+  alterarSenha(usuario) {
+    return this.http.post(this.domain+'authentication/alterarsenha',usuario).map(res => res.json());
+  }
+
 
 }
