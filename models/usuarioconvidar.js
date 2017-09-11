@@ -6,7 +6,7 @@ const usuarioconvidarSchema = new Schema({
     usuarioid: { type:String,ref: 'Usuario',required:true },
     empresaid:{type:String, ref : 'Empresa',required:true},
     datainscricao:{type:Date},
-    dataproximoenvio:{type:Date, default:Date.now()},
+    dataproximoenvio:{type:Date, default:Date.now(), index:true},
     dataultimoenvio:{type:Date}
 });
 

@@ -4,7 +4,7 @@ mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 
 const respostaSchema = new Schema({
-    ordemservicoid: {type: String, ref: 'Ordemservico'},
+    ordemservicoid: {type: String, index:true, ref: 'Ordemservico'},
     perguntaid: { type: String },
     tipo: { type: String },
     descricao: { type: String },
