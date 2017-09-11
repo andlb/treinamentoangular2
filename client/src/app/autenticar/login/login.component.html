@@ -10,9 +10,6 @@
     <label class="control-label" for="email">E-mail</label>
     <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
       <input #email type="text" class="form-control"  id="email" name="email" formControlName="email" placeholder="" >
-      <ul class="help-block">
-        <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
-      </ul>
     </div>
   </div>
   <div class="control-group">

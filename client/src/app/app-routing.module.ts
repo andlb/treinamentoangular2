@@ -1,3 +1,4 @@
+import { EsquecisenhaComponent } from './autenticar/login/esquecisenha.component';
 import { ReinicializarsenhaComponent } from './autenticar/login/reinicializarsenha.component';
 
 import { NgModule }             from '@angular/core';
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
   { path: 'areaproprietario', loadChildren: './proprietario/proprietario.module#ProprietarioModule'},
   { path: 'login', component:LoginComponent,canActivate: [NoAuthGuard]},
   { path: 'reinializarsenha', component: ReinicializarsenhaComponent,canActivate: [NoAuthGuard]},
+  { path: 'esquecisenha', component: EsquecisenhaComponent,canActivate: [NoAuthGuard]},
   { path: 'login/:acessode', component:LoginComponent,canActivate: [NoAuthGuard]},
   { path: 'register',component:RegisterComponent, canActivate:[NoAuthGuard] },
   { path: 'register/:acessode',component:RegisterComponent, canActivate:[NoAuthGuard] },

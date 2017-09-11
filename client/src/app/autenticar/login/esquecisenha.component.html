@@ -7,18 +7,19 @@
 
 <form [formGroup]="form" (submit)="onLoginSubmi()" >
   <div class="control-group">
-    <label class="control-label" for="email">Informe seu e-mail que enviaremos um e-mail com o procedimento para alterar a senha</label>
-    <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
+    <label class="control-label" for="email">
+      Digite seu email de cadastro abaixo e clique em enviar.<br>
+      Nós lhe enviaremos um e-mail com link para recadastrar sua senha</label>
+    <div >
       <input #email type="text" class="form-control"  id="email" name="email" formControlName="email" placeholder="" >
-      <ul class="help-block">
-        <li *ngIf="form.controls.email.touched && form.controls.email.errors?.required ">Informe o e-mail</li>
-      </ul>
     </div>
   </div>
+  <br>
   <div class="control-group">
     <!-- Button -->
     <div class="controls">
-      <button [disabled]="!form.valid || processing" class="btn btn-success">Enviar</button>
+      <button [disabled]="processing" class="btn btn-success">Enviar</button>
+      <button [disabled]="processing"  class="btn btn-info" type="button" (click)="onVoltar()" >Voltar</button>
     </div>
   </div>
 </form>

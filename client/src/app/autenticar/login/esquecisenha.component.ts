@@ -50,11 +50,14 @@ export class EsquecisenhaComponent implements OnInit, OnDestroy {
   }
 
   onLoginSubmi() {
+    this.processing = true;
+    this.disableForm();
+    this.message = "";
+    this.messageClass = "";
     let enviar = {
       email: this.form.controls["email"].value
     };
     this.subEnviarSenha = this.authService.enviarEmailSenha(enviar).subscribe(data => {
-
       if (!data.success) {
         this.message = data.message;
         this.messageClass = "alert alert-danger";
@@ -63,11 +66,20 @@ export class EsquecisenhaComponent implements OnInit, OnDestroy {
       } else {
         this.message = 'Obrigado! Você receberá um e-mail com o link e instruções pra criar uma nova senha';
         this.messageClass = 'alert alert-success';
+        setTimeout(()=>{
+          this.router.navigate(["/login"]);
+        },2000)
+
       }
     });
   }
 
+
+
   ngOnDestroy(): void {
     if (this.subEnviarSenha) this.subEnviarSenha.unsubscribe();
+  }
+  onVoltar(){
+    this.router.navigate(['/login']);
   }
 }
