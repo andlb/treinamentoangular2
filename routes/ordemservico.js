@@ -115,8 +115,9 @@ module.exports = router => {
                 retorno.message = err.code + " - " + err.message;
                 return res.json(retorno);
               }
-              retorno.ordensservico = oOrdemServico;
+              retorno.ordemservico = oOrdemServico;
               retorno.veiculo = oOrdemServico.veiculoid;
+              
               retorno.proprietario = oUsuario;
               retorno.success = true;
               retorno.servicos = servicos;
@@ -336,6 +337,7 @@ module.exports = router => {
   });
 
   router.post("/cadastra", (req, res) => {
+    console.log("entrou em cadastra");
     let retorno = {
       success: false,
       message: ""
@@ -418,6 +420,7 @@ module.exports = router => {
         retorno.message = "Empresa não encontrada";
         return res.json(retorno);
       }
+      console.log("encontrou empresa");
       Usuario.findOne({ cpf: req.body.cpf }).exec((err, oUsuario) => {
         if (err) {
           retorno.message = err.code + " - " + err.message;
@@ -453,6 +456,7 @@ module.exports = router => {
               return res.json(retorno);
             }
           }
+          console.log("Cadastrou usuario");
           //pesquisa pelo veiculo pela placa
           Veiculo.findOne({ placa: req.body.placa }).exec((err, oVeiculo) => {
             if (err) {
@@ -475,37 +479,39 @@ module.exports = router => {
                 retorno.message = err.code + " " + err.message;
                 return res.json(retorno);
               }
-              var ordemservicoid = req.body.ordemservicoid;
-              Ordemservico.findById(
-                ordemservicoid
-              ).exec((err, ordemservico) => {
+              console.log("encontrou veiculo");
+              let ordemservicoid = req.body.ordemservicoid;
+              Ordemservico.findOne({_id:ordemservicoid}                
+              ).exec((err, oOrdemServico) => {
+                console.log("encontrou veiculo");
                 if (err) {
                   retorno.message = err.code + " " + err.message;
                   return res.json(retorno);
                 }
                 
-                if (!ordemservico) {
-                  ordemservico = new Ordemservico();
+                if (!oOrdemServico) {
+                  oOrdemServico = new Ordemservico();
                   novaOrdemServico = true;
-
                 }
-                ordemservico.veiculoid = oVeiculo._id;
-                ordemservico.usuarioid = oUsuario._id;
-                ordemservico.status = 1;  
+                console.log("nova ordem de serviço");
+                console.log(novaOrdemServico);
+                oOrdemServico.veiculoid = oVeiculo._id;
+                oOrdemServico.usuarioid = oUsuario._id;
+                oOrdemServico.status = 1;  
                 if (finalizar){
-                  ordemservico.status = 2;
+                  oOrdemServico.status = 2;
                 }
                 
-                ordemservico.empresaid = req.body.empresaid;
-                ordemservico.quilometragem = req.body.quilometragem;
-                ordemservico.save((err, ordemservico) => {
+                oOrdemServico.empresaid = req.body.empresaid;
+                oOrdemServico.quilometragem = req.body.quilometragem;
+                oOrdemServico.save((err, oOrdemServico) => {
                   if (err) {
                     retorno.message = err.code + " " + err.message;
                     return res.json(retorno);
                   }
                   //cadastrando os serviços
                   Servicorealizado.remove(
-                    { ordemservicoid: ordemservico._id },
+                    { ordemservicoid: oOrdemServico._id },
                     err => {
                       if (err) {
                         retorno.message = err.code + " " + err.message;
@@ -515,7 +521,7 @@ module.exports = router => {
                       for (let servicorealizado of req.body.servicorealizado) {
                         servicorealizado.veiculoid = oVeiculo._id;
                         servicorealizado.empresaid = oEmpresa._id;
-                        servicorealizado.ordemservicoid = ordemservico._id;
+                        servicorealizado.ordemservicoid = oOrdemServico._id;
                         servicosrealizados.push(servicorealizado);
                       }
                       Servicorealizado.insertMany(
@@ -531,7 +537,7 @@ module.exports = router => {
                               empresaid:req.body.empresaid
                             }).save((err,oUsuarioConvidar) => {
                               if (!err) {
-                                Agradecimento.enviaragradecimento(ordemservico._id);
+                                Agradecimento.enviaragradecimento(oOrdemServico._id);
                                 //Inscricao.enviarConvite(oUsuarioConvidar._id);
                               }
 

@@ -78,17 +78,13 @@ export class OficinaService {
     };
   }
 
-  setVeiculo(veiculo) {
+  setVeiculo(veiculo,ordemservico:any=null) {
     if (!veiculo) return;
     var quilometragem = '';
-    if (veiculo.quilometragem) {
-      quilometragem = veiculo.quilometragem;
+    if (ordemservico) {
+      quilometragem = ordemservico.quilometragem;
     }
-    if (veiculo.atributos) {
-      if (veiculo.atributos.length>0){
-        quilometragem = veiculo.atributos[veiculo.atributos.length - 1].quilometragem;
-      }
-    }
+
     this.cadastroProprietario.veiculo = {
       marca: veiculo.marca,
       modelo: veiculo.modelo,
@@ -136,6 +132,9 @@ export class OficinaService {
 
   atualizarDados() {
     this.createAuthenticationHeader();
+    console.log("ordem servico id");
+    console.log(this.ordemservicoid);
+
     let oficina = {
       ordemservicoid:this.ordemservicoid,
       marca: this.cadastroProprietario.veiculo.marca,

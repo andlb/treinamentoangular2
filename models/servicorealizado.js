@@ -5,6 +5,7 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
+
 const servicorealizadoSchema = new Schema({
     veiculoid: { type: String, ref: 'Veiculo', index: true, required: [true, "Veiculo não definido"] },
     servicoid: { type: String, ref:'Servico', required: [true, 'Serviço não definido'] },
@@ -13,6 +14,7 @@ const servicorealizadoSchema = new Schema({
     timestamp: { type: Date, default: Date.now() },
     observacao: { type: String },
     proximatrocadata: { type: Date},
-    proximatrocakm: { type: Number},
+    proximatrocakm: { type: Number}
 });
+
 module.exports = mongoose.model('Servicorealizado', servicorealizadoSchema);

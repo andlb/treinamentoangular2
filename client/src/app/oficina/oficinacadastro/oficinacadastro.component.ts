@@ -13,6 +13,9 @@ import {
   OnDestroy
 } from "@angular/core";
 
+import * as moment from 'moment';
+
+
 @Component({
   selector: "app-oficinacadastro",
   templateUrl: "./oficinacadastro.component.html",
@@ -68,7 +71,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
               }
               this.edit = true;
               this.oficinaService.setOrdemservicoid(this.atendimentoid);
-              this.oficinaService.setVeiculo(data.veiculo);
+              this.oficinaService.setVeiculo(data.veiculo,data.ordemservico);
               this.oficinaService.setProprietario(data.proprietario);
               this.servicos = data.servicos;
               this.servicosRealizados = data.servicorealizado;
@@ -99,6 +102,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
               if (data.success) {
                 this.empresa = data.empresa;
                 this.servicos = data.servicos;
+                this.oficinaService.setOrdemservicoid(null);
                 this.servicosRealizados = [];
                 this.adicionarServicoForm();
                 this.placa.nativeElement.focus();
@@ -141,6 +145,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
           if (data.veiculo && data.proprietario) {
             this.oficinaService.setVeiculo(data.veiculo);
             this.oficinaService.setProprietario(data.proprietario);
+            this.oficinaService.setOrdemservicoid(null);
             if (data.proprietario.cadastrado) {
               this.cadastrado = data.proprietario.cadastrado;
             }
@@ -298,6 +303,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   onLimpar() {
     //this.placa.nativeElement.focus();
     this.edit = false;
+    this.oficinaService.setOrdemservicoid(null);
     this.form.controls["placa"].setValue("");
     this.form.controls["marca"].setValue("");
     this.form.controls["modelo"].setValue("");
@@ -384,9 +390,20 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.servicosRealizados = [];
     for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
       if (control.value.selecionado) {
+        let proximadatatroca:any = "";
+        if (control.value.proximatrocadata){
+          proximadatatroca = moment(Date.now()).add(control.value.proximatrocadata,"day");
+        }
+        let proximatrocakm:any = "";
+        if (control.value.proximatrocakm ) {
+          proximatrocakm = parseInt(this.form.controls["quilometragem"].value) + parseInt(control.value.proximatrocakm);
+        }
+
         let servicoRealizado = {
           servicoid: control.value._id,
-          observacao: control.value.observacao
+          observacao: control.value.observacao,
+          proximatrocadata: proximadatatroca,
+          proximatrocakm: proximatrocakm
         };
         this.servicosRealizados.push(servicoRealizado);
       }
@@ -429,7 +446,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.servicos[posicao].obseracao = event.target.value;
   }
 
-  defineServico(event, posicao) {
+  /*defineServico(event, posicao) {
     let codigo = event.target.value;
 
     if (event.target.checked) {
@@ -450,6 +467,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       }
     }
   }
+  */
   onVoltar() {
     this.router.navigate(["centroautomotivo/lista/edit"]);
   }
@@ -457,21 +475,23 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   adicionarServicoForm() {
     if (this.servicos) {
       for (let tServico of this.servicos) {
-        let oServico = this.servicosRealizados.find(
+        let oServicoRealizado = this.servicosRealizados.find(
           servicorealizado => servicorealizado.servicoid === tServico._id
         );
         let selecionado = false;
         let observacao = "";
-        if (oServico) {
+        if (oServicoRealizado) {
           selecionado = true;
-          observacao = oServico.observacao;
+          observacao = oServicoRealizado.observacao;
         }
         (<FormArray>this.form.get("servicosForm")).push(
           this.formBuilder.group({
             _id: tServico._id,
             descricao: tServico.descricao,
             selecionado: selecionado,
-            observacao: observacao
+            observacao: observacao,
+            proximatrocadata:tServico.tempo,
+            proximatrocakm:tServico.quilometragem
           })
         );
       }
