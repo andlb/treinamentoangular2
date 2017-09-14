@@ -530,19 +530,23 @@ module.exports = router => {
                           if (err) {
                             retorno.message = err.code + " - " + err.message;
                             return res.json(retorno);
-                          }
+                          }                          
                           if (usuarioNovo) {
                             new Usuarioconvidar({
                               usuarioid:oUsuario._id,
                               empresaid:req.body.empresaid
                             }).save((err,oUsuarioConvidar) => {
                               if (!err) {
-                                Agradecimento.enviaragradecimento(oOrdemServico._id);
-                                //Inscricao.enviarConvite(oUsuarioConvidar._id);
+                                console.log('enviando agradecimento');                                
+                                Inscricao.enviarConvite(oUsuarioConvidar._id);                                
                               }
-
                             });
+                          }else{
+                            console.log('enviando inscriação');
+                            Agradecimento.enviaragradecimento(oOrdemServico._id);
                           }
+                          
+                          Agradecimento.enviaragradecimento(oOrdemServico._id);
                           retorno.success = true;
                           if (!finalizar) {
                             if (novaOrdemServico) {

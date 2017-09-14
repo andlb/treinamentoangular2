@@ -43,5 +43,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
+#Amazon file access
+youcar.pem
+my-key-pair.ppk
+
 /test/*.js
 /config/email.js

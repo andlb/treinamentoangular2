@@ -83,6 +83,8 @@ export class OficinaService {
     var quilometragem = '';
     if (ordemservico) {
       quilometragem = ordemservico.quilometragem;
+    }else {
+      quilometragem = veiculo.quilometragem;
     }
 
     this.cadastroProprietario.veiculo = {
