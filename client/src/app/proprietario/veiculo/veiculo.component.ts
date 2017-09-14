@@ -22,8 +22,8 @@ import {
 export class VeiculoComponent implements OnInit {
   @ViewChild("placa") placa: ElementRef;
   form: FormGroup;
-  edit: Boolean = false;
-  processing: Boolean = false;
+  edit: boolean = false;
+  processing: boolean = false;
   messageClass;
   message;
   subPesquisa: Subscription;

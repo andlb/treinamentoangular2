@@ -24,8 +24,8 @@ import * as moment from 'moment';
 export class OficinacadastroComponent implements OnInit, OnDestroy {
   @ViewChild("placa") placa: ElementRef;
   @ViewChild("quilometragem") quilometragem: ElementRef;
-  form: FormGroup;
-  edit: boolean = false;
+  form;
+  public edit: boolean = false;
   processing: boolean = false;
   messageClass:string;
   message:string;

@@ -9,7 +9,7 @@ import { environment } from './../../environments/environment';
 export class AuthService {
   private usuario;
   empresaChanged = new Subject();
-  domain = environment.domain;
+  domain:string = environment.domain;
   authToken;
   usuarioToken;
   options;

@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class OficinalistComponent implements OnInit {
   private httpSubs: Subscription;
   private subsEdit: Subscription;
-  private edit=false;
+  edit=false;
   messageClass = "";
   message = "";
   ordemservicos = [];

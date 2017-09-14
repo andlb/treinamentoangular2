@@ -1,4 +1,4 @@
-<form [formGroup]="form" (submit)="submitEmpresa()" >
+<form [formGroup]="form" (submit)="addCadastro()" >
    <div class="control-group">
       <label class="control-label" for="email">E-mail</label>
       <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
