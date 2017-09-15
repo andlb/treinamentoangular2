@@ -11,6 +11,7 @@ const Empresa = require("../../models/empresa");
 const Ordemservico = require("../../models/ordemservico");
 const Usuarioconvidar = require("../../models/usuarioconvidar");
 const Servicorealizado = require("../../models/servicorealizado");
+const Configuration = require("../../models/configuration");
 const email = require("../../config/email");
 const database = require("../../config/database");
 
@@ -56,41 +57,52 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
   }else{
     acessopagina =database.acesso + "/login"
   }
-  let transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: email.user,
-      pass: email.pass
+  Configuration.findOne({}, (err,data) => {
+    if (err) {
+      console.log(err);
+      return;
     }
+    if (!data){
+      console.log("dados sobre o envio do e-mail não encontrado.");
+      return;
+    }
+    let decode = jwt.verify(data.emailtoken, data.emailsecret);    
+    let transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: decode.email,
+        pass: decode.pass
+      }
+    });
+    let subject = this.getSubject(empresa, usuario);
+    const { html, errors } = mjml.mjml2html(
+      this.getHtml(servicorealizados, ordemservico, acessopagina),
+      {
+        beautify: true,
+        minify: true,
+        level: "soft"
+      }
+    );
+  
+    //var text = this.getText(empresa, usuario);
+    //TODO: mudar o TO para o usuário
+    transporter.sendMail(
+      {
+        from: empresa.nomefantasia + " <" + email.user + ">",
+        to: "andlbp@gmail.com",
+        subject: subject,      
+        html: html
+      },
+      (err, info) => {
+        if (err) {
+          console.log(err);
+        }
+        if (info) {
+          console.log(info);
+        }
+      }
+    );  
   });
-  let subject = this.getSubject(empresa, usuario);
-  const { html, errors } = mjml.mjml2html(
-    this.getHtml(servicorealizados, ordemservico, acessopagina),
-    {
-      beautify: true,
-      minify: true,
-      level: "soft"
-    }
-  );
-
-  //var text = this.getText(empresa, usuario);
-  //TODO: mudar o TO para o usuário
-  transporter.sendMail(
-    {
-      from: empresa.nomefantasia + " <" + email.user + ">",
-      to: "andlbp@gmail.com",
-      subject: subject,      
-      html: html
-    },
-    (err, info) => {
-      if (err) {
-        console.log(err);
-      }
-      if (info) {
-        console.log(info);
-      }
-    }
-  );
 };
 
 exports.getSubject = (empresa, usuario) => {

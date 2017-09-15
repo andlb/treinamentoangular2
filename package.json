@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "cd client && ng build --env=prod && cd.. && node index.js"
+    "build": "cd client && ng build --env=prod"
   },
   "repository": {
     "type": "git",

@@ -28,35 +28,47 @@ exports.envioEmail = (usuario) => {
   );
 
   let acessopagina = database.acesso + "/reinializarsenha?tk=" + token;
-  let transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: email.user,
-      pass: email.pass
-    }
-  });
-  let subject = this.getSubject( usuario);
-  const {
-    html,
-    errors
-  } = mjml.mjml2html(this.getHtml( usuario, acessopagina), {
-    beautify: true,
-    minify: true,
-    level: "soft"
-  });
-    
-  transporter.sendMail({
-    from: "yucar <" + email.user + ">",
-    to: "andlbp@gmail.com",
-    subject: subject,    
-    html: html
-  },(err,info) =>{
+  Configuration.findOne({}, (err,data) => {
     if (err) {
       console.log(err);
+      return;
     }
-    if (info) {
-      console.log(info);
+    if (!data){
+      console.log("dados sobre o envio do e-mail não encontrado.");
+      return;
     }
+    let decode = jwt.verify(data.emailtoken, data.emailsecret);    
+    let transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: decode.email,
+        pass: decode.pass
+      }
+    });
+
+    let subject = this.getSubject( usuario);
+    const {
+      html,
+      errors
+    } = mjml.mjml2html(this.getHtml( usuario, acessopagina), {
+      beautify: true,
+      minify: true,
+      level: "soft"
+    });
+      
+    transporter.sendMail({
+      from: "yucar <" + email.user + ">",
+      to: "andlbp@gmail.com",
+      subject: subject,    
+      html: html
+    },(err,info) =>{
+      if (err) {
+        console.log(err);
+      }
+      if (info) {
+        console.log(info);
+      }
+    });
   });
 };
 

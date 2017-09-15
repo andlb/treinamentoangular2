@@ -71,27 +71,39 @@ function enviaEmail(oEmpresa) {
             if (errors) {
               console.log(errors.map(e => e.formattedMessage).join("\n"));
             }
-            var transporter = nodemailer.createTransport({
-              service: "Gmail",
-              auth: {
-                user: email.user,
-                pass: email.pass
+            Configuration.findOne({}, (err,data) => {
+              if (err) {
+                console.log(err);
+                return;
               }
+              if (!data){
+                console.log("dados sobre o envio do e-mail não encontrado.");
+                return;
+              }
+              let decode = jwt.verify(data.emailtoken, data.emailsecret);    
+              let transporter = nodemailer.createTransport({
+                service: "Gmail",
+                auth: {
+                  user: decode.email,
+                  pass: decode.pass
+                }
+              });                         
+
+              var subject = oEmpresa.nomefantasia + ' - lembrando os serviços a ser realizado' 
+              if (err) {
+                console.log("could not connect to database", err);
+              } else {
+                transporter.sendMail({
+                  from: "yucar <"+email.user+">",
+                  to: "andlbp@gmail.com",
+                  subject: subject,
+                  text: "texto da mensagem enviada",
+                  html: html
+                });
+              }            
             });
-            var subject = oEmpresa.nomefantasia + ' - lembrando os serviços a ser realizado' 
-            if (err) {
-              console.log("could not connect to database", err);
-            } else {
-              transporter.sendMail({
-                from: "yucar <"+email.user+">",
-                to: "andlbp@gmail.com",
-                subject: subject,
-                text: "texto da mensagem enviada",
-                html: html
-              });
-            }
-          }
-        });
+         }        
+      });
     }
   );
 }

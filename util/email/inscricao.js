@@ -86,38 +86,48 @@ exports.envioEmail = (empresa, usuario) => {
   );
 
   let acessopagina = database.acesso + "/register?tk=" + token+'&email='+usuario.email;
-  let transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: email.user,
-      pass: email.pass
-    }
-  });
   let subject = this.getSubject(empresa, usuario);
-  const {
-    html,
-    errors
-  } = mjml.mjml2html(this.getHtml(empresa, usuario, acessopagina), {
-    beautify: true,
-    minify: true,
-    level: "soft"
-  });
-    
-  var text = this.getText(empresa, usuario, acessopagina);
-  //TODO: mudar o TO para o usuário
-  transporter.sendMail({
-    from: "yucar <" + email.user + ">",
-    to: "andlbp@gmail.com",
-    subject: subject,
-    text: text,
-    html: html
-  },(err,info) =>{
+  let text = this.getText(empresa, usuario, acessopagina);
+  Configuration.findOne({}, (err,data) => {
     if (err) {
       console.log(err);
+      return;
     }
-    if (info) {
-      console.log(info);
+    if (!data){
+      console.log("dados sobre o envio do e-mail não encontrado.");
+      return;
     }
+    let decode = jwt.verify(data.emailtoken, data.emailsecret);    
+    let transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: decode.email,
+        pass: decode.pass
+      }
+    }); 
+    const {
+      html,
+      errors
+    } = mjml.mjml2html(this.getHtml(empresa, usuario, acessopagina), {
+      beautify: true,
+      minify: true,
+      level: "soft"
+    });
+    //TODO: mudar o TO para o usuário
+    transporter.sendMail({
+      from: "yucar <" + email.user + ">",
+      to: "andlbp@gmail.com",
+      subject: subject,
+      text: text,
+      html: html
+    },(err,info) =>{
+      if (err) {
+        console.log(err);
+      }
+      if (info) {
+        console.log(info);
+      }
+    });
   });
 };
 
