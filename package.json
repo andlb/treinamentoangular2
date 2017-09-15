@@ -8,10 +8,10 @@
     "npm": "3.10.10"
   },  
   "scripts": {
-    "start": "NODE_ENV=heroku node index.js",
+    "start": "cd client && ng build --env=prod && NODE_ENV=heroku node index.js",
+    "build": "cd client && ng build --env=prod",
     "startws": "NODE_ENV=production node index.js",
-    "dev": "nodemon index.js",    
-    "build": "cd client && ng build --env=prod"
+    "dev": "nodemon index.js"    
   },
   "repository": {
     "type": "git",
