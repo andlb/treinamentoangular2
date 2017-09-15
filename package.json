@@ -1,7 +1,7 @@
 {
-  "name": "yucar",
+  "name": "youcar",
   "version": "0.0.1",
-  "description": "projeto yucar para mecanicas e centros automotivos",
+  "description": "projeto youcar para mecanicas e centros automotivos",
   "main": "index.js",
   "engines": {
     "node": "7.9.0",

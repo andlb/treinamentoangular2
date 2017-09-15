@@ -114,7 +114,7 @@ exports.envioEmail = (empresa, usuario) => {
     });
     //TODO: mudar o TO para o usuário
     transporter.sendMail({
-      from: "yucar <" + email.user + ">",
+      from: "youcar <" + email.user + ">",
       to: "andlbp@gmail.com",
       subject: subject,
       text: text,
@@ -133,7 +133,7 @@ exports.envioEmail = (empresa, usuario) => {
 exports.getSubject = (empresa, usuario) => {
   return (
     empresa.nomefantasia +
-    " gostaria de convidar você a fazer parte do portal yucar"
+    " gostaria de convidar você a fazer parte do portal youcar"
   );
 };
 
@@ -142,7 +142,7 @@ exports.getText = (empresa, usuario, acessopagina) => {
   let retorno =
     "Olá " +
     usuario.nome +
-    `.<br> <br>A YUCAR é uma startup que facilitará o acesso aos serviços realizados em seu carro.
+    `.<br> <br>A YOUCAR é uma startup que facilitará o acesso aos serviços realizados em seu carro.
     <br><br> Em parceria com `
     +empresa.nomefantasia+
     `, você terá  todos os serviços realizados em seu veiculo disponíveis on-line. 
@@ -160,7 +160,7 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
         <mj-section background-color="#f0f0f0">
           <mj-column>
             <mj-text font-style="italic" font-size="20" color="#626262">
-              YUCAR e ` + empresa.nomefantasia + `
+              YOUCAR e ` + empresa.nomefantasia + `
             </mj-text>
           </mj-column>
         </mj-section>

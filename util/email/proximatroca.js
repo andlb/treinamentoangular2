@@ -92,7 +92,7 @@ function enviaEmail(oEmpresa) {
                 console.log("could not connect to database", err);
               } else {
                 transporter.sendMail({
-                  from: "yucar <"+email.user+">",
+                  from: "youcar <"+email.user+">",
                   to: "andlbp@gmail.com",
                   subject: subject,
                   text: "texto da mensagem enviada",
@@ -143,7 +143,7 @@ function getHtml(servicorealizados, empresa) {
       <mj-section background-color="#f0f0f0">
         <mj-column>
           <mj-text font-style="italic" font-size="20" color="#626262">
-            YUCAR
+            YOUCAR
           </mj-text>
         </mj-column>
       </mj-section>
@@ -198,7 +198,7 @@ fs.readFile('teste.log',(err,data)=>{
     
   }
   transporter.sendMail({
-    from:'yucar <andlbp@gmail.com>',
+    from:'youcar <andlbp@gmail.com>',
     to:'andlbp@gmail.com',
     subject:'Enviando e-mail utilizando o NODE.JS',
     text:'texto da mensagem enviada',

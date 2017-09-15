@@ -114,14 +114,14 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   let mensagemCliente = '';
   let textoBotao = ''
   if (!usuario.cadastrado) {
-    mensagemCliente = `A YUCAR em parceria com ` +
+    mensagemCliente = `A YOUCAR em parceria com ` +
     empresa.nomefantasia +
     ` irá disponibilizar na internet os serviços realizados em seu veículo.<br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
     Para ter acesso se cadastre no nosso portal através do botao abaixo.`              
     textoBotao = 'Crie sua conta'
   }else{
-    mensagemCliente = `A YUCAR em parceria com ` +
+    mensagemCliente = `A YOUCAR em parceria com ` +
     empresa.nomefantasia +
     ` disponibiliza na internet os serviços realizados em seu veículo.<br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
