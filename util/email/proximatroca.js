@@ -11,8 +11,6 @@ const Empresa = require("../models/empresa");
 const Servico = require("../models/servico");
 const Servicorealizado = require("../models/servicorealizado");
 const moment = require("moment");
-const email = require("../config/email");
-
 
 try {
   mongoose.Promise = global.Promise;

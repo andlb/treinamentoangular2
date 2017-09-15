@@ -12,7 +12,6 @@ const Ordemservico = require("../../models/ordemservico");
 const Usuarioconvidar = require("../../models/usuarioconvidar");
 const Servicorealizado = require("../../models/servicorealizado");
 const Configuration = require("../../models/configuration");
-const email = require("../../config/email");
 const database = require("../../config/database");
 
 exports.enviaragradecimento = ordemservicoid => {

@@ -9,7 +9,6 @@ const config = require("../../config/database");
 const Usuario = require("../../models/usuario");
 const Empresa = require("../../models/empresa");
 const Usuarioconvidar = require("../../models/usuarioconvidar");
-const email = require("../../config/email");
 const database = require("../../config/database");
 
 exports.enviarConvite = (usuarioconvidarid) => {

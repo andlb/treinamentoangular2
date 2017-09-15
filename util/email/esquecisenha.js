@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 
 const config = require("../../config/database");
 const Usuario = require("../../models/usuario");
-const email = require("../../config/email");
 const database = require("../../config/database");
 
 exports.enviaEsqueciSenha = usuario => {
