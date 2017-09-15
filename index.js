@@ -1,18 +1,21 @@
 const express = require('express');
 const router = express.Router();
+const app = express();
 const mongoose = require('mongoose');
-const config = require('./config/database');
 const path = require('path');
+
+const config = require('./config/database')[app.get('env')];
 const authentication = require('./routes/authentication')(router);
 const empresas = require('./routes/empresas')(router);
 const ordemservico = require('./routes/ordemservico')(router);
 const proprietario = require('./routes/proprietario')(router);
 
-const app = express();
 const bodyParser = require('body-parser')
 const cors = require('cors');
 
 mongoose.Promise = global.Promise;
+console.log(config);
+
 mongoose.connect(config.uri, (err) => {
     if (err) {
         console.log('could not connect to database', err);
