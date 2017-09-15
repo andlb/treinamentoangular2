@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router();
 const app = express();
+const router = express.Router();
 const mongoose = require('mongoose');
 const path = require('path');
 
@@ -14,8 +14,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 
 mongoose.Promise = global.Promise;
-console.log(config);
-
 mongoose.connect(config.uri, (err) => {
     if (err) {
         console.log('could not connect to database', err);

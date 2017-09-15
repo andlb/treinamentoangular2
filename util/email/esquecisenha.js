@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 
-const config = require("../../config/database");
 const Usuario = require("../../models/usuario");
 const database = require("../../config/database");
 

@@ -1,3 +1,6 @@
+const express = require('express');
+const app = express();
+
 const Usuario = require("../models/usuario");
 const Usuarioconvidar = require("../models/usuarioconvidar");
 const Empresa = require("../models/empresa");
