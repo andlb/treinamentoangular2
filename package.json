@@ -10,9 +10,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    //"start": "cd client && ng build --env=prod && cd .. && NODE_ENV=heroku node index.js",
-    "postinstall": "cd client && ng build --target=production -e ${NODE_ENV:-production} --aot",
-    //"build": "cd client && ng build --env=prod",
+    "postinstall": "cd client && ng build",
     "startws": "NODE_ENV=production node index.js",
     "dev": "nodemon index.js"    
   },
@@ -46,3 +44,7 @@
   },
   "devDependencies": {}
 }
+
+//"start": "cd client && ng build --env=prod && cd .. && NODE_ENV=heroku node index.js",
+//"build": "cd client && ng build --env=prod",    
+//"postinstall": "cd client && ng build --target=production -e ${NODE_ENV:-production} --aot",
