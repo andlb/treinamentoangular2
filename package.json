@@ -6,10 +6,13 @@
   "engines": {
     "node": "7.9.0",
     "npm": "3.10.10"
-  },  
+  },    
   "scripts": {
-    "start": "cd client && ng build --env=prod && cd .. && NODE_ENV=heroku node index.js",
-    "build": "cd client && ng build --env=prod",
+    "ng": "ng",
+    "start": "node server.js",
+    //"start": "cd client && ng build --env=prod && cd .. && NODE_ENV=heroku node index.js",
+    "postinstall": "cd client && ng build --target=production -e ${NODE_ENV:-production} --aot",
+    //"build": "cd client && ng build --env=prod",
     "startws": "NODE_ENV=production node index.js",
     "dev": "nodemon index.js"    
   },
