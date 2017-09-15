@@ -44,7 +44,3 @@
   },
   "devDependencies": {}
 }
-
-//"start": "cd client && ng build --env=prod && cd .. && NODE_ENV=heroku node index.js",
-//"build": "cd client && ng build --env=prod",    
-//"postinstall": "cd client && ng build --target=production -e ${NODE_ENV:-production} --aot",
