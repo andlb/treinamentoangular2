@@ -18,10 +18,15 @@ const jwt = require("jsonwebtoken");
 mongoose.Promise = global.Promise;
 let options = {};
 if (app.get('env') === "production") {
-    ///let decode = jwt.verify(config.acessobd, config.segredoemail);
-    let userid = 'youcar';
-    let pass = 'OrxBtfT3rDiQtnNDTalh';
+    let decode = jwt.verify(config.acessobd, config.segredoemail);
+    let userid = decode.user;
+    let pass = decode.pass;    
+    options = {
+        user:userid,
+        pass:pass
+    };    
 }
+console.log(options);
 mongoose.connect(config.uri,options, (err) => {
     if (err) {
         console.log('could not connect to database', err);
