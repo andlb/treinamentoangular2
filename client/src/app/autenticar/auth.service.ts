@@ -27,6 +27,7 @@ export class AuthService {
   }
 
   checkEmailUsuario(email){
+    console.log("domain: " + this.domain);
     return this.http.get(this.domain+'authentication/checkEmailUsuario/'+email).map(res => res.json());
   }
 
