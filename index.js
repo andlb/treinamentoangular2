@@ -12,12 +12,22 @@ const proprietario = require('./routes/proprietario')(router);
 const Usuario = require("./models/usuario");
 const bodyParser = require('body-parser')
 const cors = require('cors');
+const jwt = require("jsonwebtoken");
+const database = require("./config/database");
+
 
 mongoose.Promise = global.Promise;
-options = {
-    user:'youcar',
-    pass:'OrxBtfT3rDiQtnNDTalh'
-};
+let options = {};
+if (app.get('env') === "production") {
+    let decode = jwt.verify(database.acessobd, database.trocasenha);
+    let userid = decode.user;
+    let pass = decode.pass;
+    options = {
+        user:userid,
+        pass:pass
+    };
+}
+console.log(options);
 mongoose.connect(config.uri,options, (err) => {
     if (err) {
         console.log('could not connect to database', err);
