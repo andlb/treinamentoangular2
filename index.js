@@ -9,7 +9,7 @@ const authentication = require('./routes/authentication')(router);
 const empresas = require('./routes/empresas')(router);
 const ordemservico = require('./routes/ordemservico')(router);
 const proprietario = require('./routes/proprietario')(router);
-
+const Usuario = require("./models/usuario");
 const bodyParser = require('body-parser')
 const cors = require('cors');
 
@@ -24,7 +24,7 @@ mongoose.connect(config.uri,options, (err) => {
     } else {
         console.log('connected to database : ' + config.db);
     }
-    
+
     Usuario.findOne( {}, (err,usuario) => {
         if (err) {
             console.log(err);
