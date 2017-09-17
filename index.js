@@ -19,6 +19,12 @@ const database = require("./config/database");
 mongoose.Promise = global.Promise;
 let options = {};
 if (app.get('env') === "production") {
+    
+    console.log("acesso bd");
+    console.log(database.acessobd);
+    console.log("segredo email");
+    console.log(database.segredoemail);
+    
     let decode = jwt.verify(database.acessobd, database.segredoemail);
     let userid = decode.user;
     let pass = decode.pass;
