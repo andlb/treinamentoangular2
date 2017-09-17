@@ -24,6 +24,12 @@ mongoose.connect(config.uri,options, (err) => {
     } else {
         console.log('connected to database : ' + config.db);
     }
+    
+    Usuario.findOne( {}, (err,usuario) => {
+        if (err) {
+            console.log(err);
+        }
+    });
 });
 app.use(cors({ origin: 'http://localhost:4200' }));
 app.use(bodyParser.urlencoded({ extended: false }))
