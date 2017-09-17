@@ -5,7 +5,7 @@ const Usuario = require("../models/usuario");
 const Usuarioconvidar = require("../models/usuarioconvidar");
 const Empresa = require("../models/empresa");
 const jwt = require("jsonwebtoken");
-const database = require("../config/database");
+const database = require("../config/database")[app.get('env')];
 const moment = require("moment");
 const esquecisenha = require('../util/email/esquecisenha');
 
