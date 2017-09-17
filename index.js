@@ -19,7 +19,7 @@ const database = require("./config/database");
 mongoose.Promise = global.Promise;
 let options = {};
 if (app.get('env') === "production") {
-    let decode = jwt.verify(database.acessobd, database.trocasenha);
+    let decode = jwt.verify(database.acessobd, database.segredoemail);
     let userid = decode.user;
     let pass = decode.pass;
     options = {
