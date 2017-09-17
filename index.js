@@ -14,7 +14,11 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.uri, (err) => {
+options = {
+    user:'youcar',
+    pass:'OrxBtfT3rDiQtnNDTalh'
+};
+mongoose.connect(config.uri,options, (err) => {
     if (err) {
         console.log('could not connect to database', err);
     } else {
