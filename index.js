@@ -13,19 +13,18 @@ const Usuario = require("./models/usuario");
 const bodyParser = require('body-parser')
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
-const database = require("./config/database");
 
 
 mongoose.Promise = global.Promise;
 let options = {};
 if (app.get('env') === "production") {
-    
+
     console.log("acesso bd");
-    console.log(database.acessobd);
+    console.log(config.acessobd);
     console.log("segredo email");
-    console.log(database.segredoemail);
+    console.log(config.segredoemail);
     
-    let decode = jwt.verify(database.acessobd, database.segredoemail);
+    let decode = jwt.verify(config.acessobd, config.segredoemail);
     let userid = decode.user;
     let pass = decode.pass;
     options = {
