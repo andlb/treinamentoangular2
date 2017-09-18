@@ -68,6 +68,8 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
       return;
     }
     let decode = jwt.verify(data.emailtoken, data.emailsecret);    
+    console.log('decode');
+    console.log(decode);
     let transporter = nodemailer.createTransport({
       service: "Gmail",
       auth: {
