@@ -12,6 +12,9 @@ const Empresa = require("../models/empresa");
 const Servico = require("../models/servico");
 const Servicorealizado = require("../models/servicorealizado");
 
+console.log("tipo de ambiente")
+console.log([app.get('env')]);
+
 mongoose.Promise = global.Promise;
 mongoose.connect(config.uri, err => {
   if (err) {

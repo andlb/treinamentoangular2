@@ -1,5 +1,8 @@
+const express = require('express');
+const app = express();
+
 const mongoose = require("mongoose");
-const config = require("../config/database");
+const config = require("../config/database")[app.get('env')];;
 const Veiculo = require("../models/veiculo");
 
 const Usuario = require("../models/usuario");

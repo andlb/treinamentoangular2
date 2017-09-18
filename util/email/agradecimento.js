@@ -1,18 +1,20 @@
 "use strict";
+const express = require('express');
+const app = express();
+
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 
-const config = require("../../config/database");
+const config = require("../../config/database")[app.get('env')];;
 const Usuario = require("../../models/usuario");
 const Empresa = require("../../models/empresa");
 const Ordemservico = require("../../models/ordemservico");
 const Usuarioconvidar = require("../../models/usuarioconvidar");
 const Servicorealizado = require("../../models/servicorealizado");
 const Configuration = require("../../models/configuration");
-const database = require("../../config/database");
 
 exports.enviaragradecimento = ordemservicoid => {
   Ordemservico.findById(ordemservicoid)
@@ -45,16 +47,16 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
       userId: usuario._id,
       email: usuario.email
     },
-    database.segredoemail,
+    config.segredoemail,
     {
       expiresIn: "15 days"
     }
   );
   let acessopagina ='';
   if (!usuario.cadastrado) {    
-    acessopagina = database.acesso + "/register?tk=" + token + "&email=" + usuario.email;
+    acessopagina = config.acesso + "/register?tk=" + token + "&email=" + usuario.email;
   }else{
-    acessopagina =database.acesso + "/login"
+    acessopagina =config.acesso + "/login"
   }
   Configuration.findOne({}, (err,data) => {
     if (err) {

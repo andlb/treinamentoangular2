@@ -1,4 +1,7 @@
 "use strict";
+const express = require('express');
+const app = express();
+
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
@@ -6,7 +9,7 @@ const moment = require("moment");
 const jwt = require("jsonwebtoken");
 
 const Usuario = require("../../models/usuario");
-const database = require("../../config/database");
+const database = require("../../config/database")[app.get('env')];;
 
 exports.enviaEsqueciSenha = usuario => {
   this.envioEmail(usuario);

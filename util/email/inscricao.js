@@ -1,4 +1,7 @@
 "use strict";
+const express = require('express');
+const app = express();
+
 const mjml = require("mjml");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
@@ -9,7 +12,7 @@ const config = require("../../config/database");
 const Usuario = require("../../models/usuario");
 const Empresa = require("../../models/empresa");
 const Usuarioconvidar = require("../../models/usuarioconvidar");
-const database = require("../../config/database");
+const database = require("../../config/database")[app.get('env')];
 
 exports.enviarConvite = (usuarioconvidarid) => {
   Usuarioconvidar.findById({ _id: usuarioconvidarid })

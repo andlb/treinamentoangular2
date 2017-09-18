@@ -26,7 +26,7 @@ if (app.get('env') === "production") {
         pass:pass
     };    
 }
-console.log(options);
+
 mongoose.connect(config.uri,options, (err) => {
     if (err) {
         console.log('could not connect to database', err);
