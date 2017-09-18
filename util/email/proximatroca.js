@@ -200,7 +200,7 @@ fs.readFile('teste.log',(err,data)=>{
     
   }
   transporter.sendMail({
-    from:'youcar <andlbp@gmail.com>',
+    from:'youkar <andlbp@gmail.com>',
     to:'andlbp@gmail.com',
     subject:'Enviando e-mail utilizando o NODE.JS',
     text:'texto da mensagem enviada',

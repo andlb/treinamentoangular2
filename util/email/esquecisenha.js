@@ -58,7 +58,7 @@ exports.envioEmail = (usuario) => {
     });
       
     transporter.sendMail({
-      from: "youcar <" + decode.email + ">",
+      from: "youkar <" + decode.email + ">",
       to: "andlbp@gmail.com",
       subject: subject,    
       html: html
@@ -92,7 +92,7 @@ exports.getHtml = ( usuario, acessopagina) => {
         <mj-section background-color="#fafafa">
           <mj-column width="400">
             <mj-text color="#525252" align="center">
-            Seja bem vindo a YOUCAR.COM, recebemos uma solicitação para uma nova senha associada a sua conta.
+            Seja bem vindo a YOUKAR.COM.BR, recebemos uma solicitação para uma nova senha associada a sua conta.
             Se você fez essa solicitação, por favor, confirme clicando no botão abaixo.
             </mj-text>
             <mj-button background-color="#F45E43" href="`+acessopagina+`">Confirmar alteração</mj-button>      

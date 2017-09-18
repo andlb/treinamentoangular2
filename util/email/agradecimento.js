@@ -17,6 +17,9 @@ const Servicorealizado = require("../../models/servicorealizado");
 const Configuration = require("../../models/configuration");
 
 exports.enviaragradecimento = ordemservicoid => {
+  console.log('entrou em agradecimento');
+  console.log('ordem de serviço' + ordemservicoid);
+
   Ordemservico.findById(ordemservicoid)
     .populate("veiculoid usuarioid empresaid")
     .exec((err, oOrdemservico) => {
@@ -118,14 +121,14 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   let mensagemCliente = '';
   let textoBotao = ''
   if (!usuario.cadastrado) {
-    mensagemCliente = `A YOUCAR em parceria com ` +
+    mensagemCliente = `A YOUKAR em parceria com ` +
     empresa.nomefantasia +
     ` irá disponibilizar na internet os serviços realizados em seu veículo.<br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
     Para ter acesso se cadastre no nosso portal através do botao abaixo.`              
     textoBotao = 'Crie sua conta'
   }else{
-    mensagemCliente = `A YOUCAR em parceria com ` +
+    mensagemCliente = `A YOUKAR em parceria com ` +
     empresa.nomefantasia +
     ` disponibiliza na internet os serviços realizados em seu veículo.<br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
