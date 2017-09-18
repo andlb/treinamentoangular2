@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 
-const config = require("../../config/database")[app.get('env')];;
+const config = require("../../config/database")[app.get('env')];
 const Usuario = require("../../models/usuario");
 const Empresa = require("../../models/empresa");
 const Ordemservico = require("../../models/ordemservico");
@@ -89,7 +89,7 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
     //TODO: mudar o TO para o usuário
     transporter.sendMail(
       {
-        from: empresa.nomefantasia + " <" + email.user + ">",
+        from: empresa.nomefantasia + " <" + decode.email + ">",
         to: "andlbp@gmail.com",
         subject: subject,      
         html: html

@@ -94,7 +94,7 @@ function enviaEmail(oEmpresa) {
                 console.log("could not connect to database", err);
               } else {
                 transporter.sendMail({
-                  from: "youcar <"+email.user+">",
+                  from: "youcar <"+decode.email+">",
                   to: "andlbp@gmail.com",
                   subject: subject,
                   text: "texto da mensagem enviada",

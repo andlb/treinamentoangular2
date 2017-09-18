@@ -58,7 +58,7 @@ exports.envioEmail = (usuario) => {
     });
       
     transporter.sendMail({
-      from: "youcar <" + email.user + ">",
+      from: "youcar <" + decode.email + ">",
       to: "andlbp@gmail.com",
       subject: subject,    
       html: html

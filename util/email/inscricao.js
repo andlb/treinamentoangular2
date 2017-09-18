@@ -117,7 +117,7 @@ exports.envioEmail = (empresa, usuario) => {
     });
     //TODO: mudar o TO para o usuário
     transporter.sendMail({
-      from: "youcar <" + email.user + ">",
+      from: "youcar <" + decode.email+ ">",
       to: "andlbp@gmail.com",
       subject: subject,
       text: text,
