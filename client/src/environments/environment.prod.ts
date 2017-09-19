@@ -1,5 +1,5 @@
 
 export const environment = {
   production: true,
-  domain: "http://youkar.com.br:8080/"
+  domain: "http://youkar.com.br/"
 };
