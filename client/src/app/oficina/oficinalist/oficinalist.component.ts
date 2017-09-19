@@ -29,6 +29,13 @@ export class OficinalistComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.oficinaService.getDadosUsuario();
+    if (this.oficinaService.empresaid === "" ){
+      this.message = 'Empresa não definida para o usuário.';
+      this.messageClass = "alert alert-danger";
+      return;
+    }
+
     this.subsEdit = this.route.params.subscribe(
       (params: Params) => {
         if (params.edit) {
@@ -36,6 +43,8 @@ export class OficinalistComponent implements OnInit {
         }
       }
     );
+
+
     this.httpSubs = this.oficinaService.getTodosVeiculos().subscribe((data) => {
       if (!this.authService.verTokenValido(data.tokeninvalido) ){
         this.message = 'Usuário desconectado. Por favor, logue novamente.';

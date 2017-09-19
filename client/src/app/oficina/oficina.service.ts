@@ -39,13 +39,19 @@ export class OficinaService {
     private empresaService: EmpresaService,
     private http: Http
   ) {
+    this.getDadosUsuario();
+    this.finalizar = false;
+  }
+
+  getDadosUsuario(){
+    this.empresaid = "";
     this.authService.loadToken();
     let usuario = JSON.parse(this.authService.usuarioToken);
+
     if (usuario.empresa) {
       this.empresaid = usuario.empresa._id;
     }
     this.usuarioid = usuario.usuarioid;
-    this.finalizar = false;
   }
 
   createAuthenticationHeader() {

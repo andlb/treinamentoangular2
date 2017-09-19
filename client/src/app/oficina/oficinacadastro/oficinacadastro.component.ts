@@ -53,6 +53,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.finalizar = false;
+    this.oficinaService.getDadosUsuario();
     this.subsPesquisaAtendimento = this.route.params.subscribe(
       (params: Params) => {
         this.atendimentoid = params.id;
