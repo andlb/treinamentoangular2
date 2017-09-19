@@ -17,13 +17,10 @@ const Servicorealizado = require("../../models/servicorealizado");
 const Configuration = require("../../models/configuration");
 
 exports.enviaragradecimento = ordemservicoid => {
-  console.log('entrou em agradecimento');
-  console.log('ordem de serviço' + ordemservicoid);
 
   Ordemservico.findById(ordemservicoid)
     .populate("veiculoid usuarioid empresaid")
-    .exec((err, oOrdemservico) => {
-      console.log("entrou no find");
+    .exec((err, oOrdemservico) => {      
       if (err) {
         console.log(err.code + " - " + err.message);
         process.exit(0);
@@ -71,8 +68,6 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
       return;
     }
     let decode = jwt.verify(data.emailtoken, data.emailsecret);    
-    console.log('decode');
-    console.log(decode);
     let transporter = nodemailer.createTransport({
       service: "Gmail",
       auth: {

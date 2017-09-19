@@ -536,17 +536,13 @@ module.exports = router => {
                               usuarioid:oUsuario._id,
                               empresaid:req.body.empresaid
                             }).save((err,oUsuarioConvidar) => {
-                              if (!err) {
-                                console.log('enviando agradecimento');                                
+                              if (!err) {                                
                                 Inscricao.enviarConvite(oUsuarioConvidar._id);                                
                               }
                             });
-                          }else{
-                            console.log('enviando inscriação');
+                          }else{                            
                             Agradecimento.enviaragradecimento(oOrdemServico._id);
-                          }
-                          
-                          Agradecimento.enviaragradecimento(oOrdemServico._id);
+                          }                                                    
                           retorno.success = true;
                           if (!finalizar) {
                             if (novaOrdemServico) {
