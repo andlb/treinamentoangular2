@@ -14,8 +14,11 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
 
-
 mongoose.Promise = global.Promise;
+
+console.log("produção ou desenvolvimento");
+console.log([app.get('env')]);
+
 let options = {};
 if (app.get('env') === "production") {
     let decode = jwt.verify(config.acessobd, config.segredoemail);
@@ -33,15 +36,8 @@ mongoose.connect(config.uri,options, (err) => {
     } else {
         console.log('connected to database : ' + config.db);
     }
-
-    Usuario.findOne( {}, (err,usuario) => {
-        if (err) {
-            console.log(err);
-        }
-    });
 });
 
-//app.use(cors({ origin: 'http://localhost:4200' }));
 var corsOptions = {
     origin: 'http://youkar.com.br',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
