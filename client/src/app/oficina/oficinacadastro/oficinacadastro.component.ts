@@ -229,7 +229,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["email"].disable();
     this.form.controls["dtnascimento"].disable();
     for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
-      (<FormGroup>control).controls["observacao"].disable();
+      //(<FormGroup>control).controls["observacao"].disable();
     }
   }
 
@@ -398,7 +398,6 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         if (control.value.proximatrocakm ) {
           proximatrocakm = parseInt(this.form.controls["quilometragem"].value) + parseInt(control.value.proximatrocakm);
         }
-
         let servicoRealizado = {
           servicoid: control.value._id,
           observacao: control.value.observacao,
@@ -446,6 +445,42 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.servicos[posicao].obseracao = event.target.value;
   }
 
+  onVoltar() {
+    this.router.navigate(["centroautomotivo/lista/edit"]);
+  }
+
+  adicionarServicoForm() {
+    if (this.servicos) {
+      for (let tServico of this.servicos) {
+        let oServicoRealizado = this.servicosRealizados.find(
+          servicorealizado => servicorealizado.servicoid === tServico._id
+        );
+        let selecionado = false;
+        var observacao = "";
+        if (oServicoRealizado) {
+          selecionado = true;
+
+          if (oServicoRealizado.observacao) {
+            observacao = oServicoRealizado.observacao;
+          }
+        }
+        (<FormArray>this.form.get("servicosForm")).push(
+          this.formBuilder.group({
+            _id: tServico._id,
+            descricao: tServico.descricao,
+            selecionado: selecionado,
+            observacao: observacao,
+            proximatrocadata:tServico.tempo,
+            proximatrocakm:tServico.quilometragem
+          })
+        );
+      }
+    }
+  }
+}
+
+
+
   /*defineServico(event, posicao) {
     let codigo = event.target.value;
 
@@ -468,33 +503,3 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     }
   }
   */
-  onVoltar() {
-    this.router.navigate(["centroautomotivo/lista/edit"]);
-  }
-
-  adicionarServicoForm() {
-    if (this.servicos) {
-      for (let tServico of this.servicos) {
-        let oServicoRealizado = this.servicosRealizados.find(
-          servicorealizado => servicorealizado.servicoid === tServico._id
-        );
-        let selecionado = false;
-        let observacao = "";
-        if (oServicoRealizado) {
-          selecionado = true;
-          observacao = oServicoRealizado.observacao;
-        }
-        (<FormArray>this.form.get("servicosForm")).push(
-          this.formBuilder.group({
-            _id: tServico._id,
-            descricao: tServico.descricao,
-            selecionado: selecionado,
-            observacao: observacao,
-            proximatrocadata:tServico.tempo,
-            proximatrocakm:tServico.quilometragem
-          })
-        );
-      }
-    }
-  }
-}

@@ -140,9 +140,6 @@ export class OficinaService {
 
   atualizarDados() {
     this.createAuthenticationHeader();
-    console.log("ordem servico id");
-    console.log(this.ordemservicoid);
-
     let oficina = {
       ordemservicoid:this.ordemservicoid,
       marca: this.cadastroProprietario.veiculo.marca,
