@@ -136,15 +136,22 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
 
   var tColumns = "";
   for (var servicorealizado of servicorealizados) {
-    var proximaDataTroca = moment(ordemservico.data, moment.ISO_8601).add(
-      servicorealizado.servicoid.tempo,
-      "month"
-    );
-    var proximaTroca =
-      parseFloat(ordemservico.quilometragem) +
-      parseFloat(servicorealizado.servicoid.quilometragem);
-    servicorealizado.servicoid.proximaTroca = proximaTroca;
+    var proximaDataTroca = "Não definido";
+    if (servicorealizado.servicoid.tempo!==""){
+      proximaDataTroca = moment(ordemservico.data, moment.ISO_8601).add(
+        servicorealizado.servicoid.tempo,
+        "month"
+      );        
+    }
+  
+    var proximaTroca = "Não definido";
+    if (servicorealizado.servicoid.quilometragem !=="") {
+      proximaTroca =
+        parseFloat(ordemservico.quilometragem) +
+        parseFloat(servicorealizado.servicoid.quilometragem);
+      servicorealizado.servicoid.proximaTroca = proximaTroca;
 
+    }
     tColumns +=
       `
               <tr>
