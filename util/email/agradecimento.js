@@ -139,7 +139,7 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
     var proximaDataTroca = "Não definido";
     console.log("Tempo");
     console.log(servicorealizado.servicoid.tempo);
-    if (servicorealizado.servicoid.tempo!==""){
+    if (servicorealizado.servicoid.tempo){
       proximaDataTroca = moment(ordemservico.data, moment.ISO_8601).add(
         servicorealizado.servicoid.tempo,
         "month"
@@ -150,7 +150,7 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
     console.log("quilometragem");
     console.log(servicorealizado.servicoid.quilometragem);
 
-    if (servicorealizado.servicoid.quilometragem !=="") {
+    if (servicorealizado.servicoid.quilometragem) {
       proximaTroca =
         parseFloat(ordemservico.quilometragem) +
         parseFloat(servicorealizado.servicoid.quilometragem);
