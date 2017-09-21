@@ -8,11 +8,12 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 
-const config = require("../../config/database");
+const config = require("../../config/database")[app.get('env')];
 const Usuario = require("../../models/usuario");
 const Empresa = require("../../models/empresa");
 const Usuarioconvidar = require("../../models/usuarioconvidar");
 const database = require("../../config/database")[app.get('env')];
+const Configuration = require("../../models/configuration");
 
 exports.enviarConvite = (usuarioconvidarid) => {
   Usuarioconvidar.findById({ _id: usuarioconvidarid })
