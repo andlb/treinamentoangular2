@@ -144,6 +144,7 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
         servicorealizado.servicoid.tempo,
         "month"
       );        
+      proximaDataTroca = proximaDataTroca.format("DD/MM/YYYY");
     }
   
     var proximaTroca = "Não definido";
@@ -163,7 +164,8 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
       servicorealizado.servicoid.descricao +
       `</td>
                  <td width='35%' style="text-align:left;">` +
-      proximaDataTroca.format("DD/MM/YYYY") +
+      proximaDataTroca
+       +
       `</td>
                 <td width='25%' style="text-align:right;">` +
       proximaTroca +
