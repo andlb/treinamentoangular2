@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt-nodejs');
 
 let emailLengthChecker = (email) => {
     if (!email) return false;
-    if (email.length < 5 || email.length > 30) return false;
+    if (email.length < 5 || email.length > 200) return false;
     return true;
 }
 

@@ -16,10 +16,10 @@ const jwt = require("jsonwebtoken");
 
 mongoose.Promise = global.Promise;
 
-console.log("produção ou desenvolvimento");
-console.log([app.get('env')]);
-
 let options = {};
+console.log('Ambiente');
+console.log(app.get('env'));
+
 if (app.get('env') === "production") {
     let decode = jwt.verify(config.acessobd, config.segredoemail);
     let userid = decode.user;
@@ -38,11 +38,18 @@ mongoose.connect(config.uri,options, (err) => {
     }
 });
 
-var corsOptions = {
-    origin: 'http://youkar.com.br',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+if (app.get('env') === "production") {
+    var corsOptions = {
+        origin: 'http://youkar.com.br',
+        optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+    }
+    app.use(cors());    
+}else {
+    if (app.get('env') === "development") {
+        app.use(cors({ origin: 'http://localhost:4200' }));
+    }
 }
-app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'));

@@ -113,17 +113,19 @@ exports.getSubject = (empresa, usuario) => {
 exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   let empresa = ordemservico.empresaid;
   let usuario = ordemservico.usuarioid;
+  let veiculo = ordemservico.veiculoid;
+
   let mensagemCliente = '';
   let textoBotao = ''
   if (!usuario.cadastrado) {
-    mensagemCliente = `A YOUKAR em parceria com ` +
+    mensagemCliente = `Olá `+ordemservico.usuarioid.nome+`.  A YOUKAR em parceria com ` +
     empresa.nomefantasia +
     ` irá disponibilizar na internet os serviços realizados em seu veículo.<br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
     Para ter acesso se cadastre no nosso portal através do botao abaixo.`              
     textoBotao = 'Crie sua conta'
   }else{
-    mensagemCliente = `A YOUKAR em parceria com ` +
+    mensagemCliente = `Olá `+ordemservico.usuarioid.nome+`. A YOUKAR em parceria com ` +
     empresa.nomefantasia +
     ` disponibiliza na internet os serviços realizados em seu veículo.<br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
@@ -194,10 +196,22 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
 
       </mj-section>  
       <mj-section>
-        <mj-text align="left" font-size="20" color="grey">
-          Lista dos serviços realizados
-        </mj-text>        
-      </mj-section>
+        <mj-column>
+          <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey" />
+        </mj-column>
+      </mj-section>      
+      <mj-section background-color="#e6e6ff">        
+          <mj-text align="center" font-size="20" color="grey">
+            Lista dos serviços realizados
+          </mj-text>        
+          <mj-column>
+              <mj-text><span style="font-weight:bold">Placa:</span> `+veiculo.placa+` </mj-text>
+          </mj-column>
+          <mj-column >
+              <mj-text><span style="font-weight:bold">Km: </span> `+ordemservico.quilometragem+` </mj-text>
+          </mj-column>
+        
+      </mj-section>      
       <mj-section>
           <mj-column>
             <mj-table>
@@ -206,9 +220,7 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
                 <th width='35%' style="text-align:left;" >Data próx. troca</th>
                 <th width='25%' style="text-align:right;">KM próx. troca</th>
               </tr>      
-              ` +
-      tColumns +
-      `
+              ` + tColumns +      `
               </mj-table>
             </mj-column>
         </mj-section>

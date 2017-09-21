@@ -455,8 +455,7 @@ module.exports = router => {
               retorno.message = err.code + " " + err.message;
               return res.json(retorno);
             }
-          }
-          console.log("Cadastrou usuario");
+          }          
           //pesquisa pelo veiculo pela placa
           Veiculo.findOne({ placa: req.body.placa }).exec((err, oVeiculo) => {
             if (err) {
@@ -479,11 +478,11 @@ module.exports = router => {
                 retorno.message = err.code + " " + err.message;
                 return res.json(retorno);
               }
-              console.log("encontrou veiculo");
+              
               let ordemservicoid = req.body.ordemservicoid;
               Ordemservico.findOne({_id:ordemservicoid}                
               ).exec((err, oOrdemServico) => {
-                console.log("encontrou veiculo");
+                
                 if (err) {
                   retorno.message = err.code + " " + err.message;
                   return res.json(retorno);
@@ -493,8 +492,8 @@ module.exports = router => {
                   oOrdemServico = new Ordemservico();
                   novaOrdemServico = true;
                 }
-                console.log("nova ordem de serviço");
-                console.log(novaOrdemServico);
+                
+              
                 oOrdemServico.veiculoid = oVeiculo._id;
                 oOrdemServico.usuarioid = oUsuario._id;
                 oOrdemServico.status = 1;  
@@ -536,12 +535,18 @@ module.exports = router => {
                               usuarioid:oUsuario._id,
                               empresaid:req.body.empresaid
                             }).save((err,oUsuarioConvidar) => {
-                              if (!err) {                                
-                                Inscricao.enviarConvite(oUsuarioConvidar._id);                                
+                              if (!err) { 
+                                if (finalizar){                               
+                                  Inscricao.enviarConvite(oUsuarioConvidar._id);                                
+                                }
                               }
                             });
-                          }else{                            
-                            Agradecimento.enviaragradecimento(oOrdemServico._id);
+                          }else{         
+                            if (finalizar){                   
+                              if (finalizar){                               
+                                Agradecimento.enviaragradecimento(oOrdemServico._id);
+                              }
+                            }
                           }                                                    
                           retorno.success = true;
                           if (!finalizar) {
