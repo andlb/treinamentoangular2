@@ -90,7 +90,7 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
     transporter.sendMail(
       {
         from: empresa.nomefantasia + " <" + decode.email + ">",
-        to: "andlbp@gmail.com",
+        to: usuario.email,
         subject: subject,      
         html: html
       },
