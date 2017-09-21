@@ -78,7 +78,6 @@
         <div [ngClass]="{'has-error':form.controls.dtnascimento.touched &&  (form.controls.dtnascimento.errors), 'has-success': !form.controls.dtnascimento.errors }">
           <input type="text" class="form-control" id="dtnascimento" name="dtnascimento" formControlName="dtnascimento" placeholder="*Data nasc. do proprietário">
           <ul class="help-block">
-            <li *ngIf="form.controls.dtnascimento.touched && form.controls.dtnascimento.errors?.required ">Informe a data de nascimento</li>
             <li *ngIf="((form.controls.dtnascimento.touched) && ((form.controls.dtnascimento.errors?.pattern) || (form.controls.dtnascimento.errors?.maxlength || form.controls.dtnascimento.errors?.minlength)))">Data inválida</li>
           </ul>
         </div>

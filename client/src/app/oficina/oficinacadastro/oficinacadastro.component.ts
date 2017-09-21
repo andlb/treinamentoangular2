@@ -276,7 +276,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         [
           Validators.required,
           Validators.minLength(5),
-          Validators.maxLength(30),
+          Validators.maxLength(100),
           Validators.pattern(
             /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           )
@@ -285,7 +285,6 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       dtnascimento: [
         "",
         [
-          Validators.required,
           Validators.minLength(10),
           Validators.maxLength(10),
           Validators.pattern(
