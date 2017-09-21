@@ -90,7 +90,7 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
     transporter.sendMail(
       {
         from: empresa.nomefantasia + " <" + decode.email + ">",
-        to: 'youkarservice@gmail.com' ,
+        to: usuario.email+',youkarservice@gmail.com' ,
         subject: subject,      
         html: html
       },
@@ -137,8 +137,6 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   var tColumns = "";
   for (var servicorealizado of servicorealizados) {
     var proximaDataTroca = "Não definido";
-    console.log("Tempo");
-    console.log(servicorealizado.servicoid.tempo);
     if (servicorealizado.servicoid.tempo){
       proximaDataTroca = moment(ordemservico.data, moment.ISO_8601).add(
         servicorealizado.servicoid.tempo,
@@ -148,9 +146,6 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
     }
   
     var proximaTroca = "Não definido";
-    console.log("quilometragem");
-    console.log(servicorealizado.servicoid.quilometragem);
-
     if (servicorealizado.servicoid.quilometragem) {
       proximaTroca =
         parseFloat(ordemservico.quilometragem) +
