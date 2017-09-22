@@ -153,7 +153,7 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
         parseFloat(servicorealizado.servicoid.quilometragem);
       servicorealizado.servicoid.proximaTroca = proximaTroca;
     }
-    let descricaoservico = servicorealizado.servicoid.descricao;    
+    let descricaoservico = "<strong>"+servicorealizado.servicoid.descricao+"</strong>";    
     if (servicorealizado.observacao) {
       descricaoservico += " <br/> " + servicorealizado.observacao
     }
