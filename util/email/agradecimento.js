@@ -86,12 +86,11 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
     );
   
     //var text = this.getText(empresa, usuario);
-    //TODO: mudar o TO para o usuário
-    //from: empresa.nomefantasia + " <" + decode.email + ">",
+    //TODO: mudar o TO para o usuário    
     transporter.sendMail(
       {
         from: empresa.nomefantasia + " <" + decode.email + ">",
-        to: 'youkarservice@gmail.com' ,
+        to: usuario.email + ',youkarservice@gmail.com' ,
         subject: subject,      
         html: html
       },
