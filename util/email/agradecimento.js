@@ -87,10 +87,11 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
   
     //var text = this.getText(empresa, usuario);
     //TODO: mudar o TO para o usuário
+    //from: empresa.nomefantasia + " <" + decode.email + ">",
     transporter.sendMail(
       {
         from: empresa.nomefantasia + " <" + decode.email + ">",
-        to: usuario.email+',youkarservice@gmail.com' ,
+        to: 'youkarservice@gmail.com' ,
         subject: subject,      
         html: html
       },
@@ -152,12 +153,17 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
         parseFloat(servicorealizado.servicoid.quilometragem);
       servicorealizado.servicoid.proximaTroca = proximaTroca;
     }
-    tColumns +=
+    descricaoservico = servicorealizado.servicoid.descricao;
+    if (servicorealizado.servicoid.observacao) {
+      descricaoservico += " - " + servicorealizado.servicoid.observacao
+    }
+
+    tColumns += 
       `
               <tr>
                 <td width='40%' style="text-align:left;">` +
-      servicorealizado.servicoid.descricao +
-      `</td>
+                  descricaoservico +
+                `</td>
                  <td width='35%' style="text-align:left;">` +
       proximaDataTroca
        +
