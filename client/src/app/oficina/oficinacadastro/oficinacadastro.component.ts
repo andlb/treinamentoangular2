@@ -73,6 +73,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
               this.edit = true;
               this.oficinaService.setOrdemservicoid(this.atendimentoid);
               this.oficinaService.setVeiculo(data.veiculo,data.ordemservico);
+
               this.oficinaService.setProprietario(data.proprietario);
               this.servicos = data.servicos;
               this.servicosRealizados = data.servicorealizado;

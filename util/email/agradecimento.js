@@ -230,8 +230,8 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
             <mj-table>
               <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
                 <th width='40%' style="text-align:left;" >Serviço</th>
-                <th width='35%' style="text-align:left;" >Data próx. troca</th>
-                <th width='25%' style="text-align:right;">KM próx. troca</th>
+                <th width='35%' style="text-align:left;" >Data próx. manut.</th>
+                <th width='25%' style="text-align:right;">KM próx. manut.</th>
               </tr>      
               ` + tColumns +      `
               </mj-table>
