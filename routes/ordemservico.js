@@ -77,7 +77,6 @@ module.exports = router => {
       this.retorno.message = "Id da ordem de serviço não encontrado.";
       return res.json(this.retorno);
     }
-
     if (!req.params.empresaid) {
       this.retorno.message = "Empresa não informada.";
       return res.json(this.retorno);
