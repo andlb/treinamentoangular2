@@ -20,7 +20,9 @@ export class OficinaService {
       cpf: '',
       nome: '',
       email: '',
-      datanascimento: ''
+      datanascimento: '',
+      telefoneddd:'',
+      telefone:''
     },
     veiculo: {
       marca: '',
@@ -81,6 +83,8 @@ export class OficinaService {
       nome: proprietario.nome,
       email: proprietario.email,
       datanascimento: datanascimento,
+      telefoneddd : proprietario.telefoneddd,
+      telefone: proprietario.telefone
     };
   }
 
@@ -152,16 +156,19 @@ export class OficinaService {
       nome: this.cadastroProprietario.proprietario.nome,
       email: this.cadastroProprietario.proprietario.email,
       datanascimento: this.cadastroProprietario.proprietario.datanascimento,
+      telefoneddd: this.cadastroProprietario.proprietario.telefoneddd,
+      telefone:this.cadastroProprietario.proprietario.telefone,
       empresaid: this.empresaid,
       servicorealizado: this.cadastroProprietario.servicosRealizado,
       finalizar:this.finalizar
     };
+    console.log("oficina");
+    console.log(oficina);
     return this.http
       .post(this.domain + "ordemservico/cadastra", oficina, this.options)
       .map(res => res.json());
   }
 
-  //TODO:pesquisa de placa.
   pesquisaVeiculo(placa) {
     this.createAuthenticationHeader();
     return this.http

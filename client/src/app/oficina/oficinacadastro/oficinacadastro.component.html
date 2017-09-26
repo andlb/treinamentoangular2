@@ -7,7 +7,7 @@
 <div class="container">
   <form class="form-horizontal" [formGroup]="form" (submit)="enviaDados()">
     <div class="form-group">
-      <div class="col-lg-11 col-lg-offset-1">
+      <div class="col-md-11 col-md-offset-1">
 
         <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">{{(!edit) ? 'Incluir' : 'Salvar' }}</button>
         <!-- <button *ngIf="(edit)" [disabled]="processing"  type="button" class="btn btn-danger" (click)="onDeletar()">Inativar</button>
@@ -17,8 +17,8 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="placa" class="col-lg-1 control-label">Placa</label>
-      <div class="col-lg-2">
+      <label for="placa" class="col-md-1 control-label">Placa</label>
+      <div class="col-md-2">
         <div [ngClass]="{'has-error':((form.controls.placa.touched) &&  (form.controls.placa.errors)), 'has-success': !form.controls.placa.errors }">
           <input type="text" class="form-control" autofocus #placa id="placa" name="placa" formControlName="placa" placeholder="*Placa do veículo"
             (blur)="onPesquisarPlaca()">
@@ -28,26 +28,26 @@
           </ul>
         </div>
       </div>
-      <label for="marca" class="col-lg-2 control-label">Marca</label>
-      <div class="col-lg-2">
+      <label for="marca" class="col-md-2 control-label">Marca</label>
+      <div class="col-md-3">
         <input type="text" class="form-control" id="marca" name="marca" formControlName="marca" placeholder="*Marca do veículo">
       </div>
-      <label for="modelo" class="col-lg-1 control-label">Modelo</label>
-      <div class="col-lg-2">
+      <label for="modelo" class="col-md-1 control-label">Modelo</label>
+      <div class="col-md-3">
         <input type="text" class="form-control" id="modelo" name="modelo" formControlName="modelo" placeholder="*Modelo do veiculo">
       </div>
     </div>
     <div class="form-group">
-      <label for="ano" class="col-lg-1 control-label">Ano</label>
-      <div class="col-lg-2">
+      <label for="ano" class="col-md-1 control-label">Ano</label>
+      <div class="col-md-2">
         <input type="text" class="form-control" id="ano" name="ano" formControlName="ano" placeholder="*ano do veiculo">
       </div>
-      <label for="anomodelo" class="col-lg-2 control-label">Ano modelo</label>
-      <div class="col-lg-2 col-lg-off-8">
+      <label for="anomodelo" class="col-md-2 control-label">Ano modelo</label>
+      <div class="col-md-3">
         <input type="text" class="form-control" id="anomodelo" name="anomodelo" formControlName="anomodelo" placeholder="*Ano modelo">
       </div>
-      <label for="quilometragem" class="col-lg-1 control-label">KM</label>
-      <div class="col-lg-2 col-lg-off-8">
+      <label for="quilometragem" class="col-md-1 control-label">KM</label>
+      <div class="col-md-3">
         <div [ngClass]="{'has-error':form.controls.quilometragem.touched &&  (form.controls.quilometragem.errors), 'has-success': !form.controls.quilometragem.errors }">
           <input #quilometragem type="text" class="form-control" id="quilometragem" name="quilometragem" formControlName="quilometragem" placeholder="*Quilometragem">
           <ul class="help-block">
@@ -58,12 +58,12 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="cpf" class="col-lg-1 control-label">CPF</label>
-      <div class="col-lg-2">
+      <label for="cpf" class="col-md-1 control-label">CPF</label>
+      <div class="col-md-2">
         <input type="text" class="form-control" id="cpf" name="cpf" formControlName="cpf" placeholder="*CPF do proprietário" (blur)="mudarCpf($event)">
       </div>
-      <label for="nome" class="col-lg-2 control-label">Nome</label>
-      <div class="col-lg-6">
+      <label for="nome" class="col-md-2 control-label">Nome</label>
+      <div class="col-md-7">
         <div [ngClass]="{'has-error':form.controls.nome.touched &&  (form.controls.nome.errors), 'has-success': !form.controls.nome.errors }">
           <input type="text" class="form-control" id="nome" name="nome" formControlName="nome" placeholder="*Nome do proprietário">
           <ul class="help-block">
@@ -72,9 +72,10 @@
         </div>
       </div>
     </div>
+
     <div class="form-group">
-      <label for="dtnascimento" class="col-lg-1 control-label">Dt. Nasc.</label>
-      <div class="col-lg-2">
+      <label for="dtnascimento" class="col-md-1 control-label">Dt. Nasc.</label>
+      <div class="col-md-2">
         <div [ngClass]="{'has-error':form.controls.dtnascimento.touched &&  (form.controls.dtnascimento.errors), 'has-success': !form.controls.dtnascimento.errors }">
           <input type="text" class="form-control" id="dtnascimento" name="dtnascimento" formControlName="dtnascimento" placeholder="*Data nasc. do proprietário">
           <ul class="help-block">
@@ -82,8 +83,8 @@
           </ul>
         </div>
       </div>
-      <label for="email" class="col-lg-2 control-label">E-mail</label>
-      <div class="col-lg-4">
+      <label for="email" class="col-md-2 control-label">E-mail</label>
+      <div class="col-md-3">
         <div [ngClass]="{'has-error':form.controls.email.touched &&  (form.controls.email.errors), 'has-success': !form.controls.email.errors }">
           <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="*E-mail do proprietário">
           <ul class="help-block">
@@ -93,7 +94,24 @@
           </ul>
         </div>
       </div>
+      <label for="telefone" class="col-md-1 control-label">Telefone</label>
+      <div class="col-md-3" style="display: flex">
+          <input type="text" style="width: 50px;" class="form-control" id="telefoneddd" name="telefoneddd" formControlName="telefoneddd" placeholder="*DDD">
+          &nbsp;
+          <input type="text" class="form-control" id="telefone" name="telefone" formControlName="telefone" placeholder="*Telefone">
+      </div>
     </div>
+    <!--
+    <div class="form-group">
+        <label for="telefone" class="col-md-1 control-label">Telefone</label>
+        <div class="col-md-1">
+            <input type="text" style="width: 50px;" class="form-control" id="telefoneddd" name="telefoneddd" formControlName="telefoneddd" placeholder="*Telefoneddd">
+          </div>
+          <div class="col-md-10">
+            <input type="text" class="form-control" id="telefone" name="telefone" formControlName="telefone" placeholder="*Telefone">
+          </div>
+      </div>
+    -->
     <div class="bs-example" data-example-id="table-within-panel">
       <div class="panel panel-success">
         <div class="panel-heading">Serviços</div>
@@ -119,7 +137,7 @@
       </div>
     </div>
     <div class="form-group">
-      <div class="col-lg-11 col-lg-offset-1">
+      <div class="col-md-11 col-md-offset-1">
         <!-- <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">{{(!edit) ? 'Incluir' : 'Editar' }}</button> -->
         <!-- <button *ngIf="(edit)" [disabled]="processing"  type="button" class="btn btn-danger" (click)="onDeletar()">Inativar</button>
         <button *ngIf="(!edit)" [disabled]="processing" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button> -->

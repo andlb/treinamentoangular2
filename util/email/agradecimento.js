@@ -84,13 +84,14 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
         level: "soft"
       }
     );
-  
-    //var text = this.getText(empresa, usuario);
-    //TODO: mudar o TO para o usuário    
+    let toEmail = usuario.email + ',youkarservice@gmail.com' 
+    if (app.get('env') !== "production") {
+      toEmail = "andlbp@gmail.com"
+    }    
     transporter.sendMail(
       {
         from: empresa.nomefantasia + " <" + decode.email + ">",
-        to: usuario.email + ',youkarservice@gmail.com' ,
+        to: toEmail,
         subject: subject,      
         html: html
       },
@@ -230,8 +231,8 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
             <mj-table>
               <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
                 <th width='40%' style="text-align:left;" >Serviço</th>
-                <th width='35%' style="text-align:left;" >Data próx. troca</th>
-                <th width='25%' style="text-align:right;">KM próx. troca</th>
+                <th width='35%' style="text-align:left;" >Data próx. manut.</th>
+                <th width='25%' style="text-align:right;">KM próx. manut.</th>
               </tr>      
               ` + tColumns +      `
               </mj-table>

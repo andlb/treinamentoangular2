@@ -73,6 +73,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
               this.edit = true;
               this.oficinaService.setOrdemservicoid(this.atendimentoid);
               this.oficinaService.setVeiculo(data.veiculo,data.ordemservico);
+
               this.oficinaService.setProprietario(data.proprietario);
               this.servicos = data.servicos;
               this.servicosRealizados = data.servicorealizado;
@@ -184,6 +185,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["nome"].setValue(proprietario.nome);
     this.form.controls["email"].setValue(proprietario.email);
     this.form.controls["dtnascimento"].setValue(proprietario.datanascimento);
+    this.form.controls["telefoneddd"].setValue(proprietario.telefoneddd);
+    this.form.controls["telefone"].setValue(proprietario.telefone);
     if (this.edit) {
       this.form.controls["email"].disable();
       this.form.controls["cpf"].disable();
@@ -209,10 +212,14 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         this.form.controls["nome"].setValue("");
         this.form.controls["email"].setValue("");
         this.form.controls["dtnascimento"].setValue("");
+        this.form.controls["telefoneddd"].setValue("");
+        this.form.controls["telefone"].setValue("");
       }else{
         this.form.controls["nome"].setValue(this.oficinaService.getProprietario().nome);
         this.form.controls["email"].setValue(this.oficinaService.getProprietario().email);
         this.form.controls["dtnascimento"].setValue(this.oficinaService.getProprietario().datanascimento);
+        this.form.controls["telefoneddd"].setValue(this.oficinaService.getProprietario().telefoneddd);
+        this.form.controls["telefone"].setValue(this.oficinaService.getProprietario().telefone);
       }
     }
   }
@@ -228,8 +235,11 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["nome"].disable();
     this.form.controls["email"].disable();
     this.form.controls["dtnascimento"].disable();
+    this.form.controls["telefoneddd"].disable();
+    this.form.controls["telefone"].disable();
+
     for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
-      //(<FormGroup>control).controls["observacao"].disable();
+      (<FormGroup>control).controls["observacao"].disable();
     }
   }
 
@@ -247,6 +257,9 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["nome"].enable();
     this.form.controls["email"].enable();
     this.form.controls["dtnascimento"].enable();
+    this.form.controls["telefoneddd"].enable()
+    this.form.controls["telefone"].enable();
+
     for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
       (<FormGroup>control).controls["observacao"].enable();
     }
@@ -282,6 +295,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
           )
         ]
       ],
+      telefoneddd:"",
+      telefone: "",
       dtnascimento: [
         "",
         [
@@ -314,6 +329,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["nome"].setValue("");
     this.form.controls["email"].setValue("");
     this.form.controls["dtnascimento"].setValue("");
+    this.form.controls["telefoneddd"].setValue("");
+    this.form.controls["telefone"].setValue("");
 
     this.servicosRealizados = [];
   }
@@ -339,6 +356,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       nome: this.form.controls["nome"].value,
       email: this.form.controls["email"].value,
       datanascimento: this.form.controls["dtnascimento"].value,
+      telefoneddd: this.form.controls["telefoneddd"].value,
+      telefone: this.form.controls["telefone"].value,
       cadastrado: false
     };
     this.oficinaService.setVeiculo(veiculo);
@@ -385,11 +404,15 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       cpf: this.form.controls["cpf"].value,
       nome: this.form.controls["nome"].value,
       email: this.form.controls["email"].value,
-      datanascimento: this.form.controls["dtnascimento"].value
+      datanascimento: this.form.controls["dtnascimento"].value,
+      telefoneddd: this.form.controls["telefoneddd"].value,
+      telefone: this.form.controls["telefone"].value
     };
+
     this.servicosRealizados = [];
     for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
-      if (control.value.selecionado) {
+
+      if ((<FormGroup>control).controls["selecionado"].value) {
         let proximadatatroca:any = "";
         if (control.value.proximatrocadata){
           proximadatatroca = moment(Date.now()).add(control.value.proximatrocadata,"day");
@@ -400,7 +423,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         }
         let servicoRealizado = {
           servicoid: control.value._id,
-          observacao: control.value.observacao,
+          observacao: (<FormGroup>control).controls["observacao"].value,
           proximatrocadata: proximadatatroca,
           proximatrocakm: proximatrocakm
         };
