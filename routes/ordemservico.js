@@ -55,7 +55,9 @@ module.exports = router => {
               nome: usuario.nome,
               email: usuario.email,
               datanascimento: usuario.datanascimento,
-              cadastrado: usuario.cadastrado
+              cadastrado: usuario.cadastrado,
+              telefone:usuario.telefone,
+              telefoneddd:usuario.telefoneddd
             };
             retorno.proprietario = oUsuario;
             return res.json(retorno);
@@ -84,7 +86,7 @@ module.exports = router => {
       _id: req.params.id,
       empresaid: req.params.empresaid
     })
-      .populate("usuarioid", "nome email cpf datanascimento")
+      .populate("usuarioid", "nome email cpf datanascimento telefone telefoneddd")
       .populate("veiculoid")
       .exec((err, oOrdemServico) => {
         if (err) {
@@ -101,7 +103,9 @@ module.exports = router => {
           cpf: usuario.cpf,
           nome: usuario.nome,
           email: usuario.email,
-          datanascimento: usuario.datanascimento
+          datanascimento: usuario.datanascimento,
+          telefone:usuario.telefone,
+          telefoneddd:usuario.telefoneddd
         };
         Servico.find({ empresaid: req.params.empresaid }, (err, servicos) => {
           if (err) {
@@ -408,7 +412,9 @@ module.exports = router => {
       email: req.body.email,
       tipo: 1,
       cpf: req.body.cpf,
-      datanascimento: dtNascimento
+      datanascimento: dtNascimento,
+      telefone:req.body.telefone,
+      telefoneddd:req.body.telefoneddd
     };
 
     Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
@@ -443,6 +449,10 @@ module.exports = router => {
         }
         oUsuario.cpf = usuario.cpf;
         oUsuario.datanascimento = usuario.datanascimento;
+        oUsuario.telefone = usuario.telefone;
+        oUsuario.telefoneddd = usuario.telefoneddd;
+        console.log("usuário antes de cadastrar");
+        console.log(oUsuario);
         oUsuario.save(err => {
           if (err) {
             //return err message

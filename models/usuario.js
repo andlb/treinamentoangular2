@@ -72,6 +72,8 @@ const usuarioSchema = new Schema({
     cadastrocompleto: { type: Boolean, default: false },
     cadastrado: { type: Boolean, default: false },
     datacadastro:{type:Date},
+    telefoneddd:{ type: String },
+    telefone:{ type: String }
 });
 
 usuarioSchema.pre('save', function(next) {
