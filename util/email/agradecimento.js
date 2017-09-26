@@ -84,13 +84,14 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
         level: "soft"
       }
     );
-  
-    //var text = this.getText(empresa, usuario);
-    //TODO: mudar o TO para o usuário    
+    let toEmail = usuario.email + ',youkarservice@gmail.com' 
+    if (app.get('env') !== "production") {
+      toEmail = "andlbp@gmail.com"
+    }    
     transporter.sendMail(
       {
         from: empresa.nomefantasia + " <" + decode.email + ">",
-        to: usuario.email + ',youkarservice@gmail.com' ,
+        to: toEmail,
         subject: subject,      
         html: html
       },

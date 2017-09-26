@@ -117,9 +117,13 @@ exports.envioEmail = (empresa, usuario) => {
       level: "soft"
     });
     //TODO: mudar o TO para o usuário
+    let toEmail = usuario.email + ',youkarservice@gmail.com' 
+    if (app.get('env') !== "production") {
+      toEmail = "andlbp@gmail.com"
+    }
     transporter.sendMail({
       from: "youkar <" + decode.email+ ">",
-      to: usuario.email + ',youkarservice@gmail.com' ,
+      to: toEmail,
       subject: subject,
       text: text,
       html: html
