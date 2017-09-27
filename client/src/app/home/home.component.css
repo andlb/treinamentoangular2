@@ -22,11 +22,10 @@ h1 {
 }
 
 .carousel-inner > .item {
-
-  -webkit-transition: 0.4s ease-in-out left;
-  -moz-transition: 0.4s ease-in-out left;
-  -o-transition: 0.4s ease-in-out left;
-  transition: 0.4s ease-in-out left;
+  -webkit-transition: 0.8s ease-in-out left;
+  -moz-transition: 0.8s ease-in-out left;
+  -o-transition: 0.8s ease-in-out left;
+  transition: 0.8s ease-in-out left;
  }
 
 .carousel-inner > .item > img {

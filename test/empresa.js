@@ -61,6 +61,7 @@ mongoose.connect(config.uri, err => {
       Empresa.find({}).exec((err, empresas) => {
         empresas.forEach(function(oEmpresa) {
           servicos = [];
+
           servico = {
             empresaid: oEmpresa._id,
             descricao: "Alinhamento",
@@ -68,6 +69,26 @@ mongoose.connect(config.uri, err => {
             quilometragem: 6000
           };
           servicos.push(servico);
+          servico = {
+            empresaid: oEmpresa._id,
+            descricao: "Sem tempo",            
+            quilometragem: 6000
+          };
+          servicos.push(servico);
+
+          servico = {
+            empresaid: oEmpresa._id,
+            descricao: "Sem quilometragem",            
+            tempo: 7,            
+          };
+          servicos.push(servico);
+
+          servico = {
+            empresaid: oEmpresa._id,
+            descricao: "Sem tempo e quilometragem",            
+          };
+          servicos.push(servico);
+
           servico = {
             empresaid: oEmpresa._id,
             descricao: "Balanceamento",
