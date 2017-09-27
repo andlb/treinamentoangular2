@@ -5,5 +5,5 @@
 
 export const environment = {
   production: true,
-  domain: "http://localhost:8080/"
+  domain: "http://youkar.com.br/"
 };
