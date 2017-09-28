@@ -585,70 +585,20 @@ module.exports = router => {
 };
 
 function CalculaProximasManutencoes(servicosrealizados,ordemservico){
-  console.log(servicosrealizados);
-  console.log(ordemservico);
   for (let servicoreal of servicosrealizados) {
-    console.log("servicoreal");
-    console.log(servicoreal);
-    Servico.findById(servicoreal.servicoid,(err,servico)=>{
-      console.log('ID DO SERVICO');      
-      //Servicorealizado.findOne({_id:servicoreal._id},(err,tservicoreal)=>{
-        if (servico.tempo) {  
-          servicoreal.proximatrocadata = moment(ordemservico.data, moment.ISO_8601).add(
-            servico.tempo,
-            "month"
-          ).toDate();
-        }
-        if (servico.quilometragem) {   
-          servicoreal.proximatrocakm =
-          parseFloat(ordemservico.quilometragem) +
-          parseFloat(servico.quilometragem);  
-        }
-        servicoreal.save();
-      });
-    //});
+    Servico.findById(servicoreal.servicoid,(err,servico)=>{        
+      if (servico.tempo) {  
+        servicoreal.proximatrocadata = moment(ordemservico.data, moment.ISO_8601).add(
+          servico.tempo,
+          "month"
+        ).toDate();
+      }
+      if (servico.quilometragem) {   
+        servicoreal.proximatrocakm =
+        parseFloat(ordemservico.quilometragem) +
+        parseFloat(servico.quilometragem);  
+      }
+      servicoreal.save();
+    });    
   }
 }
-
-// function CalcProxDataMan(servicoid,ordemservico){
-//   Servico.findById(servicoid, (err,servico)=> {
-    
-//     console.log("servico data man");
-//     console.log(servico);  
-//     let retorno = "";
-//     if (!servico){
-//       return retorno;
-//     }
-//     if (servico.tempo) {    
-//       retorno = moment(ordemservico.data, moment.ISO_8601).add(
-//         servico.tempo,
-//         "month"
-//       );
-//     }
-//     console.log("calculando retorno ");
-//     console.log(retorno);
-//     return retorno;       
-//   });
-// }
-
-// function CalcProxKmManu(servicoid,ordemservico){
-//   Servico.findById(servicoid, (err,servico)=> {
-//     console.log("servico prox. km");
-//     console.log(servico);  
-//     let retorno = "";
-//     if (!servico){
-//       return retorno;
-//     }
-//     console.log("quilometragem");
-//     console.log(servico.quilometragem);
-    
-//     if (servico.quilometragem) {   
-//       retorno =
-//       parseFloat(ordemservico.quilometragem) +
-//       parseFloat(servico.quilometragem);  
-//     }
-//     console.log("calculando retorno ");
-//     console.log(retorno);
-//     return retorno;
-//   });
-// }

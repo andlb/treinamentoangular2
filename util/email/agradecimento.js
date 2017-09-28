@@ -138,20 +138,13 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   var tColumns = "";
   for (var servicorealizado of servicorealizados) {
     var proximaDataTroca = "Não definido";
-    if (servicorealizado.servicoid.tempo){
-      proximaDataTroca = moment(ordemservico.data, moment.ISO_8601).add(
-        servicorealizado.servicoid.tempo,
-        "month"
-      );        
+    if (servicorealizado.proximatrocadata){
+      proximaDataTroca = moment(servicorealizado.proximatrocadata, moment.ISO_8601);        
       proximaDataTroca = proximaDataTroca.format("DD/MM/YYYY");
-    }
-  
+    }  
     var proximaTroca = "Não definido";
-    if (servicorealizado.servicoid.quilometragem) {
-      proximaTroca =
-        parseFloat(ordemservico.quilometragem) +
-        parseFloat(servicorealizado.servicoid.quilometragem);
-      servicorealizado.servicoid.proximaTroca = proximaTroca;
+    if (servicorealizado.proximatrocakm) {
+      proximaTroca =servicorealizado.proximatrocakm
     }
     let descricaoservico = "<strong>"+servicorealizado.servicoid.descricao+"</strong>";    
     if (servicorealizado.observacao) {

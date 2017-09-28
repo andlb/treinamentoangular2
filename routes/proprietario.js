@@ -7,6 +7,7 @@ const Resposta = require("../models/resposta");
 const Servicorealizado = require("../models/servicorealizado");
 const Servico = require("../models/servico");
 const moment = require("moment");
+const numeral = require('numeral');
 
 module.exports = router => {
   router.get("/servicos/:proprietarioid", (req, res) => {
@@ -16,6 +17,7 @@ module.exports = router => {
       servicorealizado: undefined
     };
     
+
     retorno.message = validaEntradaProprietario(req);
     if (retorno.message) {
       return res.json(retorno);
@@ -185,7 +187,7 @@ function insereVeiculo(servicorealizado) {
         data: odbcToDisplay(servicorealizado.ordemservicoid.data),
         empresanome: servicorealizado.empresaid.nomefantasia,
         empresacelular: servicorealizado.empresaid.celular,
-        quilometragem: servicorealizado.ordemservicoid.quilometragem,
+        quilometragem: numeral(servicorealizado.ordemservicoid.quilometragem).format('0,0'),
         servicos: [insereServico(servicorealizado)]
       }
     ]
@@ -199,27 +201,35 @@ function insereOrdemServico(servicorealizado) {
     data: odbcToDisplay(servicorealizado.ordemservicoid.data),
     empresanome: servicorealizado.empresaid.nomefantasia,
     empresacelular: servicorealizado.empresaid.celular,
-    quilometragem: servicorealizado.ordemservicoid.quilometragem,
+    quilometragem: numeral(servicorealizado.ordemservicoid.quilometragem).format('0,0'),
     servicos: [insereServico(servicorealizado)]
   };
 }
 
 function insereServico(servicorealizado) {
-  var proximaDataTroca = moment(
-    servicorealizado.ordemservicoid.data,
-    moment.ISO_8601
-  ).add(servicorealizado.servicoid.tempo, "month");
-  var proximaTroca =
-    parseFloat(servicorealizado.ordemservicoid.quilometragem) +
-    parseFloat(servicorealizado.servicoid.quilometragem);
-  servicorealizado.servicoid.proximaTroca = proximaTroca;
+  
+  let proximaDataTroca = "Não definido";
+  if (servicorealizado.proximatrocadata) {
+    proximaDataTroca = moment(servicorealizado.proximatrocadata, moment.ISO_8601);        
+    proximaDataTroca = proximaDataTroca.format("DD/MM/YYYY");
+  }
+
+  let proximaTroca = "Não definido";
+  if (servicorealizado.proximatrocakm) {
+    proximaTroca =numeral(servicorealizado.proximatrocakm).format('0,0')
+  }
+  let descricaoservico = "<strong>"+servicorealizado.servicoid.descricao+"</strong>";    
+  if (servicorealizado.observacao) {
+    descricaoservico += " <br/> " + servicorealizado.observacao
+  }
   return {
     _id: servicorealizado.servicoid._id,
     descricao: servicorealizado.servicoid.descricao,
     tempo: servicorealizado.servicoid.tempo,
     quilometragem: servicorealizado.servicoid.quilometragem,
     proximatroca: proximaTroca,
-    proximatrocadata: moment(proximaDataTroca).format("DD/MM/YYYY")
+    proximatrocadata:proximaDataTroca,
+    observacao:servicorealizado.observacao
   };
 }
 
