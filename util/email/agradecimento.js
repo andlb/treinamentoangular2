@@ -121,14 +121,14 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   if (!usuario.cadastrado) {
     mensagemCliente = `Olá `+ordemservico.usuarioid.nome+`.  A YOUKAR em parceria com ` +
     empresa.nomefantasia +
-    ` irá disponibilizar na internet os serviços realizados em seu veículo.<br>
+    ` irá disponibilizar na internet os serviços realizados em seu veículo. <br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
     Para ter acesso se cadastre no nosso portal através do botao abaixo.`              
     textoBotao = 'Crie sua conta'
   }else{
     mensagemCliente = `Olá `+ordemservico.usuarioid.nome+`. A YOUKAR em parceria com ` +
     empresa.nomefantasia +
-    ` disponibiliza na internet os serviços realizados em seu veículo.<br>
+    ` disponibiliza na internet os serviços realizados em seu veículo. <br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
     Acesse o nosso portal através do botão abaixo.`              
     textoBotao = 'Acesse sua conta'
@@ -213,7 +213,7 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
           <mj-text color="#525252" align="left">
             Caso não seja possivel clicar no botão, copie o link abaixo e cole na url do seu browser:
             <br>
-            <a href="`+acessopagina+`" class="quebratexto">`+acessopagina+`</a>
+            <p class="quebratexto">`+acessopagina+`</p>
           </mj-text>
         </mj-column>
       </mj-section>
@@ -252,9 +252,4 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   `;
   return tMjml;
 };
-/*
-    veiculoid: { type: String, index:true, ref : 'Veiculo', required: [true, "Veiculo não informada"] },
-    usuarioid: { type: String, index:true, ref : 'Usuario', required: [true, "Usuário não informada"] },
-    empresaid: { type: String, index:true, ref : 'Empresa', required: [true, "Empresa não informada"] },
 
-  */
