@@ -339,8 +339,7 @@ module.exports = router => {
     });
   });
 
-  router.post("/cadastra", (req, res) => {
-    console.log("entrou em cadastra");
+  router.post("/cadastra", (req, res) => {    
     let retorno = {
       success: false,
       message: ""
@@ -425,7 +424,7 @@ module.exports = router => {
         retorno.message = "Empresa não encontrada";
         return res.json(retorno);
       }
-      console.log("encontrou empresa");
+      
       Usuario.findOne({ cpf: req.body.cpf }).exec((err, oUsuario) => {
         if (err) {
           retorno.message = err.code + " - " + err.message;
@@ -525,7 +524,7 @@ module.exports = router => {
                         return res.json(retorno);
                       }
                       var servicosrealizados = [];
-                      console.log("entrou na parte que faz o calculo das proximas manutenções");
+                      
                       for (let servicorealizado of req.body.servicorealizado) {
                         servicorealizado.veiculoid = oVeiculo._id;
                         servicorealizado.empresaid = oEmpresa._id;
@@ -539,21 +538,22 @@ module.exports = router => {
                             retorno.message = err.code + " - " + err.message;
                             return res.json(retorno);
                           }    
-                          CalculaProximasManutencoes(docs,oOrdemServico);
+                          CalculaProximasManutencoes(docs,oOrdemServico);                          
                           if (usuarioNovo) {
                             new Usuarioconvidar({
                               usuarioid:oUsuario._id,
                               empresaid:req.body.empresaid
                             }).save((err,oUsuarioConvidar) => {
                               if (!err) { 
-                                if (finalizar){                               
+                                if (finalizar){    
                                   Inscricao.enviarConvite(oUsuarioConvidar._id);                                
+                                  Agradecimento.enviaragradecimento(oOrdemServico._id);
                                 }
                               }
                             });
                           }else{         
                             if (finalizar){                   
-                              if (finalizar){                               
+                              if (finalizar){                  
                                 Agradecimento.enviaragradecimento(oOrdemServico._id);
                               }
                             }

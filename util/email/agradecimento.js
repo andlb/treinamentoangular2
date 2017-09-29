@@ -86,7 +86,7 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
     );
     let toEmail = usuario.email + ',youkarservice@gmail.com' 
     if (app.get('env') !== "production") {
-      toEmail = "andlbp@gmail.com"
+      toEmail = "andlbp@hotmail.com"
     }    
     transporter.sendMail(
       {
@@ -170,6 +170,13 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   var tMjml =
     `
   <mjml>
+  <mj-head>
+  <mj-style inline="inline">
+    .quebratexto {          
+      word-break: break-all;
+    }
+  </mj-style>
+</mj-head>  
     <mj-body>
       <mj-container>
         <!-- Company Header -->
@@ -198,10 +205,19 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
           +acessopagina +
           `">
           `+ textoBotao +`
-          </mj-button>                
+          </mj-button>                                 
         </mj-column>
-
-      </mj-section>  
+      </mj-section> 
+      <mj-section background-color="#fafafa">
+        <mj-column width="150">
+          <mj-text color="#525252" align="left">
+            Caso não seja possivel clicar no botão, copie o link abaixo e cole na url do seu browser:
+            <br>
+            <a href="`+acessopagina+`" class="quebratexto">`+acessopagina+`</a>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+   
       <mj-section>
         <mj-column>
           <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey" />
