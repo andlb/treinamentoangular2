@@ -192,7 +192,7 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
           </mj-column>
         </mj-section>
         <mj-section background-color="#fafafa">
-          <mj-column width="150">
+          <mj-column width="400">
             <mj-text color="#525252" align="left">
               Caso não seja possivel clicar no botão, copie o link abaixo e cole na url do seu browser:
               <br>
