@@ -33,16 +33,34 @@
           </div>
         </div>
       </a>
+      <a class="list-group-item active">
+        <div class='container'>
+          <div class='col-sm-3'>
+            Descrição do serviço
+          </div>
+          <div class='col-sm-4'>
+            Data próx. manutenção
+          </div>
+          <div class='col-sm-3'>
+            Km próx. manutenção
+          </div>
+        </div>
+      </a>
       <a class="list-group-item" *ngFor="let servico of ordemservico.servicos">
         <div class='container'>
           <div class='col-sm-3'>
-            {{servico.descricao}}
+           <strong> {{servico.descricao}} </strong>
           </div>
           <div class='col-sm-4'>
-          Dt próx. troca {{servico.proximatrocadata}}
+          {{servico.proximatrocadata}}
           </div>
           <div class='col-sm-3'>
-           Km próx. troca {{servico.proximatroca}}
+           {{servico.proximatroca}}
+          </div>
+        </div>
+        <div class='container'>
+          <div class='col-sm-10'>
+            {{servico.observacao}}
           </div>
         </div>
       </a>

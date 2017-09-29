@@ -11,8 +11,13 @@ const ordemservico = require('./routes/ordemservico')(router);
 const proprietario = require('./routes/proprietario')(router);
 const Usuario = require("./models/usuario");
 const bodyParser = require('body-parser')
+const correcaoservico = require("./util/correcao/service");
+const numeral = require('numeral');
+const registranumeral = require('./util/registranumeral');
+
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
+
 
 mongoose.Promise = global.Promise;
 
@@ -37,6 +42,9 @@ mongoose.connect(config.uri,options, (err) => {
         console.log('connected to database : ' + config.db);
     }
 });
+
+correcaoservico.atualizaVersao();
+registranumeral.registraNumeral();
 
 if (app.get('env') === "production") {
     var corsOptions = {

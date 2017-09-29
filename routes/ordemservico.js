@@ -8,7 +8,7 @@ const Servicorealizado = require("../models/servicorealizado");
 const Usuarioconvidar = require("../models/usuarioconvidar");
 const Inscricao = require('../util/email/inscricao');
 const Agradecimento = require("../util/email/agradecimento");
-
+const moment = require("moment");
 const Servico = require("../models/servico");
 
 module.exports = router => {
@@ -339,8 +339,7 @@ module.exports = router => {
     });
   });
 
-  router.post("/cadastra", (req, res) => {
-    console.log("entrou em cadastra");
+  router.post("/cadastra", (req, res) => {    
     let retorno = {
       success: false,
       message: ""
@@ -425,7 +424,7 @@ module.exports = router => {
         retorno.message = "Empresa não encontrada";
         return res.json(retorno);
       }
-      console.log("encontrou empresa");
+      
       Usuario.findOne({ cpf: req.body.cpf }).exec((err, oUsuario) => {
         if (err) {
           retorno.message = err.code + " - " + err.message;
@@ -450,8 +449,7 @@ module.exports = router => {
         oUsuario.datanascimento = usuario.datanascimento;
         oUsuario.telefone = usuario.telefone;
         oUsuario.telefoneddd = usuario.telefoneddd;
-        console.log("usuário antes de cadastrar");
-        console.log(oUsuario);
+  
         oUsuario.save(err => {
           if (err) {
             //return err message
@@ -526,6 +524,7 @@ module.exports = router => {
                         return res.json(retorno);
                       }
                       var servicosrealizados = [];
+                      
                       for (let servicorealizado of req.body.servicorealizado) {
                         servicorealizado.veiculoid = oVeiculo._id;
                         servicorealizado.empresaid = oEmpresa._id;
@@ -538,21 +537,23 @@ module.exports = router => {
                           if (err) {
                             retorno.message = err.code + " - " + err.message;
                             return res.json(retorno);
-                          }                          
+                          }    
+                          CalculaProximasManutencoes(docs,oOrdemServico);                          
                           if (usuarioNovo) {
                             new Usuarioconvidar({
                               usuarioid:oUsuario._id,
                               empresaid:req.body.empresaid
                             }).save((err,oUsuarioConvidar) => {
                               if (!err) { 
-                                if (finalizar){                               
+                                if (finalizar){    
                                   Inscricao.enviarConvite(oUsuarioConvidar._id);                                
+                                  Agradecimento.enviaragradecimento(oOrdemServico._id);
                                 }
                               }
                             });
                           }else{         
                             if (finalizar){                   
-                              if (finalizar){                               
+                              if (finalizar){                  
                                 Agradecimento.enviaragradecimento(oOrdemServico._id);
                               }
                             }
@@ -582,3 +583,22 @@ module.exports = router => {
   });
   return router;
 };
+
+function CalculaProximasManutencoes(servicosrealizados,ordemservico){
+  for (let servicoreal of servicosrealizados) {
+    Servico.findById(servicoreal.servicoid,(err,servico)=>{        
+      if (servico.tempo) {  
+        servicoreal.proximatrocadata = moment(ordemservico.data, moment.ISO_8601).add(
+          servico.tempo,
+          "month"
+        ).toDate();
+      }
+      if (servico.quilometragem) {   
+        servicoreal.proximatrocakm =
+        parseFloat(ordemservico.quilometragem) +
+        parseFloat(servico.quilometragem);  
+      }
+      servicoreal.save();
+    });    
+  }
+}

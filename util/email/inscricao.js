@@ -119,10 +119,10 @@ exports.envioEmail = (empresa, usuario) => {
     //TODO: mudar o TO para o usuário
     let toEmail = usuario.email + ',youkarservice@gmail.com' 
     if (app.get('env') !== "production") {
-      toEmail = "andlbp@gmail.com"
-    }
-    transporter.sendMail({
-      from: "youkar <" + decode.email+ ">",
+      toEmail = "andlbp@hotmail.com"
+    }    
+    transporter.sendMail({      
+      from: empresa.nomefantasia + " <" + decode.email + ">",
       to: toEmail,
       subject: subject,
       text: text,
@@ -161,8 +161,17 @@ exports.getText = (empresa, usuario, acessopagina) => {
 };
 
 exports.getHtml = (empresa, usuario, acessopagina) => {
+  console.log('acessopagina');
+  console.log(acessopagina);
   var tMjml = `
   <mjml>
+    <mj-head>
+      <mj-style inline="inline">
+        .quebratexto {          
+          word-break: break-all;
+        }
+      </mj-style>
+    </mj-head>
     <mj-body>
       <mj-container>
         <mj-section background-color="#f0f0f0">
@@ -177,12 +186,25 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
             <mj-text color="#525252" align="center">
             ` + this.getText(empresa, usuario, acessopagina) + `
             </mj-text>
-            <mj-button background-color="#F45E43" href="`+acessopagina+`">Crie sua conta</mj-button>      
+            <mj-button background-color="#F45E43" href="`+acessopagina+`">
+            Crie sua conta
+            </mj-button>      
+          </mj-column>
+        </mj-section>
+        <mj-section background-color="#fafafa">
+          <mj-column width="150">
+            <mj-text color="#525252" align="left">
+              Caso não seja possivel clicar no botão, copie o link abaixo e cole na url do seu browser:
+              <br>
+              <a href="`+acessopagina+`" class="quebratexto">`+acessopagina+`</a>
+            </mj-text>
           </mj-column>
         </mj-section>
       </mj-container>      
     </mj-body>
   </mjml>`
+  console.log('acesso pagina final');
+  console.log(acessopagina)
   return tMjml;
 };
 
