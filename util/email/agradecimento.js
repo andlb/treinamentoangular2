@@ -211,8 +211,10 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
       <mj-section background-color="#fafafa">
         <mj-column width="350">
           <mj-text color="#525252" align="left">
-            Caso não seja possivel clicar no botão, copie o link abaixo e cole na url do seu browser:
-            <br>
+            Alguns servidores de e-mail bloqueiam o botão.
+            </br>
+              Por isso, caso não seja possivel clicar no botão, copie o texto abaixo e cole na url do seu browser:
+            </br>
             <p class="quebratexto">`+acessopagina+`</p>
           </mj-text>
         </mj-column>
