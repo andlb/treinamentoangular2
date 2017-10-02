@@ -73,7 +73,12 @@ const usuarioSchema = new Schema({
     cadastrado: { type: Boolean, default: false },
     datacadastro:{type:Date},
     telefoneddd:{ type: String },
-    telefone:{ type: String }
+    telefone:{ type: String },
+    emailenviado:[{
+        accepted:[],
+        rejected:[],
+        dataenvio:{type:Date, default:Date.now()},
+    }]
 });
 
 usuarioSchema.pre('save', function(next) {

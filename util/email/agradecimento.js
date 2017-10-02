@@ -101,6 +101,8 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
         }
         if (info) {
           console.log(info);
+          usuario.emailenviado.push(info);
+          usuario.save();
         }
       }
     );  

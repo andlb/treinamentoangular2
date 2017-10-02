@@ -133,6 +133,14 @@ exports.envioEmail = (empresa, usuario) => {
       }
       if (info) {
         console.log(info);
+        usuario.emailenviado.push(info);
+        usuario.save((err,usuario)=> {
+          if (err) {
+            console.log(err);
+          }else {
+            console.log("usuario atualizado com sucesso " + usuario._id);
+          }
+        });
       }
     });
   });

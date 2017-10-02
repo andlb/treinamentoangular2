@@ -546,7 +546,7 @@ module.exports = router => {
                             }).save((err,oUsuarioConvidar) => {
                               if (!err) { 
                                 if (finalizar){    
-                                  Inscricao.enviarConvite(oUsuarioConvidar._id);                                
+                                  //Inscricao.enviarConvite(oUsuarioConvidar._id);                                
                                   Agradecimento.enviaragradecimento(oOrdemServico._id);
                                 }
                               }
