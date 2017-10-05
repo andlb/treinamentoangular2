@@ -99,8 +99,8 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
         if (err) {
           console.log(err);
         }
-        if (info) {
-          console.log(info);
+        if (info) {        
+          info.tipo="agradecimento";  
           usuario.emailenviado.push(info);
           usuario.save();
         }
@@ -121,7 +121,9 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
   let mensagemCliente = '';
   let textoBotao = ''
   if (!usuario.cadastrado) {
-    mensagemCliente = `Olá `+ordemservico.usuarioid.nome+`.  A YOUKAR em parceria com ` +
+    mensagemCliente = `Olá `
+    + ordemservico.usuarioid.nome + 
+    `.  A YOUKAR em parceria com ` +
     empresa.nomefantasia +
     ` irá disponibilizar na internet os serviços realizados em seu veículo. <br>
     Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.

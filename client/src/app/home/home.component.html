@@ -1,55 +1,68 @@
-<!-- Carousel
-    ================================================== -->
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner" role="listbox">
-    <div class="item active">
-      <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
-      <div class="container">
-        <div class="carousel-caption">
-            <h1>Bem-vindo a YouKar.com.br</h1>
-          <p>Um lugar onde proprietários de veículos encontrarão
-            informações sobre o seu veiculo,
-            dicas para reduzir custo na manutenção e
-            aumentar o preço de venda e conselhos para garantir a
-            segurança sua e de sua família.</p>
-          <p><a class="btn btn-lg btn-primary" role="button" (click)="onRegistre()">Registre-se</a></p>
-        </div>
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 ">
+        <h1>Bem vindo a YouKar.com.br</h1>
+        <p>
+          Um lugar onde você saberá sobre as revsões realizada no seu veiculo, dicas para reduzir custo na
+          manutenção e para aumentar o preço de venda além de conselhos para garantir a segurança sua e de sua família .
+        </p>
+        <p>
+            <a class="btn btn-lg btn-primary" role="button" (click)="onRegistre()">Registre-se</a></p>
       </div>
     </div>
-
-    <div class="item">
-      <img class="second-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
-      <div class="container">
-        <div class="carousel-caption">
-          <h1>Disponibilizar os serviços realizados na internet.</h1>
-          <p>Acessando o portal, você poderá ter acesso ao histório das manutenção realizadas em seu veículo, desde que ele tenha sido realizado em uma das empresas parceira.</p>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-        <img class="third-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
-        <div class="container">
-          <div class="carousel-caption">
-            <h1>Lembretes sobre manutenções.</h1>
-            <p>Manteremos contato para informar a data e quilometragem das próximas manutenções.</p>
-            <p><a class="btn btn-lg btn-primary" role="button" (click)="onRegistre()">Registre-se</a></p>
-          </div>
-        </div>
-      </div>
   </div>
-  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Próximo</span>
-      </a>
-  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Anterior</span>
-      </a>
 </div>
-<!-- /.carousel -->
+
+<br>
+<div class="row">
+
+  <div class="col-sm-6 col-md-4"> <!-- column 1 -->
+    <div class="thumbnail"> <!-- thumbnail 2 -->
+      <img src="\assets\images\manutencao.png"
+      style="max-height: 90px; "
+      class="img-responsive"
+      >  <!-- image 2 -->
+      <div class="caption">  <!-- caption -->
+        <h3>Lembretes de manutentão</h3>
+        <p>Realizando o serviço nas oficinas ou centros automotivo parceiros,
+          esses irão realizar o cadastro do seu veiculo e os serviços realizados,
+          assim como o tempo ou KM da para a próxima manutenção para lembrá-lo da manutenção.</p>
+        <!--<p>
+          <a href="#" class="btn btn-primary" role="button">Buy Tickets</a>
+          <a href="#" class="btn btn-default" role="button">Add to Wishlist</a>
+        </p> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4"> <!-- column 2 -->
+    <div class="thumbnail"> <!-- thumbnail 2 -->
+      <img src="\assets\images\dicas.png"
+      style="max-height: 90px; "
+      class="img-responsive"
+      >
+      <div class="caption">  <!-- caption -->
+        <h3>Dicas de manutenção</h3>
+        <p>Iremos compartilhar situações que ocorrem nas oficinas e centros automotivos
+          para evitar que esse problema ocorra com você.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4"> <!-- column 3 -->
+    <div class="thumbnail"> <!-- thumbnail 2 -->
+      <img src="\assets\images\valorizacao.png"
+      style="max-height: 90px; "
+      class="img-responsive"
+      >
+      <div class="caption">  <!-- caption -->
+        <h3>Valorização do seu veículo</h3>
+        <p>Iremos oferecer gratuitamente um controle on-line sobre as
+          manutenções realizadas em seu veículo para evitar a necessidade de
+          guardar dezenas de documentos para comprovar os cuidados que você teve com seu veículo. </p>
+      </div>
+    </div>
+  </div>
+
+</div>

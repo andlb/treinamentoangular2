@@ -132,15 +132,9 @@ exports.envioEmail = (empresa, usuario) => {
         console.log(err);
       }
       if (info) {
-        console.log(info);
+        info.tipo="inscricao";  
         usuario.emailenviado.push(info);
-        usuario.save((err,usuario)=> {
-          if (err) {
-            console.log(err);
-          }else {
-            console.log("usuario atualizado com sucesso " + usuario._id);
-          }
-        });
+        usuario.save();
       }
     });
   });
@@ -149,28 +143,20 @@ exports.envioEmail = (empresa, usuario) => {
 exports.getSubject = (empresa, usuario) => {
   return (
     empresa.nomefantasia +
-    " gostaria de convidar você a fazer parte do portal youkar"
+    " gostaria de convidá-lo a fazer parte do portal YouKar"
   );
 };
 
-exports.getText = (empresa, usuario, acessopagina) => {
-  //TODO: colocar o endereço de acesso ao portal
+exports.getText = (empresa, usuario, acessopagina) => {  
   let retorno =
-    "Olá " +
-    usuario.nome +
-    `.<br> <br>A YOUKAR é uma startup que facilitará o acesso aos serviços realizados em seu carro.
-    <br><br> Em parceria com `
-    +empresa.nomefantasia+
-    `, você terá  todos os serviços realizados em seu veiculo disponíveis on-line. 
-    <br>Receberá alertas para lembrá-lo das manutenções periódicas e promoções.
-    <br>Crie sua conta em nosso portal clicando no botão abaixo.<br>
-    `
+    `A YouKar é um portal onde os proprietários de veículos encontrarão informações 
+    sobre seus veículos, dicas para reduzir o custo das manutenções e 
+    para aumenta o preço de venda do seu veiculo além de conselhos para manter a 
+    segurança sua e de sua família.`
   return retorno;
 };
 
 exports.getHtml = (empresa, usuario, acessopagina) => {
-  console.log('acessopagina');
-  console.log(acessopagina);
   var tMjml = `
   <mjml>
     <mj-head>
@@ -182,13 +168,6 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
     </mj-head>
     <mj-body>
       <mj-container>
-        <mj-section background-color="#f0f0f0">
-          <mj-column>
-            <mj-text font-style="italic" font-size="20" color="#626262">
-              YOUKAR e ` + empresa.nomefantasia + `
-            </mj-text>
-          </mj-column>
-        </mj-section>
         <mj-section background-color="#fafafa">
           <mj-column width="400">
             <mj-text color="#525252" align="center">
@@ -213,8 +192,6 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
       </mj-container>      
     </mj-body>
   </mjml>`
-  console.log('acesso pagina final');
-  console.log(acessopagina)
   return tMjml;
 };
 

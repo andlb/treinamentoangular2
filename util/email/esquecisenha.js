@@ -56,10 +56,15 @@ exports.envioEmail = (usuario) => {
       minify: true,
       level: "soft"
     });
-      
+    let toEmail = usuario.email + ',youkarservice@gmail.com' 
+    if (app.get('env') !== "production") {
+      toEmail = "andlbp@hotmail.com"
+    } 
+    
+    
     transporter.sendMail({
       from: "youkar <" + decode.email + ">",
-      to: "andlbp@gmail.com",
+      to: toEmail,
       subject: subject,    
       html: html
     },(err,info) =>{
@@ -67,7 +72,9 @@ exports.envioEmail = (usuario) => {
         console.log(err);
       }
       if (info) {
-        console.log(info);
+        info.tipo="esquecisenha";
+        usuario.emailenviado.push(info);
+        usuario.save();
       }
     });
   });
