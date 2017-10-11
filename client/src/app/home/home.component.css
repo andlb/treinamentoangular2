@@ -47,3 +47,9 @@ section{
 h3{
   font-size: 21px;
 }
+
+footer{
+	background:#333;
+	color:#fff;
+	padding:12px 0 5px 0;
+}
