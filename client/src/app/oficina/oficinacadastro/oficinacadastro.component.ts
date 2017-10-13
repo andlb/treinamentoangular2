@@ -35,6 +35,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
   atendimentoid:string;
   cadastrado:boolean=false;
   finalizar:boolean = false;
+  cpf:string;
 
   subEnviar: Subscription;
   subEmpresa: Subscription;
@@ -207,7 +208,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
 
   mudarCpf(event) {
     if (!this.edit) {
-      if (this.oficinaService.getProprietario().cpf !== event.target.value) {
+      if ((this.cpf !== event.target.value) && (this.cpf !== "")) {
         this.form.controls["email"].enable();
         this.form.controls["nome"].setValue("");
         this.form.controls["email"].setValue("");
@@ -222,6 +223,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
         this.form.controls["telefone"].setValue(this.oficinaService.getProprietario().telefone);
       }
     }
+    this.cpf = event.target.value;
   }
 
   desabilitaCampos() {
