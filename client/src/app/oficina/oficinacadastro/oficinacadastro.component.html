@@ -10,10 +10,10 @@
   <form class="form-horizontal" [formGroup]="form" (submit)="enviaDados()">
     <div class="form-group">
       <div class="col-md-11 col-md-offset-1">
-
+        <button *ngIf="(!edit)" [disabled]="processing" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button>
         <button [disabled]="!form.valid || processing" type="submit" class="btn btn-success">{{(!edit) ? 'Incluir' : 'Salvar' }}</button>
-        <!-- <button *ngIf="(edit)" [disabled]="processing"  type="button" class="btn btn-danger" (click)="onDeletar()">Inativar</button>
-        <button *ngIf="(!edit)" [disabled]="processing" type="button" class="btn btn-warning" (click)="onLimpar()">Limpar</button> -->
+        <!-- <button *ngIf="(edit)" [disabled]="processing"  type="button" class="btn btn-danger" (click)="onDeletar()">Inativar</button> -->
+
         <button [disabled]="!form.valid || processing" type="button" class="btn btn-success" (click)="onFinalizar()">Finalizar</button>
         <button type="button" [disabled]="processing" class="btn btn-info" (click)="onVoltar()">Voltar</button>
       </div>

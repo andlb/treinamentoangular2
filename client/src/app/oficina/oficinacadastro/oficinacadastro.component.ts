@@ -155,8 +155,6 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
             this.preencheFormulario();
             this.quilometragem.nativeElement.focus();
           } else {
-            //quando a placa não é encontrada.
-            this.onLimpar();
             this.form.controls["placa"].setValue(placa);
           }
           this.processing = false;
@@ -172,6 +170,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     if (this.subsPesquisaAtendimento)
       this.subsPesquisaAtendimento.unsubscribe();
   }
+
   preencheFormulario() {
     let veiculo = this.oficinaService.getVeiculo();
     let proprietario = this.oficinaService.getProprietario();
@@ -334,7 +333,12 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
     this.form.controls["telefoneddd"].setValue("");
     this.form.controls["telefone"].setValue("");
 
-    this.servicosRealizados = [];
+    for (let control of (<FormArray>this.form.get("servicosForm")).controls) {
+      (<FormGroup>control).controls["selecionado"].setValue(false);
+      (<FormGroup>control).controls["observacao"].setValue('');
+
+
+    }
   }
 
   //coloca o formulario em estado de edição.
