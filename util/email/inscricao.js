@@ -169,7 +169,7 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
     <mj-body>
       <mj-container>
         <mj-section background-color="#fafafa">
-          <mj-column width="400">
+          <mj-column width="100%">
             <mj-text color="#525252" align="center">
             ` + this.getText(empresa, usuario, acessopagina) + `
             </mj-text>
@@ -179,7 +179,7 @@ exports.getHtml = (empresa, usuario, acessopagina) => {
           </mj-column>
         </mj-section>
         <mj-section background-color="#fafafa">
-          <mj-column width="400">
+          <mj-column width="100%">
             <mj-text color="#525252" align="left">
               Alguns servidores de e-mail bloqueiam o botão.
               </br>

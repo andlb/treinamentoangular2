@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
+const numeral = require('numeral');
 
 const config = require("../../config/database")[app.get('env')];
 const Usuario = require("../../models/usuario");
@@ -15,6 +16,7 @@ const Ordemservico = require("../../models/ordemservico");
 const Usuarioconvidar = require("../../models/usuarioconvidar");
 const Servicorealizado = require("../../models/servicorealizado");
 const Configuration = require("../../models/configuration");
+
 
 exports.enviaragradecimento = ordemservicoid => {
 
@@ -100,6 +102,7 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
           console.log(err);
         }
         if (info) {        
+          console.log(info);
           info.tipo="agradecimento";  
           usuario.emailenviado.push(info);
           usuario.save();
@@ -120,24 +123,17 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
 
   let mensagemCliente = '';
   let textoBotao = ''
-  if (!usuario.cadastrado) {
-    mensagemCliente = `Olá `
-    + ordemservico.usuarioid.nome + 
-    `.  A YOUKAR em parceria com ` +
+  mensagemCliente =     `<br> Sobre nós: <br> A YOUKAR em parceria com ` +
     empresa.nomefantasia +
-    ` irá disponibilizar na internet os serviços realizados em seu veículo. <br>
-    Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
-    Para ter acesso se cadastre no nosso portal através do botao abaixo.`              
+    ` tem o objetivo de disponibilizar na internet os serviços realizados em seu veículo e armazenar os dados do seu veículo na sua conta na Internet. <br>`
+
+  if (!usuario.cadastrado) {
+    mensagemCliente += `Para ter acesso se cadastre no nosso portal através do botão abaixo.`              
     textoBotao = 'Crie sua conta'
   }else{
-    mensagemCliente = `Olá `+ordemservico.usuarioid.nome+`. A YOUKAR em parceria com ` +
-    empresa.nomefantasia +
-    ` disponibiliza na internet os serviços realizados em seu veículo. <br>
-    Para maior facilidade, informaremos a data e a quilometragem das próximas manutenções no seu veiculo e promoções.
-    Acesse o nosso portal através do botão abaixo.`              
+    mensagemCliente += `Para ter acesso clique no botão abaixo.`              
     textoBotao = 'Acesse sua conta'
   }
-
 
   var tColumns = "";
   for (var servicorealizado of servicorealizados) {
@@ -147,25 +143,24 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
       proximaDataTroca = proximaDataTroca.format("DD/MM/YYYY");
     }  
     var proximaTroca = "Não definido";
-    if (servicorealizado.proximatrocakm) {
-      proximaTroca =servicorealizado.proximatrocakm
+    if (servicorealizado.proximatrocakm) {      
+      proximaTroca = numeral(servicorealizado.proximatrocakm).format('0,0')
     }
     let descricaoservico = "<strong>"+servicorealizado.servicoid.descricao+"</strong>";    
     if (servicorealizado.observacao) {
       descricaoservico += " <br/> " + servicorealizado.observacao
     }
-
     tColumns += 
       `
               <tr>
-                <td width='40%' style="text-align:left;">` +
+                <td width='40%' style="text-align:left;font-family:'Raleway';font-weight:400;">` +
                   descricaoservico +
                 `</td>
-                 <td width='35%' style="text-align:left;">` +
+                 <td width='35%' style="text-align:left;font-family:'Raleway';font-weight:400;">` +
       proximaDataTroca
        +
       `</td>
-                <td width='25%' style="text-align:right;">` +
+                <td width='25%' style="text-align:right;font-family:'Raleway';font-weight:400;">` +
       proximaTroca +
       `</td>
               </tr>
@@ -175,6 +170,8 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
     `
   <mjml>
   <mj-head>
+  <mj-font name="Raleway" href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" />
+  <mj-font name="Lora" href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" />
   <mj-style inline="inline">
     .quebratexto {          
       word-break: break-all;
@@ -186,7 +183,7 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
         <!-- Company Header -->
         <mj-section padding-bottom="0" background-color="#fcfcfc">
         <mj-column width="100%">
-          <mj-text align="center" font-size="20" color="grey" font-family="Helvetica Neue" font-weight="200">
+          <mj-text align="center" font-size="20" color="grey" font-family="Raleway" font-weight="700">
             ` +
     empresa.nomefantasia +
     ` agradece sua visita.
@@ -196,11 +193,14 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
       </mj-section>
       <!-- Article -->
       <mj-section background-color="white">
-        <mj-column width="350">
-          <mj-text align="left" font-size="20" color="grey">
-            Mais facilidades para você.
+        <mj-column width="100%">
+          <mj-text align="left" font-size="14" font-family="Lora" font-weight="400">
+            Olá `+ordemservico.usuarioid.nome+`, você poderia nos ajudar? <br>
+            Nós gostariamos de criar uma aplicação que te lembre sobre as próximas manutenções a ser realizado em seu veículo 
+            e tambem que armazenará os dados do serviço realizado em seu veiculo na sua conta na Internet. </br>
+            Responda esse e-mail e compartilhe conosco o que você acha sobre esse serviço e sugestões para melhorarmos e atende-los da melhor forma possível.
           </mj-text>
-          <mj-text align="left" color="grey">`
+          <mj-text align="left" color="grey" font-size="14" font-family="Lora" font-weight="400">`
             +
             mensagemCliente             
             +
@@ -213,8 +213,8 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
         </mj-column>
       </mj-section> 
       <mj-section background-color="#fafafa">
-        <mj-column width="350">
-          <mj-text color="#525252" align="left">
+        <mj-column width="100%">
+          <mj-text color="#525252" align="left" font-size="14" font-family="Lora" font-weight="400">
             Alguns servidores de e-mail bloqueiam o botão.
             </br>
               Por isso, caso não seja possivel clicar no botão, copie o texto abaixo e cole na url do seu browser:
@@ -229,25 +229,38 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
           <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey" />
         </mj-column>
       </mj-section>      
-      <mj-section background-color="#e6e6ff">        
-          <mj-text align="center" font-size="20" color="grey">
-            Lista dos serviços realizados
+      <mj-section background-color="#e6e6ff">      
+        <mj-column>
+          <mj-text align="center" 
+          font-size="20" 
+          color="grey" font-family="Raleway" font-weight="700">          
+            Lista dos serviços realizados            
+            </mj-text>
+
+          <mj-text align="center" 
+          font-size="14" 
+          color="grey" font-family="Raleway" font-weight="400">          
+            
+                    
+            <span style="font-weight:bold;">
+            Placa:</span>
+            
+            `+veiculo.placa+`
+            <span style="padding-left:80px; font-weight:bold;">
+            Km: </span>            
+            `+numeral(ordemservico.quilometragem).format('0,0')+
+            ` </span>
           </mj-text>        
-          <mj-column>
-              <mj-text><span style="font-weight:bold">Placa:</span> `+veiculo.placa+` </mj-text>
-          </mj-column>
-          <mj-column >
-              <mj-text><span style="font-weight:bold">Km: </span> `+ordemservico.quilometragem+` </mj-text>
-          </mj-column>
-        
+        </mj-column>
       </mj-section>      
+
       <mj-section>
           <mj-column>
             <mj-table>
               <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
-                <th width='40%' style="text-align:left;" >Serviço</th>
-                <th width='35%' style="text-align:left;" >Data próx. manut.</th>
-                <th width='25%' style="text-align:right;">KM próx. manut.</th>
+                <th width='40%' style="text-align:left;font-family:'Raleway';font-weight:700" >Serviço</th>
+                <th width='35%' style="text-align:left;font-family:'Raleway';font-weight:700" >Data próx. manut.</th>
+                <th width='25%' style="text-align:right;font-family:'Raleway';font-weight:700">KM próx. manut.</th>
               </tr>      
               ` + tColumns +      `
               </mj-table>
