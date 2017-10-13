@@ -113,7 +113,7 @@ exports.envioEmail = (ordemservico, servicorealizados) => {
 };
 
 exports.getSubject = (empresa, usuario) => {
-  return " Agradecemos por realizar o servico conosco. Seja sempre bem vindo.";
+  return "Nos ajude a melhorar nosso serviço.";
 };
 
 exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
@@ -197,8 +197,10 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
           <mj-text align="left" font-size="14" font-family="Lora" font-weight="400">
             Olá `+ordemservico.usuarioid.nome+`, você poderia nos ajudar? <br>
             Nós gostariamos de criar uma aplicação que te lembre sobre as próximas manutenções a ser realizado em seu veículo 
-            e tambem que armazenará os dados do serviço realizado em seu veiculo na sua conta na Internet. </br>
-            Responda esse e-mail e compartilhe conosco o que você acha sobre esse serviço e sugestões para melhorarmos e atende-los da melhor forma possível.
+            e também que armazenará os dados do serviço realizado em seu veiculo na sua conta na Internet. </br>
+            Responda esse e-mail e compartilhe conosco o que você acha 
+            sobre esse serviço e nos de sugestões para melhorarmos 
+            e atende-los sempre melhor.
           </mj-text>
           <mj-text align="left" color="grey" font-size="14" font-family="Lora" font-weight="400">`
             +
