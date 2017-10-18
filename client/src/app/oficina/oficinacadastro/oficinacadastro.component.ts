@@ -81,6 +81,7 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
               this.preencheFormulario();
               this.adicionarServicoForm();
               this.desabilitaPlaca();
+              this.cpf = this.oficinaService.getProprietario().cpf;
               this.processing = false;
             });
         } else {

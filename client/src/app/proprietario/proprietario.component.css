@@ -1,0 +1,19 @@
+.page-header{
+  padding-top:90px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin:0;
+  font-family: 'Raleway', sans-serif;
+  color:#1a1a1a;
+  margin-bottom: 10px;
+}
+
+.port_img {
+  position: relative;
+  overflow: hidden;
+}
+
+.m-top-20 {
+  margin-top:20px;
+}
