@@ -1,21 +1,27 @@
-<div class="container">
+<!-- <div class="container">
   <h2 class="page-header"> {{proprietario?.nome | uppercase}}<i *ngIf="!processing" class="fa fa-pencil fa-fw" (click)='irProfile()'></i> </h2>
-</div>
-<div class='container'>
-  <div *ngFor="let servicorealizado of servicosrealizado;">
-    <div class="alert alert-dismissible alert-success">
-      Veiculo:
-      <strong>
-        {{servicorealizado.veiculo.marca}}
-        {{servicorealizado.veiculo.modelo}}
-    </strong> PLACA:
-      <strong>
-      {{servicorealizado.veiculo.placa}}
-      </strong>
-      <i style='cursor:pointer' class="fa fa-pencil fa-fw" (click)='irVeiculo(servicorealizado.veiculo._id)'></i>
-    </div>
-    <div class="container">
+</div> -->
 
+<section>
+<div class='container'>
+  <h2 class="title">SERVIÇOS REALIZADOS</h2>
+  <div *ngFor="let servicorealizado of servicosrealizado;">
+
+    <div class="row" style='margin-top:40px'>
+      <div class="col-sm-3" >
+        <h4>
+          {{servicorealizado.veiculo.placa}}
+        </h4>
+      </div>
+      <div class="col-sm-3" >
+        <h4>
+          {{servicorealizado.veiculo.marca}}
+          {{servicorealizado.veiculo.modelo}}
+        <i style='cursor:pointer' class="fa fa-pencil fa-fw" (click)='irVeiculo(servicorealizado.veiculo._id)'></i>
+        </h4>
+      </div>
+    <div>
+    <div class="container" style='margin-top:80px'>
       <div class="row">
         <div class="col-sm-3">
           <div class="port_item xs-m-top-30">
@@ -36,7 +42,7 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Troca de filtros</h5>
-              <h6>- Graphic Design</h6>
+              <h6>- Ultima revisão: 01/01/2015</h6>
             </div>
           </div>
         </div>
@@ -47,7 +53,7 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Injeção</h5>
-              <h6>- Graphic Design</h6>
+              <h6>- Ultima revisão: 01/01/2015</h6>
             </div>
           </div>
         </div>
@@ -58,7 +64,7 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Limpeza de bico</h5>
-              <h6>- Graphic Design</h6>
+              <h6>- Ultima revisão: 01/01/2015</h6>
             </div>
           </div>
         </div>
@@ -73,7 +79,7 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Velas</h5>
-              <h6>- Graphic Design</h6>
+              <h6>- Ultima revisão: 01/01/2015</h6>
             </div>
           </div>
         </div>
@@ -85,7 +91,7 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Freios</h5>
-              <h6>- Graphic Design</h6>
+              <h6>- Ultima revisão: 01/01/2015</h6>
             </div>
           </div>
         </div>
@@ -96,7 +102,7 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Correia dentada ou corrente</h5>
-              <h6>- Graphic Design</h6>
+              <h6>- Ultima revisão: 01/01/2015</h6>
             </div>
           </div>
         </div>
@@ -107,7 +113,7 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Suspensão</h5>
-              <h6>- Graphic Design</h6>
+              <h6>- Ultima revisão: 01/01/2015</h6>
             </div>
           </div>
         </div>
@@ -121,7 +127,7 @@
               </div>
               <div class="port_caption m-top-20">
                 <h5>Pneus</h5>
-                <h6>- Graphic Design</h6>
+                <h6>- Ultima revisão: 01/01/2015</h6>
               </div>
             </div>
           </div>
@@ -163,8 +169,8 @@
       </div>
     </div>
   </div>
-
-
+</div>
+<!--
   <div class="container">
     <div *ngFor="let servicorealizado of servicosrealizado;">
       <div class="alert alert-dismissible alert-success">
@@ -228,4 +234,4 @@
         </a>
       </div>
     </div>
-  </div>
+  </div> -->

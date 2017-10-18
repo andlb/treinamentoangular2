@@ -2,6 +2,21 @@
   padding-top:90px;
 }
 
+.title{
+  position: relative;
+  margin-top:100px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #424242;
+}
+
+.alert-success{
+  height: 50px;
+  font-family: 'Raleway', sans-serif;
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin:0;
   font-family: 'Raleway', sans-serif;
