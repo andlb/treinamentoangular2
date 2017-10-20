@@ -18,9 +18,11 @@ const veiculoSchema = new Schema({
         quilometragem: { type: Number }
     }],
     tiposervicos:[{
-        tiposervico:{type:Number},
+        tiposervicoid:{type:Number},
         dataultimarealizacao:{type:Date},
-        quilometragem:{type:Number}
+        quilometragem:{type:Number},
+        proximatrocadata:{ type: Date},
+        proximatrocakm:{type:Number}
     }]
 });
 

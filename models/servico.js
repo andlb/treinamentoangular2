@@ -9,7 +9,7 @@ const servicoSchema = new Schema({
     descricao: { type: String },
     tempo: { type: Number },
     quilometragem: { type: Number },
-    tiposervico: { type: Number, ref:'Tiposervico', index:true},
+    tiposervicoid: { type: Number, ref:'Tiposervico', index:true},
     status: {type:Boolean}
 
 });

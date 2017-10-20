@@ -5,14 +5,15 @@ const Ordemservico = require("../models/ordemservico");
 const Empresa = require("../models/empresa");
 const Resposta = require("../models/resposta");
 const Servicorealizado = require("../models/servicorealizado");
+const Tiposervico = require("../models/tiposervico");
+
 const Usuarioconvidar = require("../models/usuarioconvidar");
 const Inscricao = require('../util/email/inscricao');
 const Agradecimento = require("../util/email/agradecimento");
 const moment = require("moment");
 const Servico = require("../models/servico");
 
-module.exports = router => {
-  
+module.exports = router => {  
   router.get("/placa/:placa", (req, res) => {
     let retorno = {
       success: false,
@@ -339,300 +340,335 @@ module.exports = router => {
     });
   });
 
-  router.post("/cadastra", (req, res) => {    
+  router.post("/cadastra",  (req, res) => {    
     let retorno = {
       success: false,
       message: ""
     };
-    let erroMsg = "";
-    let usuarioNovo = false;
-    let finalizar=false;
-    let novaOrdemServico = false;
-    if (req.body.finalizar){
-      finalizar=true;
-    }
 
-    if (!req.body.placa) {
-      if (erroMsg !== "") erroMsg += ",";
-      erroMsg += " a placa ";
-    }
-    if (!req.body.email) {
-      if (erroMsg !== "") erroMsg += ",";
-      erroMsg += " o e-mail ";
-    }
-    if (!req.body.nome) {
-      if (erroMsg !== "") erroMsg += ",";
-      erroMsg += " o nome ";
-    }
-    if (!req.body.cpf) {
-      if (erroMsg !== "") erroMsg += ",";
-      erroMsg += " o cpf ";
-    }
-    if (!req.body.quilometragem) {
-      if (erroMsg !== "") erroMsg += ",";
-      erroMsg += " a quilometragem ";
-    }
-    if (!req.body.empresaid) {
-      if (erroMsg !== "") erroMsg += ",";
-      erroMsg += " a empresa ";
-    }
+    try {
 
-    if (erroMsg) {
-      retorno.message = "Os seguintes campos deve ser preenchidos: " + erroMsg;
-      res.json(retorno);
-      return retorno;
-    }
-    var atributo = {};
-    if (req.body.quilometragem) {
-      atributo = {
-        quilometragem: req.body.quilometragem,
-        data: Date.now()
-      };    
-    }
-    var veiculo = {
-      marca: req.body.marca,
-      modelo: req.body.modelo,
-      placa: req.body.placa,
-      ano: req.body.ano,
-      anomodelo: req.body.anomodelo,
-    };
-    var dtNascimento = "";
-    if (req.body.datanascimento) {
-      var tNascimento = req.body.datanascimento.split("/");
-      if (tNascimento.length === 3) {
-        tNascimento =
-          tNascimento[2] + "-" + tNascimento[1] + "-" + tNascimento[0];
-        dtNascimento = new Date(tNascimento);
-      }
-    }
-    var usuario = {
-      nome: req.body.nome,
-      email: req.body.email,
-      tipo: 1,
-      cpf: req.body.cpf,
-      datanascimento: dtNascimento,
-      telefone:req.body.telefone,
-      telefoneddd:req.body.telefoneddd
-    };
 
-    Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
-      if (err) {
-        retorno.message = err.code + " - " + err.message;
-        return res.json(retorno);
+
+      let erroMsg = "";
+      let usuarioNovo = false;
+      let finalizar=false;
+      let novaOrdemServico = false;
+      if (req.body.finalizar){
+        finalizar=true;
       }
-      if (!oEmpresa) {
-        retorno.message = "Empresa não encontrada";
-        return res.json(retorno);
+
+      if (!req.body.placa) {
+        if (erroMsg !== "") erroMsg += ",";
+        erroMsg += " a placa ";
       }
-      
-      Usuario.findOne({ cpf: req.body.cpf }).exec((err, oUsuario) => {
+      if (!req.body.email) {
+        if (erroMsg !== "") erroMsg += ",";
+        erroMsg += " o e-mail ";
+      }
+      if (!req.body.nome) {
+        if (erroMsg !== "") erroMsg += ",";
+        erroMsg += " o nome ";
+      }
+      if (!req.body.cpf) {
+        if (erroMsg !== "") erroMsg += ",";
+        erroMsg += " o cpf ";
+      }
+      if (!req.body.quilometragem) {
+        if (erroMsg !== "") erroMsg += ",";
+        erroMsg += " a quilometragem ";
+      }
+      if (!req.body.empresaid) {
+        if (erroMsg !== "") erroMsg += ",";
+        erroMsg += " a empresa ";
+      }
+
+      if (erroMsg) {
+        retorno.message = "Os seguintes campos deve ser preenchidos: " + erroMsg;
+        res.json(retorno);
+        return retorno;
+      }
+      var atributo = {};
+      if (req.body.quilometragem) {
+        atributo = {
+          quilometragem: req.body.quilometragem,
+          data: Date.now()
+        };    
+      }
+      var veiculo = {
+        marca: req.body.marca,
+        modelo: req.body.modelo,
+        placa: req.body.placa,
+        ano: req.body.ano,
+        anomodelo: req.body.anomodelo,
+      };
+      var dtNascimento = "";
+      if (req.body.datanascimento) {
+        var tNascimento = req.body.datanascimento.split("/");
+        if (tNascimento.length === 3) {
+          tNascimento =
+            tNascimento[2] + "-" + tNascimento[1] + "-" + tNascimento[0];
+          dtNascimento = new Date(tNascimento);
+        }
+      }
+      var usuario = {
+        nome: req.body.nome,
+        email: req.body.email,
+        tipo: 1,
+        cpf: req.body.cpf,
+        datanascimento: dtNascimento,
+        telefone:req.body.telefone,
+        telefoneddd:req.body.telefoneddd
+      };
+
+      Empresa.findOne({ _id: req.body.empresaid }).exec((err, oEmpresa) => {
         if (err) {
           retorno.message = err.code + " - " + err.message;
           return res.json(retorno);
         }
-        //verify if the user exist
-        if (!oUsuario) {
-          //cadastra
-          oUsuario = new Usuario(usuario);
-          usuarioNovo = true;
+        if (!oEmpresa) {
+          retorno.message = "Empresa não encontrada";
+          return res.json(retorno);
         }
-        oUsuario.nome = usuario.nome;
-        //se o usuário é novo ou ainda não se cadastrou no sistema, então será permitido alterar o e-mail.
-        if (usuarioNovo) {
-          oUsuario.email = usuario.email;
-        }else {
-          if (!oUsuario.cadastrado) {
-            oUsuario.email = usuario.email;
-          }
-        }
-        oUsuario.cpf = usuario.cpf;
-        oUsuario.datanascimento = usuario.datanascimento;
-        oUsuario.telefone = usuario.telefone;
-        oUsuario.telefoneddd = usuario.telefoneddd;
-  
-        oUsuario.save(err => {
+        
+        Usuario.findOne({ cpf: req.body.cpf }).exec((err, oUsuario) => {
           if (err) {
-            //return err message
-            if (err.code === 11000) {
-              res.json({
-                success: false,
-                message: "Usuário já cadastrado"
-              });
-            } else {
-              retorno.message = err.code + " " + err.message;
-              return res.json(retorno);
+            retorno.message = err.code + " - " + err.message;
+            return res.json(retorno);
+          }
+          //verify if the user exist
+          if (!oUsuario) {
+            //cadastra
+            oUsuario = new Usuario(usuario);
+            usuarioNovo = true;
+          }
+          oUsuario.nome = usuario.nome;
+          //se o usuário é novo ou ainda não se cadastrou no sistema, então será permitido alterar o e-mail.
+          if (usuarioNovo) {
+            oUsuario.email = usuario.email;
+          }else {
+            if (!oUsuario.cadastrado) {
+              oUsuario.email = usuario.email;
             }
-          }          
-          //pesquisa pelo veiculo pela placa
-          Veiculo.findOne({ placa: req.body.placa }).exec((err, oVeiculo) => {
+          }
+          oUsuario.cpf = usuario.cpf;
+          oUsuario.datanascimento = usuario.datanascimento;
+          oUsuario.telefone = usuario.telefone;
+          oUsuario.telefoneddd = usuario.telefoneddd;
+    
+          oUsuario.save(err => {
             if (err) {
-              retorno.message = err.code + " " + err.message;
-              return res.json(retorno);
-            }
-            //se o veiculo não for encontrado
-            if (!oVeiculo) {
-              oVeiculo = new Veiculo();
-            }
-            oVeiculo.usuarioid = oUsuario._id;
-            oVeiculo.marca = veiculo.marca;
-            oVeiculo.modelo = veiculo.modelo;
-            oVeiculo.placa = veiculo.placa;
-            oVeiculo.ano = veiculo.ano;
-            oVeiculo.anomodelo = veiculo.anomodelo;
-            //oVeiculo.atributos.push(atributo);
-            oVeiculo.tiposervicos = GetTipoServico(oVeiculo,
-              req.body.servicorealizado,
-              Date.now(),
-              req.body.quilometragem);
-            console.log("tiposservicos" + oVeiculo.tiposervicos);
-            oVeiculo.save(err => {
+              //return err message
+              if (err.code === 11000) {
+                res.json({
+                  success: false,
+                  message: "Usuário já cadastrado"
+                });
+              } else {
+                retorno.message = err.code + " " + err.message;
+                return res.json(retorno);
+              }
+            }          
+            //pesquisa pelo veiculo pela placa
+            Veiculo.findOne({ placa: req.body.placa }).exec((err, oVeiculo) => {
               if (err) {
                 retorno.message = err.code + " " + err.message;
                 return res.json(retorno);
               }
-              
-              let ordemservicoid = req.body.ordemservicoid;
-              Ordemservico.findOne({_id:ordemservicoid}                
-              ).exec((err, oOrdemServico) => {
-                
+              //se o veiculo não for encontrado
+              if (!oVeiculo) {
+                oVeiculo = new Veiculo();
+              }
+              oVeiculo.usuarioid = oUsuario._id;
+              oVeiculo.marca = veiculo.marca;
+              oVeiculo.modelo = veiculo.modelo;
+              oVeiculo.placa = veiculo.placa;
+              oVeiculo.ano = veiculo.ano;
+              oVeiculo.anomodelo = veiculo.anomodelo;
+              //oVeiculo.atributos.push(atributo);              
+              oVeiculo.save(err => {
                 if (err) {
                   retorno.message = err.code + " " + err.message;
                   return res.json(retorno);
                 }
-                
-                if (!oOrdemServico) {
-                  oOrdemServico = new Ordemservico();
-                  novaOrdemServico = true;
-                }
-                
-              
-                oOrdemServico.veiculoid = oVeiculo._id;
-                oOrdemServico.usuarioid = oUsuario._id;
-                oOrdemServico.status = 1;  
-                if (finalizar){
-                  oOrdemServico.status = 2;
-                }
-                
-                oOrdemServico.empresaid = req.body.empresaid;
-                oOrdemServico.quilometragem = req.body.quilometragem;
-                oOrdemServico.save((err, oOrdemServico) => {
+
+
+                let ordemservicoid = req.body.ordemservicoid;
+                Ordemservico.findOne({_id:ordemservicoid}                
+                ).exec((err, oOrdemServico) => {
+                  
                   if (err) {
                     retorno.message = err.code + " " + err.message;
                     return res.json(retorno);
                   }
-                  //cadastrando os serviços
-                  Servicorealizado.remove(
-                    { ordemservicoid: oOrdemServico._id },
-                    err => {
-                      if (err) {
-                        retorno.message = err.code + " " + err.message;
-                        return res.json(retorno);
-                      }
-                      var servicosrealizados = [];
-                      
-                      for (let servicorealizado of req.body.servicorealizado) {
-                        servicorealizado.veiculoid = oVeiculo._id;
-                        servicorealizado.empresaid = oEmpresa._id;
-                        servicorealizado.ordemservicoid = oOrdemServico._id;
-                        servicosrealizados.push(servicorealizado);
-                      }
-                      Servicorealizado.insertMany(
-                        servicosrealizados,
-                        (err, docs) => {
-                          if (err) {
-                            retorno.message = err.code + " - " + err.message;
-                            return res.json(retorno);
-                          }    
-                          CalculaProximasManutencoes(docs,oOrdemServico);                          
-                          if (usuarioNovo) {
-                            new Usuarioconvidar({
-                              usuarioid:oUsuario._id,
-                              empresaid:req.body.empresaid
-                            }).save((err,oUsuarioConvidar) => {
-                              if (!err) { 
-                                if (finalizar){    
-                                  //Inscricao.enviarConvite(oUsuarioConvidar._id);                                
+                  
+                  if (!oOrdemServico) {
+                    oOrdemServico = new Ordemservico();
+                    novaOrdemServico = true;
+                  }
+                  
+                
+                  oOrdemServico.veiculoid = oVeiculo._id;
+                  oOrdemServico.usuarioid = oUsuario._id;
+                  oOrdemServico.status = 1;  
+                  if (finalizar){
+                    oOrdemServico.status = 2;
+                  }
+                  
+                  oOrdemServico.empresaid = req.body.empresaid;
+                  oOrdemServico.quilometragem = req.body.quilometragem;
+                  oOrdemServico.save((err, oOrdemServico) => {
+                    if (err) {
+                      retorno.message = err.code + " " + err.message;
+                      return res.json(retorno);
+                    }
+                    //cadastrando os serviços
+                    Servicorealizado.remove(
+                      { ordemservicoid: oOrdemServico._id },
+                      err => {
+                        if (err) {
+                          retorno.message = err.code + " " + err.message;
+                          return res.json(retorno);
+                        }
+                        var servicosrealizados = [];
+                        
+                        for (let servicorealizado of req.body.servicorealizado) {
+                          servicorealizado.veiculoid = oVeiculo._id;
+                          servicorealizado.empresaid = oEmpresa._id;
+                          servicorealizado.ordemservicoid = oOrdemServico._id;
+                          servicosrealizados.push(servicorealizado);
+                        }
+                        Servicorealizado.insertMany(
+                          servicosrealizados,
+                          (err, docs) => {
+                            if (err) {
+                              retorno.message = err.code + " - " + err.message;
+                              return res.json(retorno);
+                            }    
+                            CalculaProximasManutencoes(docs,oOrdemServico,oVeiculo);                          
+                            if (usuarioNovo) {
+                              new Usuarioconvidar({
+                                usuarioid:oUsuario._id,
+                                empresaid:req.body.empresaid
+                              }).save((err,oUsuarioConvidar) => {
+                                if (!err) { 
+                                  if (finalizar){    
+                                    //Inscricao.enviarConvite(oUsuarioConvidar._id);                                
+                                    Agradecimento.enviaragradecimento(oOrdemServico._id);
+                                  }
+                                }
+                              });
+                            }else{         
+                              if (finalizar){                   
+                                if (finalizar){                  
                                   Agradecimento.enviaragradecimento(oOrdemServico._id);
                                 }
                               }
-                            });
-                          }else{         
-                            if (finalizar){                   
-                              if (finalizar){                  
-                                Agradecimento.enviaragradecimento(oOrdemServico._id);
-                              }
+                            }                                                    
+                            retorno.success = true;
+                            if (!finalizar) {
+                              if (novaOrdemServico) {
+                                retorno.message = "Ordem de serviço cadastrada com sucesso";
+                              }else {
+                                retorno.message = "Ordem de serviço atualizada com sucesso";
+                              }                
+                            }else{
+                              retorno.message = "Ordem de serviço finalizada com sucesso";
                             }
-                          }                                                    
-                          retorno.success = true;
-                          if (!finalizar) {
-                            if (novaOrdemServico) {
-                              retorno.message = "Ordem de serviço cadastrada com sucesso";
-                            }else {
-                              retorno.message = "Ordem de serviço atualizada com sucesso";
-                            }                
-                          }else{
-                            retorno.message = "Ordem de serviço finalizada com sucesso";
+                            return res.json(retorno);
                           }
-                          return res.json(retorno);
-                        }
-                      );
-                    }
-                  );
+                        );
+                      }
+                    );
+                  });
                 });
               });
             });
           });
         });
       });
-    });
-  });
+    } catch (error) {
+    }  
+  
+  });  
   return router;
 };
 
-function CalculaProximasManutencoes(servicosrealizados,ordemservico){
+async function CalculaProximasManutencoes(servicosrealizados,ordemservico, veiculo){
+  console.log("***Pesquisa dos serviços***");
   for (let servicoreal of servicosrealizados) {
-    Servico.findById(servicoreal.servicoid,(err,servico)=>{        
-      if (servico.tempo) {  
-        servicoreal.proximatrocadata = moment(ordemservico.data, moment.ISO_8601).add(
-          servico.tempo,
-          "month"
-        ).toDate();
-      }
-      if (servico.quilometragem) {   
-        servicoreal.proximatrocakm =
-        parseFloat(ordemservico.quilometragem) +
-        parseFloat(servico.quilometragem);  
-      }
-      servicoreal.save();
-    });    
-  }
-}
-
-function GetTipoServico(veiculo,servicosrealizados,datacadastro,quilometragem){  
-  for (let servicorealizado of servicosrealizados){
-    console.log('servicorealizado');
-    console.log(servicorealizado);
-    console.log(servicorealizado.servicoid);
-    if (!servicorealizado.servicoid.tiposervico) continue;
+    let servico = await Servico.findById(servicoreal.servicoid);
+    if (servico.tempo) {  
+      servicoreal.proximatrocadata = moment(ordemservico.data, moment.ISO_8601).add(
+        servico.tempo,
+        "month"
+      ).toDate();
+    }
+    if (servico.quilometragem) {   
+      servicoreal.proximatrocakm =
+      parseFloat(ordemservico.quilometragem) +
+      parseFloat(servico.quilometragem);  
+    }
+    let tiposervico = await Tiposervico.findById(servico.tiposervicoid);
+    if (!tiposervico) continue;
     let tEncontrado = false;
-    for (let cTs = 0;cTs < veiculo.tiposervicos.length;cTs++) {
-      tiposervico = veiculo.tiposervicos[cTs];
-      if (tiposervico._id === servicorealizado.servicoid.tiposervico._id ){
-        tEcontrado = true;
-        veiculo.tiposervicos[cTs].dataultimarealizacao = datacadastro;
+    for (let cTs = 0;cTs < veiculo.tiposervicos.length;cTs++) {      
+      console.log(veiculo.tiposervicos[cTs]._id);
+      if (veiculo.tiposervicos[cTs]._id === tiposervico._id ){
+        tEncontrado = true;
+        veiculo.tiposervicos[cTs].dataultimarealizacao = ordemservico.data;
         veiculo.tiposervicos[cTs].quilometragem = quilometragem;
+        if (servico.tempo) {  
+          veiculo.tiposervicos[cTs].proximatrocadata = servicoreal.proximatrocadata;
+        }
+        if (servico.quilometragem) {
+          veiculo.tiposervicos[cTs].proximatrocakm = servicoreal.proximatrocakm;
+        }
       }
     }    
     if (!tEncontrado){
-      veiculo.tiposervicos.push({
-        tiposervico: servicorealizado.servicoid.tiposervico._id,
-        dataultimarealizacao : datacadastro,
-        quilometragem : quilometragem          
-      });
-    }
+      let oTipoServico = {};
+      oTipoServico.tiposervicoid = tiposervico._id;
+      oTipoServico.dataultimarealizacao = ordemservico.data;
+      if (servico.quilometragem) {
+        oTipoServico.proximatrocakm = servicoreal.proximatrocakm;
+      }
+      if (servico.tempo) {
+        oTipoServico.proximatrocadata = servicoreal.proximatrocadata;
+      }
+      veiculo.tiposervicos.push(oTipoServico);
+    }    
+    servicoreal.save();
+    console.log("***Veiculo***");
+    console.log(veiculo);
+    veiculo.save(); 
   }
-  console.log('veiculo.tiposervicos');
-  console.log(veiculo.tiposervicos);
-
-  return veiculo.tiposervicos;
 }
+
+// async function AtualizaTipoServico(veiculo,servicosrealizados,datacadastro,quilometragem){  
+//   console.log('serviços realizados');
+//   for (let servicorealizado of servicosrealizados){        
+//     let servico = await Servico.findById(servicorealizado.servicoid);
+//     console.log(servico);
+//     let tiposervico = await Tiposervico.findById(servico.tiposervicoid);
+//     if (!tiposervico) continue;
+//     let tEncontrado = false;
+//     for (let cTs = 0;cTs < veiculo.tiposervicos.length;cTs++) {      
+//       if (veiculo.tiposervicos[cTs]._id === tiposervico._id ){
+//         tEncontrado = true;
+//         veiculo.tiposervicos[cTs].dataultimarealizacao = datacadastro;
+//         veiculo.tiposervicos[cTs].quilometragem = quilometragem;
+//       }
+//     }    
+//     if (!tEncontrado){
+//       veiculo.tiposervicos.push({
+//         tiposervicoid: tiposervico._id,
+//         dataultimarealizacao : datacadastro,
+//         quilometragem : quilometragem          
+//       });
+//     }    
+//   }
+//   console.log('veiculo - atualizando');
+//   console.log(veiculo);
+//   veiculo.save();    
+// }
