@@ -9,7 +9,8 @@ const servicoSchema = new Schema({
     descricao: { type: String },
     tempo: { type: Number },
     quilometragem: { type: Number },
-    status:{type:Boolean}
+    tiposervico: { type: Number, ref:'Tiposervico', index:true},
+    status: {type:Boolean}
 
 });
 module.exports = mongoose.model('Servico', servicoSchema);

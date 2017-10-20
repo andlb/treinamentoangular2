@@ -16,6 +16,11 @@ const veiculoSchema = new Schema({
     atributos: [{
         data: { type: Date },
         quilometragem: { type: Number }
+    }],
+    tiposervicos:[{
+        tiposervico:{type:Number},
+        dataultimarealizacao:{type:Date},
+        quilometragem:{type:Number}
     }]
 });
 

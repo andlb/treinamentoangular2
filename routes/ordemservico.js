@@ -479,7 +479,12 @@ module.exports = router => {
             oVeiculo.placa = veiculo.placa;
             oVeiculo.ano = veiculo.ano;
             oVeiculo.anomodelo = veiculo.anomodelo;
-            oVeiculo.atributos.push(atributo);
+            //oVeiculo.atributos.push(atributo);
+            oVeiculo.tiposervicos = GetTipoServico(oVeiculo,
+              req.body.servicorealizado,
+              Date.now(),
+              req.body.quilometragem);
+            console.log("tiposservicos" + oVeiculo.tiposervicos);
             oVeiculo.save(err => {
               if (err) {
                 retorno.message = err.code + " " + err.message;
@@ -601,4 +606,33 @@ function CalculaProximasManutencoes(servicosrealizados,ordemservico){
       servicoreal.save();
     });    
   }
+}
+
+function GetTipoServico(veiculo,servicosrealizados,datacadastro,quilometragem){  
+  for (let servicorealizado of servicosrealizados){
+    console.log('servicorealizado');
+    console.log(servicorealizado);
+    console.log(servicorealizado.servicoid);
+    if (!servicorealizado.servicoid.tiposervico) continue;
+    let tEncontrado = false;
+    for (let cTs = 0;cTs < veiculo.tiposervicos.length;cTs++) {
+      tiposervico = veiculo.tiposervicos[cTs];
+      if (tiposervico._id === servicorealizado.servicoid.tiposervico._id ){
+        tEcontrado = true;
+        veiculo.tiposervicos[cTs].dataultimarealizacao = datacadastro;
+        veiculo.tiposervicos[cTs].quilometragem = quilometragem;
+      }
+    }    
+    if (!tEncontrado){
+      veiculo.tiposervicos.push({
+        tiposervico: servicorealizado.servicoid.tiposervico._id,
+        dataultimarealizacao : datacadastro,
+        quilometragem : quilometragem          
+      });
+    }
+  }
+  console.log('veiculo.tiposervicos');
+  console.log(veiculo.tiposervicos);
+
+  return veiculo.tiposervicos;
 }

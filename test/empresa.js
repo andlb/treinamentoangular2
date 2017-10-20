@@ -66,6 +66,7 @@ mongoose.connect(config.uri, err => {
             empresaid: oEmpresa._id,
             descricao: "Alinhamento",
             tempo: 7,
+            tiposervico:11,
             quilometragem: 6000
           };
           servicos.push(servico);
@@ -93,6 +94,7 @@ mongoose.connect(config.uri, err => {
             empresaid: oEmpresa._id,
             descricao: "Balanceamento",
             tempo: 4,
+            tiposervico:11,
             quilometragem: 5000
           };
           servicos.push(servico);
@@ -100,6 +102,7 @@ mongoose.connect(config.uri, err => {
             empresaid: oEmpresa._id,
             descricao: "Rodizio",
             tempo: 5,
+            tiposervico:10,
             quilometragem: 6000
           };
           servicos.push(servico);
@@ -107,6 +110,7 @@ mongoose.connect(config.uri, err => {
             empresaid: oEmpresa._id,
             descricao: "Freio",
             tempo: 6,
+            tiposervico:6,
             quilometragem: 40000
           };
           servicos.push(servico);
@@ -114,6 +118,7 @@ mongoose.connect(config.uri, err => {
             empresaid: oEmpresa._id,
             descricao: "Amortocedores",
             tempo: 12,
+            tiposervico:12,
             quilometragem: 90000
           };
           servicos.push(servico);
@@ -121,6 +126,7 @@ mongoose.connect(config.uri, err => {
             empresaid: oEmpresa._id,
             descricao: "Troca de óleo",
             tempo: 4,
+            tiposervico:1,
             quilometragem: 7000
           };
           servicos.push(servico);
@@ -128,6 +134,7 @@ mongoose.connect(config.uri, err => {
             empresaid: oEmpresa._id,
             descricao: "Troca de filtros",
             tempo: 12,
+            tiposervico:2,
             quilometragem: 10000
           };
           servicos.push(servico);
