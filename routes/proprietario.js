@@ -179,7 +179,7 @@ module.exports = router => {
 function insereVeiculo(servicorealizado) {
   return {
     veiculoid: servicorealizado.veiculoid._id,
-    veiculo: servicorealizado.veiculoid,
+    veiculo: servicorealizado.veiculoid,    
     ordensservico: [
       {
         _id: servicorealizado.ordemservicoid._id,

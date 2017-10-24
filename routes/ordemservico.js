@@ -594,8 +594,7 @@ module.exports = router => {
   return router;
 };
 
-async function CalculaProximasManutencoes(servicosrealizados,ordemservico, veiculo){
-  console.log("***Pesquisa dos serviços***");
+async function CalculaProximasManutencoes(servicosrealizados,ordemservico, veiculo){  
   for (let servicoreal of servicosrealizados) {
     let servico = await Servico.findById(servicoreal.servicoid);
     if (servico.tempo) {  
@@ -639,8 +638,6 @@ async function CalculaProximasManutencoes(servicosrealizados,ordemservico, veicu
       veiculo.tiposervicos.push(oTipoServico);
     }    
     servicoreal.save();
-    console.log("***Veiculo***");
-    console.log(veiculo);
     veiculo.save(); 
   }
 }

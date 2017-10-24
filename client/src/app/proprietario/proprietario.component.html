@@ -5,7 +5,7 @@
 <section>
 <div class='container'>
   <h2 class="title">SERVIÇOS REALIZADOS</h2>
-  <div *ngFor="let servicorealizado of servicosrealizado;">
+  <div *ngFor="let servicorealizado of servicosrealizado; let cServ = index">
 
     <div class="row" style='margin-top:40px'>
       <div class="col-sm-3" >
@@ -30,7 +30,9 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Troca de óleo</h5>
-              <h6>- Ultima revisão: 01/01/2015</h6>
+              <h6>- Dt. últ.  revisão: {{oleoultima[cServ]===""?oleoultima[cServ]:"Não informado"}}</h6>
+              <h6>- Dt. próx. revisão: {{oleodata[cServ]===""?oleodata[cServ]:"Não informado"}}</h6>
+              <h6>- KM  próx. revisão: {{oleokm[cServ]===""?oleokm[cServ]:0 | number:'1.0-0' }}</h6>
             </div>
           </div>
         </div>
@@ -42,7 +44,9 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Troca de filtros</h5>
-              <h6>- Ultima revisão: 01/01/2015</h6>
+              <h6>- Dt. últ.  revisão: {{filtroultima[cServ]===""?filtroultima[cServ]:"Não informado"}}</h6>
+              <h6>- Dt. próx. revisão: {{filtrodata[cServ]===""?filtrodata[cServ]:"Não informado"}}</h6>
+              <h6>- KM  próx. revisão: {{filtrokm[cServ]===""?filtrokm[cServ]:0 | number:'1.0-0' }}</h6>
             </div>
           </div>
         </div>
@@ -53,7 +57,9 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Injeção</h5>
-              <h6>- Ultima revisão: 01/01/2015</h6>
+              <h6>- Dt. últ.  revisão: {{injecaoultima[cServ]===""?injecaoultima[cServ]:"Não informado"}}</h6>
+              <h6>- Dt. próx. revisão: {{injecaodata[cServ]===""?injecaodata[cServ]:"Não informado"}}</h6>
+              <h6>- KM  próx. revisão: {{injecaokm[cServ]===""?injecaokm[cServ]:0 | number:'1.0-0' }}</h6>
             </div>
           </div>
         </div>
@@ -64,7 +70,9 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Limpeza de bico</h5>
-              <h6>- Ultima revisão: 01/01/2015</h6>
+              <h6>- Dt. últ.  revisão: {{bicoultima[cServ]===""?bicoultima[cServ]:"Não informado"}}</h6>
+              <h6>- Dt. próx. revisão: {{bicodata[cServ]===""?bicodata[cServ]:"Não informado"}}</h6>
+              <h6>- KM  próx. revisão: {{bicokm[cServ]===""?bicokm[cServ]:0 | number:'1.0-0' }}</h6>
             </div>
           </div>
         </div>
@@ -79,7 +87,9 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Velas</h5>
-              <h6>- Ultima revisão: 01/01/2015</h6>
+              <h6>- Dt. últ.  revisão: {{velasultima[cServ]===""?velasultima[cServ]:"Não informado"}}</h6>
+              <h6>- Dt. próx. revisão: {{velasdata[cServ]===""?velasdata[cServ]:"Não informado"}}</h6>
+              <h6>- KM  próx. revisão: {{velaskm[cServ]===""?velaskm[cServ]:0 | number:'1.0-0' }}</h6>
             </div>
           </div>
         </div>
@@ -91,7 +101,9 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Freios</h5>
-              <h6>- Ultima revisão: 01/01/2015</h6>
+              <h6>- Dt. últ.  revisão: {{freiosultima[cServ]===""?freiosultima[cServ]:"Não informado"}}</h6>
+              <h6>- Dt. próx. revisão: {{freiosdata[cServ]===""?freiosdata[cServ]:"Não informado"}}</h6>
+              <h6>- KM  próx. revisão: {{freioskm[cServ]===""?freioskm[cServ]:0 | number:'1.0-0' }}</h6>
             </div>
           </div>
         </div>
@@ -102,7 +114,9 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Correia dentada ou corrente</h5>
-              <h6>- Ultima revisão: 01/01/2015</h6>
+              <h6>- Dt. últ.  revisão: {{correiaultima[cServ]===""?correiaultima[cServ]:"Não informado"}}</h6>
+              <h6>- Dt. próx. revisão: {{correiadata[cServ]===""?correiadata[cServ]:"Não informado"}}</h6>
+              <h6>- KM  próx. revisão: {{correiakm[cServ]===""?correiakm[cServ]:0 | number:'1.0-0' }}</h6>
             </div>
           </div>
         </div>
@@ -113,7 +127,9 @@
             </div>
             <div class="port_caption m-top-20">
               <h5>Suspensão</h5>
-              <h6>- Ultima revisão: 01/01/2015</h6>
+              <h6>- Dt. últ.  revisão: {{suspensaoultima[cServ]===""?suspensaoultima[cServ]:"Não informado"}}</h6>
+              <h6>- Dt. próx. revisão: {{suspensaodata[cServ]===""?suspensaodata[cServ]:"Não informado"}}</h6>
+              <h6>- KM  próx. revisão: {{suspensaokm[cServ]===""?suspensaokm[cServ]:0 | number:'1.0-0' }}</h6>
             </div>
           </div>
         </div>
@@ -127,8 +143,10 @@
               </div>
               <div class="port_caption m-top-20">
                 <h5>Pneus</h5>
-                <h6>- Ultima revisão: 01/01/2015</h6>
-              </div>
+                <h6>- Dt. últ.  revisão: {{pneusultima[cServ]===""?pneusultima[cServ]:"Não informado"}}</h6>
+                <h6>- Dt. próx. revisão: {{pneusdata[cServ]===""?pneusdata[cServ]:"Não informado"}}</h6>
+                <h6>- KM  próx. revisão: {{pneuskm[cServ]===""?pneuskm[cServ]:0 | number:'1.0-0' }}</h6>
+                </div>
             </div>
           </div>
           <div class="col-sm-3">
@@ -139,7 +157,9 @@
               </div>
               <div class="port_caption m-top-20">
                 <h5>Rodizio de pneus</h5>
-                <h6>- Graphic Design</h6>
+                <h6>- Dt. últ.  revisão: {{rodizioultima[cServ]===""?rodizioultima[cServ]:"Não informado"}}</h6>
+                <h6>- Dt. próx. revisão: {{rodiziodata[cServ]===""?rodiziodata[cServ]:"Não informado"}}</h6>
+                <h6>- KM  próx. revisão: {{rodiziokm[cServ]===""?rodiziokm[cServ]:0 | number:'1.0-0' }}</h6>
               </div>
             </div>
           </div>
@@ -150,7 +170,9 @@
               </div>
               <div class="port_caption m-top-20">
                 <h5>Alinhamento e balanceamento</h5>
-                <h6>- Graphic Design</h6>
+                <h6>- Dt. últ.  revisão: {{alinhamentoultima[cServ]===""?alinhamentoultima[cServ]:"Não informado"}}</h6>
+                <h6>- Dt. próx. revisão: {{alinhamentodata[cServ]===""?alinhamentodata[cServ]:"Não informado"}}</h6>
+                <h6>- KM  próx. revisão: {{alinhamentokm[cServ]===""?alinhamentokm[cServ]:0 | number:'1.0-0' }}</h6>
               </div>
             </div>
           </div>
@@ -161,7 +183,9 @@
               </div>
               <div class="port_caption m-top-20">
                 <h5>Amortecedores</h5>
-                <h6>- Ultima revisão:</h6>
+                <h6>- Dt. últ.  revisão: {{amortecedorultima[cServ]===""?amortecedorultima[cServ]:"Não informado"}}</h6>
+                <h6>- Dt. próx. revisão: {{amortecedordata[cServ]===""?amortecedordata[cServ]:"Não informado"}}</h6>
+                <h6>- KM  próx. revisão: {{amortecedorkm[cServ]===""?amortecedorkm[cServ]:0 | number:'1.0-0' }}</h6>
               </div>
             </div>
           </div>
@@ -170,7 +194,7 @@
     </div>
   </div>
 </div>
-<!--
+
   <div class="container">
     <div *ngFor="let servicorealizado of servicosrealizado;">
       <div class="alert alert-dismissible alert-success">
@@ -234,4 +258,4 @@
         </a>
       </div>
     </div>
-  </div> -->
+  </div>
