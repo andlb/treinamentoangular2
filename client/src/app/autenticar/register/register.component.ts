@@ -120,6 +120,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onRegister() {
+    console.log("entrou em register");
     this.processing = true;
     this.disableForm();
     //usuário normal
@@ -144,9 +145,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.enableForm();
         } else {
           this.messageClass = "alert alert-success";
+          this.message = "Seja bem vindo. Obrigado pela visita.";
+          this.authService.storeUserData(data.token, data.user);
           setTimeout(() => {
             //this.router.navigate(["/login", this.acessode]);
-            this.router.navigate(["/login"]);
+            if (data.user.tipo === 0)  {
+              this.router.navigate(['/areaproprietario']);
+            } else {
+              this.router.navigate(['/centroautomotivo/lista/edit']);
+            }
           }, 2000);
         }
       });

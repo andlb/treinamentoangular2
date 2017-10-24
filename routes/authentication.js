@@ -84,6 +84,11 @@ module.exports = router => {
   });  
 
   router.post("/register", (req, res) => {
+    const retorno = {
+      success: false,
+      message: "",
+      token: ""
+    };
     let erroMsg = "";
     if (!req.body.email) {
       if (erroMsg != "") erroMsg != ",";
@@ -119,7 +124,9 @@ module.exports = router => {
         //quando o email é cadastrado pelo usuário.
         email = req.body.email.toLowerCase();  
       }
-      Usuario.findOne({ email: email }, (err, oUsuario) => {
+      Usuario.findOne({ email: email })
+        .populate("empresa")
+        .exec((err, oUsuario) => {
         if (err) {
           erroMsg = err.code + " - " + err.message;
           return res.json({
@@ -153,10 +160,7 @@ module.exports = router => {
         oUsuario.tipo = req.body.tipo;
         oUsuario.cadastrado = true;
         oUsuario.datacadastro = new Date();
-/*
-    cadastrado: { type: Boolean, default: false },
-    datacadastro:{type:Date},
-*/        
+
         oUsuario.save(err => {
           if (err) {
             if (err.code === 11000) {
@@ -189,12 +193,33 @@ module.exports = router => {
               usuarioid:oUsuario._id
             });
           }
-          return res.json({
-            success: true,
-            message: "Usuário salvo"
-          });                        
-        });
-        
+          const token = jwt.sign(
+            {
+              userId: oUsuario._id
+            },
+            database.secret,
+            {
+              expiresIn: "15h"
+            }
+          );
+          var empresanome = "";
+          if (oUsuario.empresa) {
+            empresanome = oUsuario.empresa.nomefantasia;
+          }
+          retorno.success = true;
+          retorno.message = "Success";
+          retorno.token = token;
+          retorno.user = {
+            usuarioid: oUsuario._id,
+            usuarionome:oUsuario.nome,
+            email: oUsuario.email,
+            tipo: oUsuario.tipo,
+            empresa: oUsuario.empresa,
+            cadastrocompleto: oUsuario.cadastrocompleto,
+            empresanome: empresanome
+          };
+          return res.json(retorno);                      
+        });        
       });
     }
   });

@@ -611,8 +611,7 @@ async function CalculaProximasManutencoes(servicosrealizados,ordemservico, veicu
     let tiposervico = await Tiposervico.findById(servico.tiposervicoid);
     if (!tiposervico) continue;
     let tEncontrado = false;
-    for (let cTs = 0;cTs < veiculo.tiposervicos.length;cTs++) {      
-      console.log(veiculo.tiposervicos[cTs]._id);
+    for (let cTs = 0;cTs < veiculo.tiposervicos.length;cTs++) {            
       if (veiculo.tiposervicos[cTs]._id === tiposervico._id ){
         tEncontrado = true;
         veiculo.tiposervicos[cTs].dataultimarealizacao = ordemservico.data;
