@@ -610,34 +610,37 @@ async function CalculaProximasManutencoes(servicosrealizados,ordemservico, veicu
     }
     let tiposervico = await Tiposervico.findById(servico.tiposervicoid);
     if (!tiposervico) continue;
-    let tEncontrado = false;
-    for (let cTs = 0;cTs < veiculo.tiposervicos.length;cTs++) {            
-      if (veiculo.tiposervicos[cTs]._id === tiposervico._id ){
-        tEncontrado = true;
-        veiculo.tiposervicos[cTs].dataultimarealizacao = ordemservico.data;
-        veiculo.tiposervicos[cTs].quilometragem = quilometragem;
-        if (servico.tempo) {  
-          veiculo.tiposervicos[cTs].proximatrocadata = servicoreal.proximatrocadata;
+    let tEncontrado = false;    
+    if (veiculo.tiposervicos) {
+      for (let cTs = 0;cTs < veiculo.tiposervicos.length;cTs++) {      
+        if (veiculo.tiposervicos[cTs].tiposervicoid === tiposervico._id){
+          tEncontrado = true;
+          veiculo.tiposervicos[cTs].quilometragem = ordemservico.quilometragem;
+          veiculo.tiposervicos[cTs].dataultimarealizacao = ordemservico.data;              
+          if (servico.tempo) {  
+            veiculo.tiposervicos[cTs].proximatrocadata = servicoreal.proximatrocadata;
+          }
+          if (servico.quilometragem) {
+            veiculo.tiposervicos[cTs].proximatrocakm = servicoreal.proximatrocakm;
+          }
         }
+      }  
+      if (!tEncontrado){          
+        let oTipoServico = {};
+        oTipoServico.tiposervicoid = tiposervico._id;
+        oTipoServico.dataultimarealizacao = ordemservico.data;
+        oTipoServico.quilometragem = ordemservico.quilometragem;
         if (servico.quilometragem) {
-          veiculo.tiposervicos[cTs].proximatrocakm = servicoreal.proximatrocakm;
+          oTipoServico.proximatrocakm = servicoreal.proximatrocakm;
         }
-      }
-    }    
-    if (!tEncontrado){
-      let oTipoServico = {};
-      oTipoServico.tiposervicoid = tiposervico._id;
-      oTipoServico.dataultimarealizacao = ordemservico.data;
-      if (servico.quilometragem) {
-        oTipoServico.proximatrocakm = servicoreal.proximatrocakm;
-      }
-      if (servico.tempo) {
-        oTipoServico.proximatrocadata = servicoreal.proximatrocadata;
-      }
-      veiculo.tiposervicos.push(oTipoServico);
-    }    
-    servicoreal.save();
-    veiculo.save(); 
+        if (servico.tempo) {
+          oTipoServico.proximatrocadata = servicoreal.proximatrocadata;
+        }
+        veiculo.tiposervicos.push(oTipoServico);          
+      }    
+      servicoreal.save();
+      veiculo.save(); 
+    }
   }
 }
 

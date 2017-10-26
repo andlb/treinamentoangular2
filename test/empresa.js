@@ -1,14 +1,16 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
 const mongoose = require("mongoose");
-const config = require("../config/database")[app.get('env')];;
+const config = require("../config/database")[app.get("env")];
 const Veiculo = require("../models/veiculo");
 
 const Usuario = require("../models/usuario");
 const Ordemservico = require("../models/ordemservico");
 const Empresa = require("../models/empresa");
 const Servico = require("../models/servico");
+const Tiposervico = require("../models/tiposervico");
+
 
 mongoose.Promise = global.Promise;
 console.log("entrou al");
@@ -53,99 +55,101 @@ mongoose.connect(config.uri, err => {
         });
       });
     });
-    Servico.remove(err => {
-      if (err) {
-        console.log(err.code + ' - '+ err.message);
-        process.exit(0);
-      }
-      Empresa.find({}).exec((err, empresas) => {
-        empresas.forEach(function(oEmpresa) {
-          servicos = [];
+    Tiposervico.remove(err => {
+      Servico.remove(err => {
+        if (err) {
+          console.log(err.code + " - " + err.message);
+          process.exit(0);
+        }
+        Empresa.find({}).exec((err, empresas) => {
+          empresas.forEach(function(oEmpresa) {
+            servicos = [];
 
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Alinhamento",
-            tempo: 7,
-            tiposervicoid:11,
-            quilometragem: 6000
-          };
-          servicos.push(servico);
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Sem tempo",            
-            quilometragem: 6000
-          };
-          servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Alinhamento",
+              tempo: 7,
+              tiposervicoid: 11,
+              quilometragem: 6000
+            };
+            servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Sem tempo",
+              quilometragem: 6000
+            };
+            servicos.push(servico);
 
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Sem quilometragem",            
-            tempo: 7,            
-          };
-          servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Sem quilometragem",
+              tempo: 7
+            };
+            servicos.push(servico);
 
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Sem tempo e quilometragem",            
-          };
-          servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Sem tempo e quilometragem"
+            };
+            servicos.push(servico);
 
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Balanceamento",
-            tempo: 4,
-            tiposervicoid:11,
-            quilometragem: 5000
-          };
-          servicos.push(servico);
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Rodizio",
-            tempo: 5,
-            tiposervicoid:10,
-            quilometragem: 6000
-          };
-          servicos.push(servico);
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Freio",
-            tempo: 6,
-            tiposervicoid:6,
-            quilometragem: 40000
-          };
-          servicos.push(servico);
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Amortocedores",
-            tempo: 12,
-            tiposervicoid:12,
-            quilometragem: 90000
-          };
-          servicos.push(servico);
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Troca de óleo",
-            tempo: 4,
-            tiposervicoid:1,
-            quilometragem: 7000
-          };
-          servicos.push(servico);
-          servico = {
-            empresaid: oEmpresa._id,
-            descricao: "Troca de filtros",
-            tempo: 12,
-            tiposervicoid:2,
-            quilometragem: 10000
-          };
-          servicos.push(servico);
-          new Servico.insertMany(servicos, (err, docs) => {
-            if (err) {
-              console.log(err.code + " - " + err.message);
-              process.exit(0);
-            }else {
-              console.log('processo terminado com sucesso');
-              process.exit(0);
-            }
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Balanceamento",
+              tempo: 4,
+              tiposervicoid: 11,
+              quilometragem: 5000
+            };
+            servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Rodizio",
+              tempo: 5,
+              tiposervicoid: 10,
+              quilometragem: 6000
+            };
+            servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Freio",
+              tempo: 6,
+              tiposervicoid: 6,
+              quilometragem: 40000
+            };
+            servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Amortocedores",
+              tempo: 12,
+              tiposervicoid: 12,
+              quilometragem: 90000
+            };
+            servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Troca de óleo",
+              tempo: 4,
+              tiposervicoid: 1,
+              quilometragem: 7000
+            };
+            servicos.push(servico);
+            servico = {
+              empresaid: oEmpresa._id,
+              descricao: "Troca de filtros",
+              tempo: 12,
+              tiposervicoid: 2,
+              quilometragem: 10000
+            };
+            servicos.push(servico);
+            new Servico.insertMany(servicos, (err, docs) => {
+              if (err) {
+                console.log(err.code + " - " + err.message);
+                process.exit(0);
+              } else {
+                console.log("processo terminado com sucesso");
+                process.exit(0);
+              }
+            });
           });
         });
       });

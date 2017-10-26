@@ -139,10 +139,10 @@ export class ProprietarioComponent implements OnInit {
     for (let cVei = 0; cVei<veiculo.length;cVei++){
       for (let cTs = 0;cTs < veiculo[cVei].veiculo.tiposervicos.length;cTs++){
         let oTipoServico = veiculo[cVei].veiculo.tiposervicos[cTs];
+
         let dataultimarealizacao = "Não informado"
         let proximatrocadata = "Não informado"
         let proximatrocakm = "Não informado";
-
         if (oTipoServico.dataultimarealizacao){
           dataultimarealizacao = moment(oTipoServico.dataultimarealizacao).format('DD/MM/YYYY');;
         }
@@ -208,6 +208,8 @@ export class ProprietarioComponent implements OnInit {
           this.rodiziokm[cVei]     = proximatrocakm;
         }
         if (oTipoServico.tiposervicoid === 11) {
+          console.log('entrou no alinamento ' + cVei);
+
           this.alinhamentoultima[cVei] = dataultimarealizacao;
           this.alinhamentodata[cVei]   = proximatrocadata;
           this.alinhamentokm[cVei]     = proximatrocakm;
