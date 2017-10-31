@@ -5,19 +5,19 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 const config = require('./config/database')[app.get('env')];
+const agendamento = require('./routes/agendamento')(router);
 const authentication = require('./routes/authentication')(router);
 const empresas = require('./routes/empresas')(router);
 const ordemservico = require('./routes/ordemservico')(router);
 const proprietario = require('./routes/proprietario')(router);
+
 const Usuario = require("./models/usuario");
 const bodyParser = require('body-parser')
 const correcaoservico = require("./util/correcao/service");
 const numeral = require('numeral');
 const registranumeral = require('./util/registranumeral');
-
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
-
 
 mongoose.Promise = global.Promise;
 
@@ -69,7 +69,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-
+app.use("/agendamento", agendamento);
 app.use("/authentication", authentication);
 app.use("/empresa", empresas);
 app.use("/ordemservico", ordemservico);

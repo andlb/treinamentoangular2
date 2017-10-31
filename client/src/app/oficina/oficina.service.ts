@@ -66,6 +66,18 @@ export class OficinaService {
     });
   }
 
+  limparProprietario(){
+    this.cadastroProprietario.proprietario = {
+      cpf:'',
+      nome: '',
+      email: '',
+      datanascimento: '',
+      telefoneddd : '',
+      telefone: ''
+    };
+    this.cadastroProprietario.servicosRealizado = [{}];
+  }
+
   setProprietario(proprietario) {
     if (!proprietario) return;
     var datanascimento = '';
@@ -86,6 +98,20 @@ export class OficinaService {
       telefoneddd : proprietario.telefoneddd,
       telefone: proprietario.telefone
     };
+  }
+
+
+
+  limparVeiculo(){
+
+    this.cadastroProprietario.veiculo = {
+      marca: '',
+      modelo: '',
+      placa:'',
+      ano: '',
+      anomodelo:'',
+      quilometragem: ''
+    }
   }
 
   setVeiculo(veiculo,ordemservico:any=null) {
@@ -162,8 +188,6 @@ export class OficinaService {
       servicorealizado: this.cadastroProprietario.servicosRealizado,
       finalizar:this.finalizar
     };
-    console.log("oficina");
-    console.log(oficina);
     return this.http
       .post(this.domain + "ordemservico/cadastra", oficina, this.options)
       .map(res => res.json());

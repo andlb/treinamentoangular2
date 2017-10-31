@@ -19,6 +19,8 @@ import { OficinaService } from "./oficina/oficina.service";
 import { ProprietarioService } from "./proprietario/proprietario.service";
 import { EsquecisenhaComponent } from './autenticar/login/esquecisenha.component';
 import { ReinicializarsenhaComponent } from './autenticar/login/reinicializarsenha.component';
+import { AgendamentoComponent } from './agendamento/agendamento.component';
+import { AgendamentoService } from './agendamento/agendamento.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { ReinicializarsenhaComponent } from './autenticar/login/reinicializarsen
     LoginComponent,
     ProfileComponent,
     EsquecisenhaComponent,
-    ReinicializarsenhaComponent
+    ReinicializarsenhaComponent,
+    AgendamentoComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { ReinicializarsenhaComponent } from './autenticar/login/reinicializarsen
     EmpresaService,
     OficinaService,
     ProprietarioService,
+    AgendamentoService,
     AuthGuard,
     NoAuthGuard
   ],
