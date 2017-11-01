@@ -64,7 +64,76 @@ mongoose.connect(config.uri, err => {
         Empresa.find({}).exec((err, empresas) => {
           empresas.forEach(function(oEmpresa) {
             servicos = [];
-
+            new Tiposervico({
+              _id:1,
+              descricao:'Troca de óleo'
+            }).save();
+        
+            new Tiposervico({
+              _id:2,
+              descricao:'Troca de filtros'
+            }).save();    
+        
+            new Tiposervico({
+              _id:3,
+              descricao:'Injeção'
+            }).save(); 
+        
+            new Tiposervico({
+              _id:4,
+              descricao:'Limpeza de bico'
+            }).save();    
+        
+            new Tiposervico({
+              _id:5,
+              descricao:'Velas'
+            }).save();    
+            
+            new Tiposervico({
+              _id:6,
+              descricao:'Freios'
+            }).save();    
+        
+            new Tiposervico({
+              _id:7,
+              descricao:'Correia dentada ou corrente'
+            }).save();    
+        
+            new Tiposervico({
+              _id:8,
+              descricao:'Suspensão'
+            }).save();    
+        
+            new Tiposervico({
+              _id:9,
+              descricao:'Pneus'
+            }).save();    
+        
+            new Tiposervico({
+              _id:10,
+              descricao:'Rodizio de pneus'
+            }).save();    
+        
+            new Tiposervico({
+              _id:11,
+              descricao:'Alinhamento e balanceamento'
+            }).save();    
+        
+            new Tiposervico({
+              _id:12,
+              descricao:'Amortecedores'
+            }).save(); 
+        
+            new Tiposervico({
+              _id:13,
+              descricao:'Bateria'
+            }).save(); 
+        
+            new Tiposervico({
+              _id:14,
+              descricao:'Embreagem'
+            }).save();     
+        
             servico = {
               empresaid: oEmpresa._id,
               descricao: "Alinhamento",

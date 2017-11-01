@@ -1,3 +1,4 @@
+import { AgendamentoComponent } from './agendamento/agendamento.component';
 import { EsquecisenhaComponent } from './autenticar/login/esquecisenha.component';
 import { ReinicializarsenhaComponent } from './autenticar/login/reinicializarsenha.component';
 
@@ -20,6 +21,7 @@ const appRoutes: Routes = [
   { path: 'reinializarsenha', component: ReinicializarsenhaComponent,canActivate: [NoAuthGuard]},
   { path: 'esquecisenha', component: EsquecisenhaComponent,canActivate: [NoAuthGuard]},
   { path: 'login/:acessode', component:LoginComponent,canActivate: [NoAuthGuard]},
+  { path: 'agendamento/:placa', component:AgendamentoComponent,canActivate: [NoAuthGuard]},
   { path: 'register',component:RegisterComponent, canActivate:[NoAuthGuard] },
   { path: 'register/:acessode',component:RegisterComponent, canActivate:[NoAuthGuard] },
   { path: 'profile/:id/:local', component:ProfileComponent,canActivate: [AuthGuard]},

@@ -460,6 +460,8 @@ export class OficinacadastroComponent implements OnInit, OnDestroy {
       } else {
         this.messageClass = "alert alert-success";
         this.message = data.message;
+        this.oficinaService.limparProprietario();
+        this.oficinaService.limparVeiculo();
         setTimeout(() => {
           this.router.navigate(["centroautomotivo/lista/edit"]);
         }, 2000);
