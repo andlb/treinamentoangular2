@@ -200,11 +200,11 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
             Olá `+ordemservico.usuarioid.nome+`, você poderia nos ajudar? <br>
             Nós gostariamos de criar uma 
             aplicação para armazenar os dados do serviço 
-            realizado em seu veiculo na sua conta na Internet. </br>
+            realizado em seu veículo na sua conta na Internet. </br>
             Dessa forma, quando você for 
-            vender o seu veiculo, você poderá disponibilizar para comprador 
+            vender o seu veículo, você poderá disponibilizar para comprador 
             todos as manutenções realizadas.
-            Se interessou? Então clique no botão abaixo para se cadastrar.
+            Está interessado? Então clique no botão abaixo para se cadastrar.
           </mj-text>
           <mj-button background-color="#F45E43" href="` 
           +acessopagina +
@@ -218,7 +218,7 @@ exports.getHtml = (servicorealizados, ordemservico, acessopagina) => {
           <mj-text color="#525252" align="left" font-size="14" font-family="Lora" font-weight="400">
             Alguns servidores de e-mail bloqueiam o botão.
             </br>
-              Por isso, caso não seja possivel clicar no botão, copie o texto abaixo e cole na url do seu browser:
+              Por isso, caso não seja possível clicar no botão, copie o texto abaixo e cole na url do seu browser:
             </br>
             <p class="quebratexto">`+acessopagina+`</p>
           </mj-text>
