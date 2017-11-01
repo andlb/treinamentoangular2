@@ -21,9 +21,13 @@ export class AgendamentoService {
   }
 
   agendarPlaca(placa) {
+    let agendamento = {
+      placa:placa
+    };
     this.createAuthenticationHeader();
     return this.http
-      .post(this.domain + "agendamento/placa", placa, this.options)
+      .post(this.domain + "agendamento/placa", agendamento)
       .map(res => res.json());
   }
+
 }
