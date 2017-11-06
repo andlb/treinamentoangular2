@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-
 const Agendamento = require("../models/agendamento");
 
 module.exports = router => {
@@ -10,7 +9,7 @@ module.exports = router => {
       message: "",
       codigoerro: ""
     };
-    if (!req.body.placa) {
+    if (!req.body.placa) {  
       retorno.message = 'Placa não informada'
       return res.json(retorno);
     }
